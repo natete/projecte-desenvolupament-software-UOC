@@ -1,6 +1,6 @@
 /*
  * Copyright FUOC.  All rights reserved.
- * @author Vicenç Font Sagristà, 2012
+ * @author Vicenï¿½ Font Sagristï¿½, 2012
  */
 package jpa;
 import java.io.Serializable;
@@ -22,6 +22,7 @@ public class PetJPA implements Serializable {
 	private String name;
 	private String description;
 	private float price;
+	private String color;
 	private CategoryJPA category;
 
 	/**
@@ -80,7 +81,12 @@ public class PetJPA implements Serializable {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	
+	public String getColor() {
+		return color;
+	}
+	public void setColor(String color) {
+		this.color = color;
+	}
 	/**
 	 * Methods get/set persistent relationships
 	 */

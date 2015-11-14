@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+
+	<h:body> 	
+	  <h:form align="left" >	
+		<h:commandLink action="#{cars.previousScreen}" value="Previous" />
+		<h:outputText value="   " />
+		<h:commandLink action="#{cars.nextScreen}" value="Next" />		
+		<h:dataTable value="#{cars.carListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  >
+ 			<f:facet name="header">			
+  			<h:outputText align="center" value="List cars: #{cars.nif}" />		
+  			</f:facet> 
+ 			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Registration Id"/>
+   				</f:facet> 
+     			<h:outputText value="#{item.carRegistrationId}" />
+ 			</h:column>
+ 			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Brand" />
+   				</f:facet> 
+    			<h:outputText value="#{item.brand}" />
+ 			</h:column>
+ 			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Model" />
+   				</f:facet> 
+    			<h:outputText  value="#{item.model} " />
+ 			</h:column>
+ 			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Color"/>
+   				</f:facet>
+     			<h:outputText align="right" value="#{item.color}" />
+   			</h:column>
+ 			<h:column>			                         
+					<h:commandButton  value="Delete Car" action="#{deletecar.deleteCar(item.carRegistrationId)}">
+					</h:commandButton>		
+ 			</h:column>
+ 		</h:dataTable>
+ 		<p align="center">
+ 			<h:commandButton value="Add Car" action="#{cars.addCar}">
+ 					
+ 			</h:commandButton>
+ 	  	</p>
+ 	  </h:form>		
+	</h:body>
+</html>

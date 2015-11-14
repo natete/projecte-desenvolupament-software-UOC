@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+	
+  
+  <h:body>
+		<br/>
+ 		<h:form>
+ 			<div align="center">
+				<table border="1" width="50%" id="table1">
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Nif:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:outputText value="#{addcar.nif}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Car Registration Id:</font></b></i></td>
+						<td>
+							<p align="left"/><h:inputText value="#{addcar.carRegistrationId}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Brand:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:inputText value="#{addcar.brand}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Model:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:inputText value="#{addcar.model}" title="Model" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Color:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:inputText value="#{addcar.color}" />
+						</td>
+					</tr>
+				</table> 	
+			</div> 
+			<p align="center">
+				<h:commandButton value="Save"  action="#{addcar.setDataCar}" />
+				<h:commandButton value="Return" immediate="true" action="carListView" />
+			</p>
+ 		</h:form>
+	</h:body>
+</html>

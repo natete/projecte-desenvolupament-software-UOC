@@ -16,29 +16,27 @@ import ejb.UserFacadeRemote;
  */
 @ManagedBean(name = "deletecar")
 @SessionScoped
-public class DeleteCarMBean implements Serializable{
-	
+public class DeleteCarMBean implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-		
+
 	@EJB
 	private UserFacadeRemote deleteCarRemote;
-	
-	
+
 	/**
 	 * Constructor method
+	 * 
 	 * @throws Exception
 	 */
-	public DeleteCarMBean() throws Exception
-	{
-		
+	public DeleteCarMBean() throws Exception {
+
 	}
-	
-	
-	public String deleteCar(String carRegistrationId) throws Exception
-	{	
+
+	public String deleteCar(String carRegistrationId) throws Exception {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		deleteCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CarSharing.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		deleteCarRemote = (UserFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		deleteCarRemote.deleteCar(carRegistrationId);
 		return "carListView";
 	}

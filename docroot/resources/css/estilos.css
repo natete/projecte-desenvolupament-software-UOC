@@ -283,3 +283,8 @@ a.listadogris:hover {font-family: Verdana, Arial, Helvetica, sans-serif;	font-si
 
 }
 .linklistado { font-family: Verdana, Arial, Helvetica, sans-serif;font-size: 10px;font-weight: 400;color: #000000; }
+
+.brandImage {
+	height: 35px;
+	width: auto;
+}

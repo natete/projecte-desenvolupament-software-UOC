@@ -136,7 +136,7 @@ public class ListCarsMBean implements Serializable{
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		screen = 0;
-		carsRemote = (UserFacadeRemote) ctx.lookup("java:app/CarSharing.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		carsRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		carsList = (Collection<CarJPA>)carsRemote.listAllCars(nif);
 	}
 }

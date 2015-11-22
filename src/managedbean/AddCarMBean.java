@@ -92,7 +92,7 @@ public class AddCarMBean implements Serializable{
 		String errorMessage=null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		addCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CarSharing.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		addCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		if (this.carRegistrationId.equals("")){
 		    // Bring the error message using the Faces Context
 			errorMessage = "Car Registration Id is missing";

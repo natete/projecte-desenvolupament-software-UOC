@@ -38,7 +38,7 @@ public class DeleteCarMBean implements Serializable{
 	{	
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		deleteCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CarSharing.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		deleteCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		deleteCarRemote.deleteCar(carRegistrationId);
 		return "carListView";
 	}

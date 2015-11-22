@@ -1,6 +1,6 @@
 package ejb;
 
-import java.util.*;
+import java.util.Collection;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
 import jpa.CarJPA;
-import ejb.UserFacadeRemote;
 
 /**
  * EJB Session Bean Class 

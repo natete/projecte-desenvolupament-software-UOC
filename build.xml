@@ -64,7 +64,7 @@
 
   <!-- Update the EJB jar file and create if not exist -->
   <target name="jarEjb" depends="compileEjb">
-    <jar jarfile="${dist}/CarSharing.jar"
+    <jar jarfile="${dist}/CAT-PDP-GRUP6.jar"
       basedir="${buildjar}"
       update="yes">
     </jar>
@@ -73,7 +73,7 @@
  
   <!-- Update the WAR file and create if not exist -->
   <target name="deployClient" depends="compileWar">
-    <jar jarfile="${dist}/CarSharing.war"
+    <jar jarfile="${dist}/CAT-PDP-GRUP6.war"
       basedir="${buildwar}"
       excludes="WEB-INF/classes/ejb/*.*, WEB-INF/classes/jpa/*.*"
       update="yes">
@@ -83,14 +83,14 @@
   <!-- Update the application ear file and created if not exist -->  
   <target name="ear" depends="clean, jarEjb, deployClient">
     <copy file="${sourcesrc}/META-INF/application.xml" todir="${dist}/META-INF"/>
-	<jar jarfile="${dist}/CarSharing.ear"
+	<jar jarfile="${dist}/CAT-PDP-GRUP6.ear"
 	   basedir="${dist}" update="yes">
 	</jar>
   </target>
 
   <!-- Deploy the ear. Copy the ear of the JBoss deployment directory -->
   <target name="deployear" depends="ear">
-    <copy file="${dist}/CarSharing.ear" todir="${deploy}"/>
+    <copy file="${dist}/CAT-PDP-GRUP6.ear" todir="${deploy}"/>
   </target>
   
   <!-- Clean the build directory -->

@@ -1,13 +1,18 @@
 package jpa;
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 /**
  * JPA Class PetJPA
  */
 @Entity
-@Table(name="carsharing.car")
+@Table(name="car")
 public class CarJPA implements Serializable {
 	@OneToOne(cascade=CascadeType.PERSIST)
 

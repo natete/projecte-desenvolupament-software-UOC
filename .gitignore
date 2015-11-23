@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 /.settings/
 /bin/
 /.packages
+=======
+/doc/
+/.settings/
+>>>>>>> branch 'master' of ssh://git@github.com/UOC-EIMT/CAT-PDP-GRUP6.git
 /CAT-PDP-GRUP6.ear
 /CAT-PDP-GRUP6.jar
 /CAT-PDP-GRUP6.war

@@ -2,12 +2,12 @@
   <display-name>CarSharing</display-name>
   <module>
     <web>
-      <web-uri>CarSharing.war</web-uri>
-      <context-root>/CarSharing</context-root>
+      <web-uri>CAT-PDP-GRUP6.war</web-uri>
+      <context-root>/CAT-PDP-GRUP6</context-root>
     </web>
   </module>
   <module>
-    <ejb>CarSharing.jar</ejb>
+    <ejb>CAT-PDP-GRUP6.jar</ejb>
   </module>
 </application>
 

@@ -2,22 +2,33 @@ package jpa;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * JPA Class PetJPA
  */
 @Entity
-@Table(name="car")
+@Table(name = "car")
 public class CarJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String nif;
-	private String carRegistrationId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer carRegistrationId;
 	private String brand;
 	private String model;
 	private String color;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "driver_id")
+	private DriverJPA driver;
 
 	/**
 	 * Class constructor methods
@@ -26,8 +37,7 @@ public class CarJPA implements Serializable {
 		super();
 	}
 
-	public CarJPA(String nif, String carRegistrationId, String brand, String model, String color) {
-		this.nif = nif;
+	public CarJPA(Integer carRegistrationId, String brand, String model, String color) {
 		this.carRegistrationId = carRegistrationId;
 		this.brand = brand;
 		this.model = model;
@@ -38,20 +48,11 @@ public class CarJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	public String getNif() {
-		return nif;
-	}
-
-	public void setNif(String nif) {
-		this.nif = nif;
-	}
-
-	@Id
-	public String getCarRegistrationId() {
+	public Integer getCarRegistrationId() {
 		return carRegistrationId;
 	}
 
-	public void setCarRegistrationId(String carRegistrationId) {
+	public void setCarRegistrationId(Integer carRegistrationId) {
 		this.carRegistrationId = carRegistrationId;
 	}
 
@@ -77,5 +78,13 @@ public class CarJPA implements Serializable {
 
 	public void setColor(String color) {
 		this.color = color;
+	}
+
+	public DriverJPA getDriver() {
+		return driver;
+	}
+
+	public void setDriver(DriverJPA driver) {
+		this.driver = driver;
 	}
 }

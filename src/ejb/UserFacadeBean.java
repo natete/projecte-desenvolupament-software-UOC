@@ -85,6 +85,27 @@ public class UserFacadeBean implements UserFacadeRemote {
 			System.out.println(e);
 		} 
 	}	
+
+	/**
+	 * Method that adds a passenger
+	 */
+	public void registerPassenger(String nif, String name, String surname, String phone, String password, String email) throws PersistenceException {
+
+		PassengerJPA passenger = new PassengerJPA();
+		passenger.setNif(nif);
+		passenger.setName(name);
+		passenger.setSurname(surname);
+		passenger.setPhone(phone);
+		passenger.setPassword(password);
+		passenger.setEmail(email);
+		try
+		{
+			entman.persist(passenger);
+			
+		}catch (PersistenceException e) {
+			System.out.println(e);
+		} 
+	}	
 	
 	/**
 	 * Method that verify the existences of as car

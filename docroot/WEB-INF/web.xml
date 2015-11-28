@@ -32,7 +32,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     
     <!-- The Welcome File List -->
     <welcome-file-list>
-    	<welcome-file>carListView.xhtml</welcome-file>
+    	<welcome-file>showTripView.xhtml</welcome-file>
     </welcome-file-list>
 
 </web-app>

@@ -1,5 +1,5 @@
 <application>
-  <display-name>CAT-PDP-GRUP6</display-name>
+  <display-name>CarSharing</display-name>
   <module>
     <web>
       <web-uri>CAT-PDP-GRUP6.war</web-uri>

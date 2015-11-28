@@ -27,7 +27,7 @@ public class CarJPA implements Serializable {
 		super();
 	}
 
-	public CarJPA(String carRegistrationId, String brand, String model, String color, String driver) {
+	public CarJPA(String carRegistrationId, String brand, String model, String color) { //, String driver) {
 		this.carRegistrationId = carRegistrationId;
 		this.brand = brand;
 		this.model = model;
@@ -80,7 +80,7 @@ public class CarJPA implements Serializable {
 	
 	public void setTripsByCar(Collection<TripJPA> trips) {
 		this.trips = trips;
-	}*/
+	}
 
 	@ManyToOne
 	@JoinColumn (name="driver")
@@ -90,5 +90,5 @@ public class CarJPA implements Serializable {
 	
 	public void setDriver(DriverJPA driver) {
 		this.driver = driver;
-	}
+	}*/
 }

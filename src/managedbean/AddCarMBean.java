@@ -119,7 +119,7 @@ public class AddCarMBean implements Serializable {
 		if (errorMessage != null) {
 			return "errorView";
 		} else {
-			addCarRemote.addCar(nif, carRegistrationId, brand, model, color);
+			addCarRemote.addCar(carRegistrationId, brand, model, color);
 			this.setCarRegistrationId("");
 			this.setBrand("");
 			this.setModel("");

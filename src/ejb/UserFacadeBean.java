@@ -25,7 +25,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	/**
 	 * Method that adds a car
 	 */
-	public void addCar(String nif, String carRegistrationId, String brand, String model, String color) throws PersistenceException {
+	public void addCar(String carRegistrationId, String brand, String model, String color) throws PersistenceException {
 
 		CarJPA car = new CarJPA();
 		car.setCarRegistrationId(carRegistrationId);
@@ -64,6 +64,27 @@ public class UserFacadeBean implements UserFacadeRemote {
 			System.out.println(e);
 		} 
 	}	
+
+	/**
+	 * Method that adds a driver
+	 */
+	public void registerDriver(String nif, String name, String surname, String phone, String password, String email) throws PersistenceException {
+
+		DriverJPA driver = new DriverJPA();
+		driver.setNif(nif);
+		driver.setName(name);
+		driver.setSurname(surname);
+		driver.setPhone(phone);
+		driver.setPassword(password);
+		driver.setEmail(email);
+		try
+		{
+			entman.persist(driver);
+			
+		}catch (PersistenceException e) {
+			System.out.println(e);
+		} 
+	}	
 	
 	/**
 	 * Method that verify the existences of as car
@@ -89,10 +110,4 @@ public class UserFacadeBean implements UserFacadeRemote {
 		else return true;
 	}
 
-
-	@Override
-	public void registerDriver(String nif, String name, String surname, String phone, String password, String email) {
-		// TODO Auto-generated method stub
-		
-	}
 }

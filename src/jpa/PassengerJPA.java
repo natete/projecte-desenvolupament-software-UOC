@@ -1,6 +1,7 @@
 package jpa;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.*;
 
@@ -19,7 +20,10 @@ public class PassengerJPA implements Serializable {
 	private String phone;
 	private String password;
 	private String email;
-
+//	private Collection<TripJPA> trips;
+//	private Collection<DriverCommentsJPA> driverComments;
+//	private Collection<MessageJPA> messages;
+	
 	/**
 	 * Class constructor methods
 	 */
@@ -27,7 +31,7 @@ public class PassengerJPA implements Serializable {
 		super();
 	}
 
-	public PassengerJPA(String nif, String carRegistrationId, String brand, String model, String color) {
+	public PassengerJPA(String nif, String name, String surname, String phone, String password, String email) {
 		this.nif = nif;
 		this.name = name;
 		this.surname = surname;
@@ -89,4 +93,37 @@ public class PassengerJPA implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	// persistent relationships
+	/*@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	???????????-----@JoinColumn(name = "driver")
+	public Collection<TripJPA> getTripsByPassenger() {
+		return trips;
+	}
+	
+	public void setTripsByPassenger(Collection<TripJPA> trips) {
+		this.trips = trips;
+	}*/
+
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@JoinColumn(name = "driver")
+	public Collection<DriverCommentJPA> getDriverCommentsByDriver() {
+		return driverComments;
+	}
+	
+	public void setDriverCommentsByDriver(Collection<DriverCommentsJPA> driverComments) {
+		this.driverComments = driverComments;
+	}*/
+	// persistent relationships
+
+	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@JoinColumn(name = "driver")
+	public Collection<messageJPA> getMessagesByDriver() {
+		return messages;
+	}
+	
+	public void setMessagesByDriver(Collection<MessageJPA> messages) {
+		this.messages = messages;
+	}*/
+
 }

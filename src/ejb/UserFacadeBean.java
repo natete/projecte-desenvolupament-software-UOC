@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
 import jpa.CarJPA;
+import jpa.DriverJPA;
+import jpa.PassengerJPA;
 import ejb.UserFacadeRemote;
 
 /**
@@ -26,7 +28,6 @@ public class UserFacadeBean implements UserFacadeRemote {
 	public void addCar(String nif, String carRegistrationId, String brand, String model, String color) throws PersistenceException {
 
 		CarJPA car = new CarJPA();
-		car.setNif(nif);
 		car.setCarRegistrationId(carRegistrationId);
 		car.setBrand(brand);
 		car.setModel(model);
@@ -72,5 +73,26 @@ public class UserFacadeBean implements UserFacadeRemote {
 		Collection<CarJPA> cars = entman.createQuery("FROM CarJPA b WHERE b.carRegistrationId = ?1").setParameter(1, carRegistrationId).getResultList();
 		if (cars.isEmpty()) return false; 
 		else return true;
-	}	
+	}
+	
+	/**
+	 * Method that verify the existences of as user
+	 */
+	public boolean existsUser(String nif, String email)throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
+		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
+		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
+		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
+		
+		if (driversNif.isEmpty() && driversEmail.isEmpty() && passengersNif.isEmpty() && passengersEmail.isEmpty()) return false; 
+		else return true;
+	}
+
+
+	@Override
+	public void registerDriver(String nif, String name, String surname, String phone, String password, String email) {
+		// TODO Auto-generated method stub
+		
+	}
 }

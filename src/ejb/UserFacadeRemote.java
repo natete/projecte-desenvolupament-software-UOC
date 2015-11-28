@@ -16,5 +16,7 @@ public interface UserFacadeRemote {
 	  public void addCar(String nif, String carRegistrationId, String brand, String model, String color);	
 	  public Collection<?> listAllCars(String nif);
 	  public void deleteCar(String carRegistrationId);
+	  public void registerDriver(String nif, String name, String surname, String phone, String password, String email);
 	  public boolean existsCar(String carRegistrationId);
+	  public boolean existsUser(String nif, String email);
 }

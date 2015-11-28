@@ -20,4 +20,11 @@
 		<nature>org.jboss.ide.eclipse.archives.core.archivesNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>src/managedbean/RegisterDriverMBean.java</name>
+			<type>1</type>
+			<location>C:/Users/ximop/Desktop/RegisterDriverMBean.java</location>
+		</link>
+	</linkedResources>
 </projectDescription>

@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<link rel="stylesheet" href="resources/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="resources/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="resources/css/estilos.css" />
+</h:head>
+<h:body>
+
+	<div class="container">
+
+		<ui:include src="navbar.xhtml" />
+
+		<h:form class="col-md-10 col-md-offset-1">
+			<h1 class="col-md-12">Afegir nou viatge</h1>
+			<div class="form-group col-md-6">
+				<label for="departureCity">Ciutat d'origen</label>
+				<h:inputText value="#{addtrip.departureCity}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="arrivalCity">Ciutat de destí</label>
+				<h:inputText value="#{addtrip.arrivalCity}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="fromPlace">Lloc d'origen</label>
+				<h:inputText value="#{addtrip.fromPlace}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="toPlace">Lloc de destí</label>
+				<h:inputText value="#{addtrip.toPlace}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="departureDate">Data de sortida</label>
+				<h:inputText value="#{addtrip.departureDate}" class="form-control" >
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:inputText>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="departureTime">Hora de sortida</label>
+				<h:inputText value="#{addtrip.departureTime}" class="form-control" >
+					<f:convertDateTime type="time" pattern="HH:mm" />
+				</h:inputText>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="availableSeats">Seients lliures</label>
+				<h:inputText value="#{addtrip.availableSeats}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="price">Preu</label>
+				<h:inputText value="#{addtrip.price}" class="form-control" />
+			</div>
+			<div class="form-group col-md-12">
+				<label for="description">Descripció</label>
+				<h:inputTextarea value="#{addtrip.description}" class="form-control" />
+			</div>
+			<div class="col-md-12 text-right">
+				<h:commandButton value="Cancelar" class="btn btn-default"
+					inmediate="true" action="tripListView" />
+				<h:commandButton value="Guardar" class="btn btn-primary"
+					action="#{addtrip.addTrip}" />
+			</div>
+
+
+		</h:form>
+	</div>
+
+	<script type="text/javascript" src="resources/js/jquery-2.1.4.min.js" />
+	<script type="text/javascript" src="resources/js/bootstrap.min.js" />
+</h:body>
+</html>

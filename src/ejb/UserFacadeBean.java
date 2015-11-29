@@ -124,8 +124,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 		@SuppressWarnings("unchecked")
 		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
 		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
-		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
-		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
+		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
+		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
 		
 		if (driversNif.isEmpty() && driversEmail.isEmpty() && passengersNif.isEmpty() && passengersEmail.isEmpty()) return false; 
 		else return true;

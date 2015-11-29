@@ -116,9 +116,9 @@ public class RegisterPassengerMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerPassengerRemote.existsUser(nif, email) == true) {
+		if (registerPassengerRemote.existsPassenger(nif, email) == true) {
 			// Bring the error message using the Faces Context
-			errorMessage = "User already exists";
+			errorMessage = "Passenger already exists";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component

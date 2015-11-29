@@ -116,9 +116,9 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerDriverRemote.existsUser(nif, email) == true) {
+		if (registerDriverRemote.existsDriver(nif, email) == true) {
 			// Bring the error message using the Faces Context
-			errorMessage = "User already exists";
+			errorMessage = "Driver already exists";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component

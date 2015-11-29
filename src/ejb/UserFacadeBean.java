@@ -118,16 +118,26 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 	
 	/**
-	 * Method that verify the existences of as user
+	 * Method that verify the existences of as driver
 	 */
-	public boolean existsUser(String nif, String email)throws PersistenceException {
+	public boolean existsDriver(String nif, String email)throws PersistenceException {
 		@SuppressWarnings("unchecked")
 		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
 		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
-		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
-		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
 		
-		if (driversNif.isEmpty() && driversEmail.isEmpty() && passengersNif.isEmpty() && passengersEmail.isEmpty()) return false; 
+		if (driversNif.isEmpty() && driversEmail.isEmpty()) return false; 
+		else return true;
+	}
+
+	/**
+	 * Method that verify the existences of as passenger
+	 */
+	public boolean existsPassenger(String nif, String email)throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		Collection<PassengerJPA> passengerNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif).getResultList();
+		Collection<PassengerJPA> passengerEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2").setParameter(2, email).getResultList();
+		
+		if (passengerNif.isEmpty() && passengerEmail.isEmpty()) return false; 
 		else return true;
 	}
 

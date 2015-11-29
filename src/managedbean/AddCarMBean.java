@@ -25,7 +25,6 @@ public class AddCarMBean implements Serializable {
 	@EJB
 	private UserFacadeRemote addCarRemote;
 
-	private String nif;
 	private String carRegistrationId;
 	private String brand;
 	private String model;
@@ -39,16 +38,6 @@ public class AddCarMBean implements Serializable {
 	 * @throws Exception
 	 */
 	public AddCarMBean() throws Exception {
-		this.setNif("00000000X");
-
-	}
-
-	public String getNif() {
-		return nif;
-	}
-
-	public void setNif(String nif) {
-		this.nif = nif;
 
 	}
 
@@ -119,7 +108,7 @@ public class AddCarMBean implements Serializable {
 		if (errorMessage != null) {
 			return "errorView";
 		} else {
-			addCarRemote.addCar(nif, carRegistrationId, brand, model, color);
+			addCarRemote.addCar(carRegistrationId, brand, model, color);
 			this.setCarRegistrationId("");
 			this.setBrand("");
 			this.setModel("");

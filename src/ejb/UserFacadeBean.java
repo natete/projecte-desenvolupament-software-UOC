@@ -23,10 +23,9 @@ public class UserFacadeBean implements UserFacadeRemote {
 	/**
 	 * Method that adds a car
 	 */
-	public void addCar(String nif, String carRegistrationId, String brand, String model, String color) throws PersistenceException {
+	public void addCar(String carRegistrationId, String brand, String model, String color) throws PersistenceException {
 
 		CarJPA car = new CarJPA();
-		car.setNif(nif);
 		car.setCarRegistrationId(carRegistrationId);
 		car.setBrand(brand);
 		car.setModel(model);

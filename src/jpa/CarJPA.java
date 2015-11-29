@@ -1,8 +1,16 @@
 package jpa;
 
 import java.io.Serializable;
+import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * JPA Class CarJPA
@@ -17,7 +25,7 @@ public class CarJPA implements Serializable {
 	private String brand;
 	private String model;
 	private String color;
-//	private Collection<TripJPA> trips;
+	private Collection<TripJPA> trips;
 	private DriverJPA driver;
 	
 	/**
@@ -72,7 +80,7 @@ public class CarJPA implements Serializable {
 	}
 	
 	// persistent relationships
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn(name = "car")
 	public Collection<TripJPA> getTripsByCar() {
 		return trips;
@@ -81,7 +89,7 @@ public class CarJPA implements Serializable {
 	public void setTripsByCar(Collection<TripJPA> trips) {
 		this.trips = trips;
 	}
-*/
+
 	@ManyToOne
 	@JoinColumn (name="driver")
 	public DriverJPA getDriver() {

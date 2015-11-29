@@ -116,22 +116,22 @@ public class PassengerJPA implements Serializable {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn(name = "driver")
-	public Collection<DriverCommentJPA> getDriverCommentsByDriver() {
+	public Collection<DriverCommentJPA> getDriverComments() {
 		return driverComments;
 	}
 	
-	public void setDriverCommentsByDriver(Collection<DriverCommentJPA> driverComments) {
+	public void setDriverComments(Collection<DriverCommentJPA> driverComments) {
 		this.driverComments = driverComments;
 	}
 	
 	// persistent relationships
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn(name = "driver")
-	public Collection<MessageJPA> getMessagesByDriver() {
+	public Collection<MessageJPA> getMessages() {
 		return messages;
 	}
 	
-	public void setMessagesByDriver(Collection<MessageJPA> messages) {
+	public void setMessages(Collection<MessageJPA> messages) {
 		this.messages = messages;
 	}
 }

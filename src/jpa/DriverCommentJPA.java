@@ -9,17 +9,15 @@ import javax.persistence.*;
 @Entity
 @Table(name="drivercomment")
 public class DriverCommentJPA implements Serializable {
-	@OneToOne(cascade=CascadeType.PERSIST)
 
 	private static final long serialVersionUID = 1L;
 
 	private String driverId;
 	private String passengerId;
 	private String comment;
-	private int ratting;
+	private int rating;
 	private DriverJPA driver;
 	private PassengerJPA passenger;
-
 		
 	/**
 	 * Class constructor methods
@@ -27,14 +25,13 @@ public class DriverCommentJPA implements Serializable {
 	public DriverCommentJPA() {
 		super();
 	}
-	public DriverCommentJPA(String driverId, String passengerId, String comment, int ratting) {		
+	public DriverCommentJPA(String driverId, String passengerId, String comment, int rating) {		
 		this.driverId = driverId;
 		this.passengerId = passengerId;
 		this.comment = comment;
-		this.ratting = ratting;
+		this.rating = rating;
 		
 	}
-	
 
 	/**
 	 *  Methods get/set the fields of database
@@ -60,10 +57,10 @@ public class DriverCommentJPA implements Serializable {
 		this.comment = comment;
 	}
 	public int getRatting() {
-		return ratting;
+		return rating;
 	}
-	public void setRatting(int ratting) {
-		this.ratting = ratting;
+	public void setRatting(int rating) {
+		this.rating = rating;
 	}
 	
 
@@ -87,6 +84,4 @@ public class DriverCommentJPA implements Serializable {
 	public  void setPassenger(PassengerJPA passenger) {
 		this.passenger = passenger;
 	}
-		
-
 }

@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="message")
 public class MessageJPA implements Serializable {
-	@OneToOne(cascade=CascadeType.PERSIST)
 
 	private static final long serialVersionUID = 1L;
 
@@ -43,13 +42,6 @@ public class MessageJPA implements Serializable {
 	/**
 	 *  Methods get/set the fields of database
 	 */
-	
-//	public int getTripId() {
-//		return tripId;
-//	}
-//	public void setTripId(int tripId) {
-//		this.tripId = tripId;
-//	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getQuestionId() {
@@ -106,7 +98,4 @@ public class MessageJPA implements Serializable {
 	public  void setPassenger(PassengerJPA passenger) {
 		this.passenger = passenger;
 	}
-	
-	
-	
 }

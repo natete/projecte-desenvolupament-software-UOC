@@ -3,7 +3,15 @@ package jpa;
 import java.io.Serializable;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * JPA Class PassengerJPA
@@ -20,9 +28,9 @@ public class PassengerJPA implements Serializable {
 	private String phone;
 	private String password;
 	private String email;
-//	private Collection<TripJPA> trips;
-//	private Collection<DriverCommentsJPA> driverComments;
-//	private Collection<MessageJPA> messages;
+	private Collection<TripJPA> trips;
+	private Collection<DriverCommentJPA> driverComments;
+	private Collection<MessageJPA> messages;
 	
 	/**
 	 * Class constructor methods
@@ -94,36 +102,36 @@ public class PassengerJPA implements Serializable {
 		this.email = email;
 	}
 
-	// persistent relationships
-	/*@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	???????????-----@JoinColumn(name = "driver")
-	public Collection<TripJPA> getTripsByPassenger() {
+	@ManyToMany
+	@JoinTable(name = "passengers_trips", joinColumns = {
+			@JoinColumn(name = "passenger_id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "trip_id", nullable = false) })
+	public Collection<TripJPA> getTrips() {
 		return trips;
 	}
 	
-	public void setTripsByPassenger(Collection<TripJPA> trips) {
+	public void setTrips(Collection<TripJPA> trips) {
 		this.trips = trips;
 	}
 
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn(name = "driver")
-	public Collection<DriverCommentJPA> getDriverCommentsByDriver() {
+	public Collection<DriverCommentJPA> getDriverComments() {
 		return driverComments;
 	}
 	
-	public void setDriverCommentsByDriver(Collection<DriverCommentsJPA> driverComments) {
+	public void setDriverComments(Collection<DriverCommentJPA> driverComments) {
 		this.driverComments = driverComments;
 	}
 	
 	// persistent relationships
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn(name = "driver")
-	public Collection<messageJPA> getMessagesByDriver() {
+	public Collection<MessageJPA> getMessages() {
 		return messages;
 	}
 	
-	public void setMessagesByDriver(Collection<MessageJPA> messages) {
+	public void setMessages(Collection<MessageJPA> messages) {
 		this.messages = messages;
-	}*/
-
+	}
 }

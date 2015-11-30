@@ -3,7 +3,13 @@ package jpa;
 import java.io.Serializable;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * JPA Class DriverJPA
@@ -20,9 +26,10 @@ public class DriverJPA implements Serializable {
 	private String phone;
 	private String password;
 	private String email;
-//	private Collection<TripJPA> trips;
-//	private Collection<DriverCommentsJPA> driverComments;
-//	private Collection<MessageJPA> messages;
+	private Collection<CarJPA> cars;
+	private Collection<TripJPA> trips;
+	private Collection<DriverCommentJPA> driverComments;
+	private Collection<MessageJPA> messages;
 	
 	/**
 	 * Class constructor methods
@@ -94,8 +101,18 @@ public class DriverJPA implements Serializable {
 		this.email = email;
 	}
 
+	
+	@OneToMany(mappedBy = "driver")
+	public Collection<CarJPA> getCars() {
+		return cars;
+	}
+
+	public void setCars(Collection<CarJPA> cars) {
+		this.cars = cars;
+	}
+
 	// persistent relationships
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
 	@JoinColumn(name = "driver")
 	public Collection<TripJPA> getTripsByDriver() {
 		return trips;
@@ -105,25 +122,25 @@ public class DriverJPA implements Serializable {
 		this.trips = trips;
 	}
 
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany
 	@JoinColumn(name = "driver")
 	public Collection<DriverCommentJPA> getDriverCommentsByDriver() {
 		return driverComments;
 	}
 	
-	public void setDriverCommentsByDriver(Collection<DriverCommentsJPA> driverComments) {
+	public void setDriverCommentsByDriver(Collection<DriverCommentJPA> driverComments) {
 		this.driverComments = driverComments;
 	}
 	
 	// persistent relationships
-	/*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+	@OneToMany
 	@JoinColumn(name = "driver")
-	public Collection<messageJPA> getMessagesByDriver() {
+	public Collection<MessageJPA> getMessagesByDriver() {
 		return messages;
 	}
 	
 	public void setMessagesByDriver(Collection<MessageJPA> messages) {
 		this.messages = messages;
-	}*/
-
+	}
+	
 }

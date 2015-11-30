@@ -1,4 +1,3 @@
-
 package managedbean;
 
 import java.io.Serializable;
@@ -25,7 +24,6 @@ public class AddCarMBean implements Serializable {
 	@EJB
 	private UserFacadeRemote addCarRemote;
 
-	private String nif;
 	private String carRegistrationId;
 	private String brand;
 	private String model;
@@ -39,16 +37,6 @@ public class AddCarMBean implements Serializable {
 	 * @throws Exception
 	 */
 	public AddCarMBean() throws Exception {
-		this.setNif("00000000X");
-
-	}
-
-	public String getNif() {
-		return nif;
-	}
-
-	public void setNif(String nif) {
-		this.nif = nif;
 
 	}
 

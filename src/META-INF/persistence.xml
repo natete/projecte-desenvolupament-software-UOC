@@ -12,6 +12,8 @@
                   value="org.hibernate.dialect.PostgreSQLDialect"/>
          <property name="hibernate.hbm2ddl.auto" value="update"/>
          <property name="hibernate.default_schema" value="carsharing"/>
+         <property name="hibernate.show_sql" value="true"></property>
+         <property name="hibernate.forma_sql" value="true"></property>
       </properties> 
    </persistence-unit>
 </persistence>

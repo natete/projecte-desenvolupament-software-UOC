@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * JPA Class PassengerJPA
  */
 @Entity
-@Table(name="passenger")
+@Table(name = "passenger")
 public class PassengerJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class PassengerJPA implements Serializable {
 	private Collection<TripJPA> trips;
 	private Collection<DriverCommentJPA> driverComments;
 	private Collection<MessageJPA> messages;
-	
+
 	/**
 	 * Class constructor methods
 	 */
@@ -52,7 +52,7 @@ public class PassengerJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	
+
 	@Id
 	public String getNif() {
 		return nif;
@@ -109,28 +109,26 @@ public class PassengerJPA implements Serializable {
 	public Collection<TripJPA> getTrips() {
 		return trips;
 	}
-	
+
 	public void setTrips(Collection<TripJPA> trips) {
 		this.trips = trips;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinColumn(name = "driver")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "passenger")
 	public Collection<DriverCommentJPA> getDriverComments() {
 		return driverComments;
 	}
-	
+
 	public void setDriverComments(Collection<DriverCommentJPA> driverComments) {
 		this.driverComments = driverComments;
 	}
-	
+
 	// persistent relationships
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinColumn(name = "driver")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "passenger")
 	public Collection<MessageJPA> getMessages() {
 		return messages;
 	}
-	
+
 	public void setMessages(Collection<MessageJPA> messages) {
 		this.messages = messages;
 	}

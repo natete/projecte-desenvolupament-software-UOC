@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,7 +16,7 @@ import ejb.TripFacadeRemote;
 import jpa.TripJPA;
 
 @ManagedBean(name = "findTripsController")
-@SessionScoped
+@ViewScoped
 public class FindTripsMBean implements Serializable {
 
 	private static final long serialVersionUID = -8313865001184025539L;

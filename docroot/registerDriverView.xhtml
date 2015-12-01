@@ -19,8 +19,7 @@
 			<h1 class="col-md-12">Afegir nou driver</h1>
 			<div class="form-group col-md-6">
 				<label for="nif">NIF: (*) </label>
-				<h:inputText value="#{registerdriver.nif}" class="form-control" 
-					required="true"/>
+				<h:inputText value="#{registerdriver.nif}" class="form-control" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="name">Nom: </label>
@@ -32,29 +31,23 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="phone">Teléfon: </label>
-				<h:inputText value="#{registerdriver.phone}" class="form-control">
-					<h:inputText value="#{registerdriver.phone}" class="form-control">
-				</h:inputText>
+				<h:inputText value="#{registerdriver.phone}" class="form-control" />
 				
 			</div>
 			<div class="form-group col-md-6">
 				<label for="email">E-Mail: (*) </label>
-				<h:inputText id="email" value="#{registerdriver.email}" class="form-control" validatorMessage="Formato de email no válido" >
-    				<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-				</h:inputText>
-				<f:message for="email" />
+				<h:inputText id="email" value="#{registerdriver.email}" class="form-control" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="password">Password: (*) </label>
-				<h:inputText value="#{registerdriver.password}" class="form-control" 
-				required="true"/>
+				<h:inputText value="#{registerdriver.password}" class="form-control" />
 			</div>
 			<div class="col-md-12 text-left">
 				<label>(*) Campo obligatorio</label>
 			</div>
 			<div class="col-md-12 text-right">
 				<h:commandButton value="Cancelar" class="btn btn-default"
-					inmediate="true" action="index" />
+					inmediate="true" action="findTripsView" />
 				<h:commandButton value="Guardar" class="btn btn-primary"
 					action="#{registerdriver.setDataDriver}" />
 			</div>

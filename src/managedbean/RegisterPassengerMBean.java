@@ -3,6 +3,8 @@ package managedbean;
 
 import java.io.Serializable;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ejb.EJB;
 import javax.faces.bean.*;
@@ -116,17 +118,50 @@ public class RegisterPassengerMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerPassengerRemote.existsPassenger(nif, email) == true) {
+		if (this.password.equals("")) {
 			// Bring the error message using the Faces Context
-			errorMessage = "Passenger already exists";
+			errorMessage = "Password is missing";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (!(this.email.equals("")) && (!(this.email.contains("@")))) {
+		if (registerPassengerRemote.existsDriver(nif, email) == true) {
 			// Bring the error message using the Faces Context
-			errorMessage = "Email must contains \"@\"";
+			errorMessage = "Driver already exists";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+		
+		Pattern patN = Pattern.compile("([0-9]{8})([A-Za-z])");
+		Matcher matN = patN.matcher(this.nif);
+		if (!(this.phone.equals("")) && !(matN.matches())) {
+			// Bring the error message using the Faces Context
+			errorMessage = "NIF format not valid. Ej.: 12345678a or 12345678A";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+
+		Pattern patP = Pattern.compile("\\d{9}");
+		Matcher matP = patP.matcher(this.phone);
+		if (!(this.phone.equals("")) && !(matP.matches())) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Phone format not valid. Ej.: 123456789";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+
+		Pattern patE = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+		Matcher matE = patE.matcher(this.email);
+		if (!(this.email.equals("")) && !(matE.matches())) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Email format not valid. Ej.: example@domain.com";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
@@ -136,7 +171,7 @@ public class RegisterPassengerMBean implements Serializable {
 		if (errorMessage != null) {
 			return "errorView";
 		} else {
-			registerPassengerRemote.registerPassenger(nif, name, surname, phone, password, email);
+			registerPassengerRemote.registerDriver(nif, name, surname, phone, password, email);
 			this.setNif("");
 			this.setName("");
 			this.setSurname("");
@@ -144,7 +179,7 @@ public class RegisterPassengerMBean implements Serializable {
 			this.setPassword("");
 			this.setEmail("");
 
-			return "index";
+			return "findTripsView.xhtml";
 		}
 	}
 

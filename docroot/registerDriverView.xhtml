@@ -13,7 +13,7 @@
 
 	<div class="container">
 
-		<ui:include src="navbar.xhtml" />
+		<ui:include src="templates/navbar.xhtml" />
 
 		<h:form class="col-md-10 col-md-offset-1">
 			<h1 class="col-md-12">Afegir nou driver</h1>
@@ -32,12 +32,17 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="phone">Teléfon: </label>
-				<h:inputText value="#{registerdriver.phone}" class="form-control" />
+				<h:inputText value="#{registerdriver.phone}" class="form-control">
+					<h:inputText value="#{registerdriver.phone}" class="form-control">
+				</h:inputText>
+				
 			</div>
 			<div class="form-group col-md-6">
 				<label for="email">E-Mail: (*) </label>
 				<h:inputText value="#{registerdriver.email}" class="form-control" 
-				required="true"/>
+					validatorMessage="Formato de email no válido">
+    				<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />/>
+				</h:inputText>
 			</div>
 			<div class="form-group col-md-6">
 				<label for="password">Password: (*) </label>

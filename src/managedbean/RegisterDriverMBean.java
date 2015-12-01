@@ -124,14 +124,14 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (!(this.email.equals("")) && (!(this.email.contains("@")))) {
+		/*if (!(this.email.equals("")) && (!(this.email.contains("@")))) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Email must contains \"@\"";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
+		}*/
 		
 		if (errorMessage != null) {
 			return "errorView";

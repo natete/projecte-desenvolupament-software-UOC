@@ -39,10 +39,10 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="email">E-Mail: (*) </label>
-				<h:inputText value="#{registerdriver.email}" class="form-control" 
-					validatorMessage="Formato de email no válido">
+				<h:inputText id="email" value="#{registerdriver.email}" class="form-control" validatorMessage="Formato de email no válido" >
     				<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
 				</h:inputText>
+				<f:message for="email" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="password">Password: (*) </label>

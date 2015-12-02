@@ -60,7 +60,7 @@ public class TripJPA implements Serializable {
 	private float price;
 
 	@ManyToOne
-	@JoinColumn(name = "driver_id")
+	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
 	@ManyToMany(mappedBy = "trips")

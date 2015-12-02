@@ -32,7 +32,7 @@ public class RateDriverMBean implements Serializable{
 	private String driverId;
 	private String passengerId;
 	private String comment;
-	private int ratting;
+	private int rating;
 	
 	private FacesMessage message;
 	
@@ -50,10 +50,10 @@ public class RateDriverMBean implements Serializable{
 	    driverComment = getDataDriverComment(driverId,passengerId);
 	    if (driverComment==null) {
 	    	setComment("");
-	    	setRatting(0); 
+	    	setRating(0); 
 	    }else{
 	    	this.comment = driverComment.getComment();
-	    	this.ratting = driverComment.getRatting();
+	    	this.rating = driverComment.getRating();
 	    }		
 	}
 	
@@ -93,14 +93,14 @@ public class RateDriverMBean implements Serializable{
 
 
 
-	public int getRatting() {
-		return ratting;
+	public int getRating() {
+		return rating;
 	}
 
 
 
-	public void setRatting(int ratting) {
-		this.ratting = ratting;
+	public void setRating(int rating) {
+		this.rating = rating;
 	}
 
 
@@ -127,9 +127,9 @@ public class RateDriverMBean implements Serializable{
 		}
 		else {	
 			if (driverComment == null) {
-				rateDriverRemote.rateDriver(driverId, passengerId, comment, ratting);
+				rateDriverRemote.rateDriver(driverId, passengerId, comment, rating);
 			} else {
-				rateDriverRemote.updateRateDriver(driverId, passengerId, comment, ratting);
+				rateDriverRemote.updateRateDriver(driverId, passengerId, comment, rating);
 			}
 			
 						

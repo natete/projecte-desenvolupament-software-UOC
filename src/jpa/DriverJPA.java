@@ -122,8 +122,7 @@ public class DriverJPA implements Serializable {
 		this.trips = trips;
 	}
 
-	@OneToMany
-	@JoinColumn(name = "driver")
+	@OneToMany(mappedBy = "driverId")
 	public Collection<DriverCommentJPA> getDriverCommentsByDriver() {
 		return driverComments;
 	}
@@ -133,8 +132,7 @@ public class DriverJPA implements Serializable {
 	}
 	
 	// persistent relationships
-	@OneToMany
-	@JoinColumn(name = "driver")
+	@OneToMany(mappedBy = "driver")
 	public Collection<MessageJPA> getMessagesByDriver() {
 		return messages;
 	}

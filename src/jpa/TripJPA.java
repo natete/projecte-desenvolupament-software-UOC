@@ -1,6 +1,7 @@
 package jpa;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -63,6 +65,13 @@ public class TripJPA implements Serializable {
 
 	@ManyToMany(mappedBy = "trips")
 	private List<PassengerJPA> passengers;
+	
+	@OneToMany(mappedBy = "trip")
+	private List<MessageJPA> messages;
+	
+	
+	
+
 
 	public TripJPA(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime,
 			String arrivalCity, String toPlace, Integer availableSeats, float price) {

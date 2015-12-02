@@ -20,7 +20,7 @@ public interface CommunicationFacadeRemote {
 	  public Collection<?>showDriverComments(String driver);
 	  public void askQuestion(int tripId, int questionId, String passenger, String subject, String body);
 	  public void replyQuestion(int tripId, int questionId, String driver, String subject, String body);
-	  public void rateDriver(String driver, String passenger, String comment, int rate);
+	  public void rateDriver(String driver, String passenger, String comment, int rating);
 	  public DriverCommentJPA getDriverComment(String driver, String Passenger);
-	  public void updateRateDriver(String driverId, String passengerId, String comment, int ratting);
+	  public void updateRateDriver(String driverId, String passengerId, String comment, int rating);
 }

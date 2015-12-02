@@ -92,12 +92,12 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that rate a driver
 	 */
-	public void rateDriver(String driverId, String passengerId, String comment, int ratting)throws PersistenceException {
+	public void rateDriver(String driverId, String passengerId, String comment, int rating)throws PersistenceException {
 		DriverCommentJPA driverComment = new DriverCommentJPA();
 		driverComment.setDriverId(driverId);
 		driverComment.setPassengerId(passengerId);
 		driverComment.setComment(comment);
-		driverComment.setRatting(ratting);
+		driverComment.setRating(rating);
 		try
 		{
 			entman.persist(driverComment);
@@ -127,10 +127,10 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that rate a driver
 	 */
-	public void updateRateDriver(String driverId, String passengerId, String comment, int ratting) throws PersistenceException {
+	public void updateRateDriver(String driverId, String passengerId, String comment, int rating) throws PersistenceException {
 		try
 		{
-		entman.createQuery("UPDATE DriverCommentJPA b SET b.comment = :comment, b.ratting = :ratting WHERE b.driverId = :driverId AND b.passengerId = :passengerId").setParameter("driverId", driverId).setParameter("passengerId",passengerId).setParameter("comment",comment).setParameter("ratting",ratting).executeUpdate();
+		entman.createQuery("UPDATE DriverCommentJPA b SET b.comment = :comment, b.rating = :rating WHERE b.driverId = :driverId AND b.passengerId = :passengerId").setParameter("driverId", driverId).setParameter("passengerId",passengerId).setParameter("comment",comment).setParameter("rating",rating).executeUpdate();
 		}catch (PersistenceException e) {
 			System.out.println(e);
 		} 	

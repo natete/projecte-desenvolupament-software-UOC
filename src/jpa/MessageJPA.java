@@ -12,6 +12,9 @@ public class MessageJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private int tripId;
+	private String driverId;
+	private String passengerId;
 	private int questionId;
 	private int replyQuestionId;
 	private String subject;
@@ -28,7 +31,7 @@ public class MessageJPA implements Serializable {
 		super();
 	}
 	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, int replyQuestionId, String subject, String body) {		
-		this.trip = trip;
+		this.trip= trip;
 		this.questionId = questionId;
 		this.driver = driver;
 		this.passenger = passenger;
@@ -82,7 +85,7 @@ public class MessageJPA implements Serializable {
 	}
 	
 	@ManyToOne
-	@JoinColumn (name="dirverId")
+	@JoinColumn (name="driverId")
 	public DriverJPA getDriver() {
 		return driver;
 	}

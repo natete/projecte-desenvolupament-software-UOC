@@ -56,10 +56,10 @@ public class DriverCommentJPA implements Serializable {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	public int getRatting() {
+	public int getRating() {
 		return rating;
 	}
-	public void setRatting(int rating) {
+	public void setRating(int rating) {
 		this.rating = rating;
 	}
 	
@@ -72,12 +72,13 @@ public class DriverCommentJPA implements Serializable {
 	public DriverJPA getDriver() {
 		return driver;
 	}
+
 	public  void setDriver(DriverJPA driver) {
 		this.driver = driver;
 	}
 	
 	@ManyToOne
-	@JoinColumn (name="passengerId")
+    @JoinColumn (name="passengerId")
 	public PassengerJPA getPassenger() {
 		return passenger;
 	}

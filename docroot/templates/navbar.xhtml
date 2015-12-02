@@ -36,9 +36,19 @@
  					<li class="active"><a href="registerDriverView.xhtml">Registrar Driver</a></li>
         			<li class="active"><a href="registerPassengerView.xhtml">Registrar Passenger</a></li>
        				<li class="active"><a href="login.xhtml">Login</a></li>
+       				<li class="active"><h:commandButton value="Logout" class="btn btn-primary"
+						action="#{login.logout}" /></li>
        
 				</ul>
 			</div>
+			
+			<div class="navbar-header">
+				<h:form>
+					<p>Welcome #{login.email}</p>
+					<h:commandLink action="#{login.logout}" value="Logout"></h:commandLink>
+				</h:form>
+			</div>
+			
 		</div>
 	</div>
 </ui:composition>

@@ -117,12 +117,12 @@ public class UserFacadeBean implements UserFacadeRemote {
 												.setParameter("email", email)
 												.setParameter("password", password)
 												.getSingleResult();
-		PassengerJPA passenger = (PassengerJPA) entman.createNamedQuery("findPassenger")
+		/*PassengerJPA passenger = (PassengerJPA) entman.createNamedQuery("findPassenger")
 												.setParameter("email", email)
 												.setParameter("password", password)
 												.getSingleResult();
-	
-		if (!(driver.getEmail().isEmpty()) || !(passenger.getEmail().isEmpty())) return true; 
+		*/
+		if (!(driver.getEmail().isEmpty()) /*|| !(passenger.getEmail().isEmpty())*/) return true; 
 		else return false;
 	
 	}

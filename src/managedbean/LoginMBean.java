@@ -124,7 +124,7 @@ public class LoginMBean implements Serializable {
         if (valid) {
             HttpSession session = SessionMBean.getSession();
             session.setAttribute("email", email);
-            return "admin";
+            return "findTripsView.xhtml";
         } else {
         	// Bring the error message using the Faces Context
 			errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct E-mail and Password";
@@ -132,7 +132,7 @@ public class LoginMBean implements Serializable {
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-            return "login";
+            return "errorView";
         }
     }
  

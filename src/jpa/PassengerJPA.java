@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,6 +19,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="passenger")
+@NamedQuery(name="findPassenger", query="SELECT p " +
+										"FROM PassengerJPA p " +
+										"WHERE p.email = :email AND " +
+										"      p.password = :password")
+
 public class PassengerJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;

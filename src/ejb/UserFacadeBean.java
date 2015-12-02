@@ -106,6 +106,26 @@ public class UserFacadeBean implements UserFacadeRemote {
 			System.out.println(e);
 		} 
 	}	
+
+	/**
+	 * Method that find the user to login
+	 */
+	public boolean login(String email, String password)throws PersistenceException {
+	
+		@SuppressWarnings("unchecked")
+		DriverJPA driver = (DriverJPA) entman.createNamedQuery("findDriver")
+												.setParameter("email", email)
+												.setParameter("password", password)
+												.getSingleResult();
+		PassengerJPA passenger = (PassengerJPA) entman.createNamedQuery("findPassenger")
+												.setParameter("email", email)
+												.setParameter("password", password)
+												.getSingleResult();
+	
+		if (!(driver.getEmail().isEmpty()) || !(passenger.getEmail().isEmpty())) return true; 
+		else return false;
+	
+	}
 	
 	/**
 	 * Method that verify the existences of as car

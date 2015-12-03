@@ -2,83 +2,52 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Properties;
+
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
-import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
 
 import ejb.UserFacadeRemote;
+import jpa.UserDTO;
 
 /**
  * Managed Bean LoginMBean
  */
 @ManagedBean(name = "login")
 @SessionScoped
-
 public class LoginMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String USER_NAME = "username";
+
+	private static final String USER_ID = "userId";
+
+	private static final String DRIVER_ROLE = "driverRole";
+
+	private static final String PASSENGER_ROLE = "passengerRole";
+
 	@EJB
 	private UserFacadeRemote loginRemote;
 
-	private String nif;
-	private String name;
-	private String surname;
-	private String phone;
 	private String password;
 	private String email;
+	private UserDTO user;
 
 	private FacesMessage message;
 
 	/**
 	 * Constructor method
-	 * 
-	 * @throws Exception
 	 */
-	public LoginMBean() throws Exception {
-		//this.setEmail(email);
-
-	}
-
-	public String getNif() {
-		return nif;
-	}
-
-	public void setNif(String nif) {
-		this.nif = nif;
-
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public LoginMBean() {
+		// this.setEmail(email);
 	}
 
 	public String getPassword() {
@@ -97,9 +66,21 @@ public class LoginMBean implements Serializable {
 		this.email = email;
 	}
 
-	//validate login
-    public String validateData() throws NamingException {
-    	String errorMessage = null;
+	public String getUsername() {
+		return this.user.getUsername();
+	}
+
+	public String getRoles() {
+		StringBuilder result = new StringBuilder();
+		for (UserDTO.Role role : this.user.getRoles()) {
+			result.append(role.getValue());
+		}
+		return result.toString();
+	}
+
+	// validate login
+	public String validateData() throws NamingException {
+		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
@@ -119,28 +100,55 @@ public class LoginMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-			
-    	boolean valid = loginRemote.login(email, password);
-        if (valid) {
-            HttpSession session = SessionMBean.getSession();
-            session.setAttribute("email", email);
-            return "findTripsView.xhtml";
-        } else {
-        	// Bring the error message using the Faces Context
+
+		this.user = loginRemote.login(this.email, this.password);
+
+		if (this.user != null) {
+			HttpSession session = SessionMBean.getSession();
+			session.setAttribute(USER_NAME, this.user.getUsername());
+			session.setAttribute(USER_ID, this.user.getId());
+			session.setAttribute(DRIVER_ROLE, this.user.isDriver());
+			session.setAttribute(PASSENGER_ROLE, this.user.isPassenger());
+
+			return "findTripsView.xhtml";
+		} else {
 			errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct E-mail and Password";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-            return "errorView";
-        }
-    }
- 
-    //logout event, invalidate session
-    public String logout() {
-        HttpSession session = SessionMBean.getSession();
-        session.invalidate();
-        return "login";
-    }
-	
+			return "errorView";
+		}
+		//
+		// boolean valid = loginRemote.login(email, password);
+		// if (valid) {
+		// HttpSession session = SessionMBean.getSession();
+		// session.setAttribute("email", email);
+		// return "findTripsView.xhtml";
+		// } else {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct
+		// E-mail and Password";
+		// // Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+		// errorMessage);
+		// // Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
+		// return "errorView";
+		// }
+	}
+
+	// logout event, invalidate session
+	public String logout() {
+		HttpSession session = SessionMBean.getSession();
+		session.invalidate();
+		this.user = null;
+		return "login";
+	}
+
+	public boolean isLogged() {
+		return this.user != null;
+	}
+
 }

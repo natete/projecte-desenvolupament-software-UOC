@@ -12,3 +12,30 @@
 .search-btn {
 	margin-top: 5px;
 }
+
+.nav.navbar-nav form {
+    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    color: #fff;
+    padding-top: 15px;
+    line-height: 20px;
+    
+}
+
+.nav.navbar-nav form i {
+	padding-right: 5px;
+}
+
+.nav.navbar-nav form label {
+	padding-right: 5px;
+	font-weight: normal;
+}
+
+.nav.navbar-nav form a {
+	padding: 15px;
+	color: #fff;	
+}
+
+.nav.navbar-nav form a:HOVER {
+	background-color: #178acc;
+	text-decoration: none;
+}

@@ -2,16 +2,17 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
 
 import ejb.UserFacadeRemote;
 
@@ -38,12 +39,9 @@ public class RegisterDriverMBean implements Serializable {
 
 	/**
 	 * Constructor method
-	 * 
-	 * @throws Exception
 	 */
 	public RegisterDriverMBean() throws Exception {
 		this.setNif(nif);
-
 	}
 
 	public String getNif() {
@@ -101,7 +99,8 @@ public class RegisterDriverMBean implements Serializable {
 		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		registerDriverRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		registerDriverRemote = (UserFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		if (this.nif.equals("")) {
 			// Bring the error message using the Faces Context
 			errorMessage = "NIF is missing";
@@ -134,7 +133,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		
+
 		Pattern patN = Pattern.compile("([0-9]{8})([A-Za-z])");
 		Matcher matN = patN.matcher(this.nif);
 		if (!(this.phone.equals("")) && !(matN.matches())) {
@@ -167,7 +166,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		
+
 		if (errorMessage != null) {
 			return "errorView";
 		} else {

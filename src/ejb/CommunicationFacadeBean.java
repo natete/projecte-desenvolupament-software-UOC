@@ -39,7 +39,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public java.util.Collection<?> showDriverComments(String driverId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<DriverCommentJPA> driverComments = entman.createQuery("FROM DriverCommentJPA b WHERE b.driverId = :driverId").setParameter("driverId", driverId).getResultList();
+		Collection<DriverCommentJPA> driverComments = entman.createQuery("FROM DriverCommentJPA b  WHERE b.driver.nif = :driverId").setParameter("driverId", driverId).getResultList();
 		
 	    return driverComments;
 	}
@@ -94,8 +94,10 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public void rateDriver(String driverId, String passengerId, String comment, int rating)throws PersistenceException {
 		DriverCommentJPA driverComment = new DriverCommentJPA();
-		driverComment.setDriverId(driverId);
-		driverComment.setPassengerId(passengerId);
+		DriverJPA d = this.findDriver(driverId);
+		PassengerJPA p = this.findPassenger(passengerId);
+		driverComment.setDriver(d);
+		driverComment.setPassenger(p);
 		driverComment.setComment(comment);
 		driverComment.setRating(rating);
 		try
@@ -115,7 +117,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	
 		try
 		{
-		DriverCommentJPA driverComment = (DriverCommentJPA) entman.createQuery("FROM DriverCommentJPA b WHERE b.driverId = :driverId AND b.passengerId = :passengerId").setParameter("driverId", driverId).setParameter("passengerId",passengerId).getSingleResult();
+		DriverCommentJPA driverComment = (DriverCommentJPA) entman.createQuery("FROM DriverCommentJPA b WHERE b.driver.nif = :driverId AND b.passenger.nif = :passengerId").setParameter("driverId", driverId).setParameter("passengerId",passengerId).getSingleResult();
 		return driverComment;
 		}catch (PersistenceException e) {
 			System.out.println(e);
@@ -130,7 +132,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	public void updateRateDriver(String driverId, String passengerId, String comment, int rating) throws PersistenceException {
 		try
 		{
-		entman.createQuery("UPDATE DriverCommentJPA b SET b.comment = :comment, b.rating = :rating WHERE b.driverId = :driverId AND b.passengerId = :passengerId").setParameter("driverId", driverId).setParameter("passengerId",passengerId).setParameter("comment",comment).setParameter("rating",rating).executeUpdate();
+		entman.createQuery("UPDATE DriverCommentJPA b SET b.comment = :comment, b.rating = :rating WHERE b.driver.nif = :driverId AND b.passenger.nif = :passengerId").setParameter("driverId", driverId).setParameter("passengerId",passengerId).setParameter("comment",comment).setParameter("rating",rating).executeUpdate();
 		}catch (PersistenceException e) {
 			System.out.println(e);
 		} 	
@@ -150,7 +152,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public DriverJPA findDriver(String driverId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		DriverJPA driver = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.driverId = ?1").setParameter(1, driverId).getSingleResult();
+		DriverJPA driver = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, driverId).getSingleResult();
 		return driver;
 	}	
 	
@@ -159,7 +161,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public PassengerJPA findPassenger(String passengerId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		PassengerJPA passenger = (PassengerJPA) entman.createQuery("FROM PassengerJPA b WHERE b.passengerId = ?1").setParameter(1, passengerId).getSingleResult();
+		PassengerJPA passenger = (PassengerJPA) entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, passengerId).getSingleResult();
 		return passenger;
 	}	
 }

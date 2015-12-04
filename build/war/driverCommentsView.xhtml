@@ -14,7 +14,7 @@
 		<h:commandLink action="#{drivercomments.nextScreen}" value="Next" />		
 		<h:dataTable value="#{drivercomments.driverCommentsListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  >
  			<f:facet name="header">			
-  			<h:outputText align="center" value="List Driver Comments: #{trip.driverName}" />		
+  			<h:outputText align="center" value="List Driver Comments: trip.driver.name" />		
   			</f:facet> 
   			<h:column>
    				<f:facet name="header">

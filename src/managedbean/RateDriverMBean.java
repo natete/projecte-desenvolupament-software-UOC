@@ -43,10 +43,8 @@ public class RateDriverMBean implements Serializable{
 	 */
 	public RateDriverMBean() throws Exception
 	{
-		LoginMBean l = new LoginMBean(); 
-		ShowTripMBean t = new ShowTripMBean();
-	    this.setPassengerId(l.getPassengerId());
-	    this.setDriverId(t.getdriverId());
+		this.setPassengerId("22222222X");
+	    this.setDriverId("00000000X");
 	    driverComment = getDataDriverComment(driverId,passengerId);
 	    if (driverComment==null) {
 	    	setComment("");

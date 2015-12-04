@@ -13,8 +13,6 @@ public class DriverCommentJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String driverId;
-	private String passengerId;
 	private String comment;
 	private int rating;
 	private DriverJPA driver;
@@ -27,9 +25,9 @@ public class DriverCommentJPA implements Serializable {
 		super();
 	}
 
-	public DriverCommentJPA(String driverId, String passengerId, String comment, int rating) {
-		this.driverId = driverId;
-		this.passengerId = passengerId;
+	public DriverCommentJPA(DriverJPA driver, PassengerJPA passenger, String comment, int rating) {
+		this.driver = driver;
+		this.passenger = passenger;
 		this.comment = comment;
 		this.rating = rating;
 
@@ -38,24 +36,7 @@ public class DriverCommentJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	@Id
-	public String getDriverId() {
-		return driverId;
-	}
-
-	public void setDriverId(String driverId) {
-		this.driverId = driverId;
-	}
-
-	@Id
-	public String getPassengerId() {
-		return passengerId;
-	}
-
-	public void setPassengerId(String passengerId) {
-		this.passengerId = passengerId;
-	}
-
+	
 	public String getComment() {
 		return comment;
 	}
@@ -73,23 +54,26 @@ public class DriverCommentJPA implements Serializable {
 	/**
 	 * Methods get/set persistent relationships
 	 */
+	
+	@Id
 	@ManyToOne
 	@JoinColumn(name = "driverId")
 	public DriverJPA getDriver() {
 		return driver;
 	}
 
-
+	
 	public void setDriver(DriverJPA driver) {
 		this.driver = driver;
 	}
-
+	
+	@Id
 	@ManyToOne
     @JoinColumn (name="passengerId")
 	public PassengerJPA getPassenger() {
 		return passenger;
 	}
-
+	
 	public void setPassenger(PassengerJPA passenger) {
 		this.passenger = passenger;
 	}

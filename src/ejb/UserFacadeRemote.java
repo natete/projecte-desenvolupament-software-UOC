@@ -3,7 +3,9 @@ package ejb;
 import java.util.Collection;
 
 import javax.ejb.Remote;
+import javax.persistence.PersistenceException;
 
+import jpa.PassengerJPA;
 import jpa.UserDTO;
 
 /**
@@ -32,4 +34,8 @@ public interface UserFacadeRemote {
 
 	public boolean existsPassenger(String nif, String email);
 
+	public boolean existsDriverEmail(String nif, String email);
+
+	public boolean existsPassengerEmail(String nif, String email);
+	
 }

@@ -110,6 +110,22 @@ public class RegisterPassengerMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
+		if (this.name.equals("")) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Name is missing";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+		if (this.surname.equals("")) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Surname is missing";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
 		if (this.email.equals("")) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Email is missing";
@@ -129,6 +145,14 @@ public class RegisterPassengerMBean implements Serializable {
 		if (registerPassengerRemote.existsDriver(nif, email) == true) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Driver already exists";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+		if (registerPassengerRemote.existsDriverEmail(nif, email) == true) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Driver already exists with some email";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component

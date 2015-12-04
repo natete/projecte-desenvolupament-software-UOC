@@ -15,19 +15,25 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import ejb.UserFacadeRemote;
+import jpa.DriverJPA;
+import jpa.PassengerJPA;
 
 /**
- * Managed Bean RegisterDriverMBean
+ * Managed Bean UpdatePersonalDataMBean
  */
-@ManagedBean(name = "registerdriver")
+@ManagedBean(name = "updatepersonaldata")
 @SessionScoped
-public class RegisterDriverMBean implements Serializable {
+public class UpdatePersonalDataMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private UserFacadeRemote registerDriverRemote;
+	private UserFacadeRemote updatePersonalDataRemote;
 
+	protected DriverJPA dataDriver;
+	protected PassengerJPA dataPassenger;
+	protected int idData = 1;
+	
 	private String nif;
 	private String name;
 	private String surname;
@@ -37,20 +43,44 @@ public class RegisterDriverMBean implements Serializable {
 
 	private FacesMessage message;
 
+	
 	/**
 	 * Constructor method
 	 */
-	public RegisterDriverMBean() throws Exception {
-		this.setNif(nif);
+	public UpdatePersonalDataMBean() throws Exception
+	{
+		setDataDriver();
+//		setDataPassenger();
+	}
+	
+	public int getIdData()
+	{
+		return idData;
+	}
+	
+	public void setIdData(int idData) throws Exception
+	{
+		this.idData = idData;
+		setDataDriver();
+//		setDataPassenger();
+	}
+	
+	public DriverJPA getDataDriver()
+	{
+		return dataDriver;
 	}
 
+	public PassengerJPA getDataPassenger()
+	{
+		return dataPassenger;
+	}
+	
 	public String getNif() {
 		return nif;
 	}
 
 	public void setNif(String nif) {
 		this.nif = nif;
-
 	}
 
 	public String getName() {
@@ -59,7 +89,6 @@ public class RegisterDriverMBean implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
-
 	}
 
 	public String getSurname() {
@@ -99,27 +128,11 @@ public class RegisterDriverMBean implements Serializable {
 		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		registerDriverRemote = (UserFacadeRemote) ctx
+		updatePersonalDataRemote = (UserFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		if (this.nif.equals("")) {
 			// Bring the error message using the Faces Context
 			errorMessage = "NIF is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.name.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Name is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.surname.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Surname is missing";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
@@ -141,7 +154,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerDriverRemote.existsDriver(nif, email) == true) {
+		if (updatePersonalDataRemote.existsDriver(nif, email) == true) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Driver already exists";
 			// Add View Faces Message
@@ -149,7 +162,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerDriverRemote.existsPassengerEmail(nif, email) == true) {
+		if (updatePersonalDataRemote.existsPassengerEmail(nif, email) == true) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Passenger already exists with some email";
 			// Add View Faces Message
@@ -194,7 +207,7 @@ public class RegisterDriverMBean implements Serializable {
 		if (errorMessage != null) {
 			return "errorView";
 		} else {
-			registerDriverRemote.registerDriver(nif, name, surname, phone, password, email);
+			updatePersonalDataRemote.registerDriver(nif, name, surname, phone, password, email);
 			this.setNif("");
 			this.setName("");
 			this.setSurname("");

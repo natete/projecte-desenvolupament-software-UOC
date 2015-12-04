@@ -116,10 +116,17 @@ public class UserFacadeBean implements UserFacadeRemote {
 		@SuppressWarnings("unchecked")
 		DriverJPA driver = (DriverJPA) entman.createNamedQuery("findDriver").setParameter("email", email)
 				.setParameter("password", password).getSingleResult();
+		PassengerJPA passenger = (PassengerJPA) entman.createNamedQuery("findPassenger").setParameter("email", email)
+				.setParameter("password", password).getSingleResult();
 
 		if (driver != null) {
 			user = new UserDTO(driver.getName() + " " + driver.getSurname(), driver.getNif());
 			user.addRole(UserDTO.Role.DRIVER);
+		}
+
+		if (passenger != null) {
+			user = new UserDTO(passenger.getName() + " " + passenger.getSurname(), passenger.getNif());
+			user.addRole(UserDTO.Role.PASSENGER);
 		}
 
 		return user;
@@ -157,13 +164,13 @@ public class UserFacadeBean implements UserFacadeRemote {
 		@SuppressWarnings("unchecked")
 		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
 				.getResultList();
-		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2")
-				.setParameter(2, email).getResultList();
+		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email)
+				.getResultList();
 
-		if (driversNif.isEmpty() && driversEmail.isEmpty())
-			return false;
-		else
+		if (!(driversNif.isEmpty()) || !(driversEmail.isEmpty()))
 			return true;
+		else
+			return false;
 	}
 
 	/**
@@ -171,15 +178,47 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 */
 	public boolean existsPassenger(String nif, String email) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<PassengerJPA> passengerNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1")
-				.setParameter(1, nif).getResultList();
-		Collection<PassengerJPA> passengerEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2")
+		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif)
+				.getResultList();
+		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2")
 				.setParameter(2, email).getResultList();
 
-		if (passengerNif.isEmpty() && passengerEmail.isEmpty())
-			return false;
-		else
+		if (!(passengersNif.isEmpty()) && !(passengersEmail.isEmpty()))
 			return true;
+		else
+			return false;
 	}
 
+	/**
+	 * Method that verify the existences of as Driver with some email
+	 */
+	public boolean existsDriverEmail(String nif, String email) throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
+				.getResultList();
+		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email)
+				.getResultList();
+
+		if (!(driversNif.isEmpty()) && driversEmail.isEmpty())
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Method that verify the existences of as passenger with some email
+	 */
+	public boolean existsPassengerEmail(String nif, String email) throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif)
+				.getResultList();
+		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2").setParameter(2, email)
+				.getResultList();
+
+		if (!(passengersNif.isEmpty()) && passengersEmail.isEmpty())
+			return true;
+		else
+			return false;
+	}
+	
 }

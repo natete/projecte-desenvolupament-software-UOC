@@ -115,13 +115,12 @@ public class PassengerJPA implements Serializable {
 	public Collection<TripJPA> getTrips() {
 		return trips;
 	}
-	
+
 	public void setTrips(Collection<TripJPA> trips) {
 		this.trips = trips;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinColumn(name = "driver")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "passenger")
 	public Collection<DriverCommentJPA> getDriverComments() {
 		return driverComments;
 	}
@@ -131,8 +130,7 @@ public class PassengerJPA implements Serializable {
 	}
 	
 	// persistent relationships
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinColumn(name = "driver")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "passenger")
 	public Collection<MessageJPA> getMessages() {
 		return messages;
 	}

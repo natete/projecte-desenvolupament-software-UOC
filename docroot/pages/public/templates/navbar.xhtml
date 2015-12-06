@@ -15,7 +15,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">CarSharing</a>
+				<a class="navbar-brand" href="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml">CarSharing</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="navbar-collapse">
@@ -30,9 +30,38 @@
 									viatges</a></li>
 							<li role="separator" class="divider"></li>
 							<li><a href="#"><i class="fa fa-user"></i> El meu perfil</a></li>
-						</ul></li>
-					<li class="active"><a href="#">Viatges <span
-							class="sr-only">(current)</span></a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Viatges <span class="sr-only">(current)</span></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<ui:fragment rendered="#{not login.isLogged()}">
+							<a href="#" class="dropdwon-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								aria-expanded="false">Registrar-se <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+				 					<li>
+				 						<a href="/CAT-PDP-GRUP6/pages/public/registerDriverView.xhtml">Com a conductor</a>
+									</li>
+				        			<li>
+				        				<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">Com a passatger</a>
+				       				</li>
+								</ul>
+						</ui:fragment>
+					</li>
+       				<li>
+       					<ui:fragment rendered="#{not login.isLogged()}">
+       						<a href="/CAT-PDP-GRUP6/pages/public/login.xhtml">Login</a>
+    					</ui:fragment>
+   					</li>
+       				<li>
+       					<h:form rendered="#{login.isLogged()}">
+							<a href="#"><i class="fa fa-user"></i><h:outputLabel value="#{login.username} (#{login.roles})" /></a>       				
+       						<h:commandLink value="Logout" action="#{login.logout}" />
+     					</h:form>
+					</li>
 				</ul>
 			</div>
 		</div>

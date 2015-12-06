@@ -34,8 +34,8 @@ public interface UserFacadeRemote {
 
 	public boolean existsPassenger(String nif, String email);
 
-	public boolean existsDriverEmail(String nif, String email);
+	public boolean existsDriverEmail(String nif, String name, String surname, String email);
 
-	public boolean existsPassengerEmail(String nif, String email);
+	public boolean existsPassengerEmail(String nif, String name, String surname, String email);
 	
 }

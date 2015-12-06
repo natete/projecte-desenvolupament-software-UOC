@@ -107,7 +107,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 		if (this.name.equals("")) {
 			// Bring the error message using the Faces Context
@@ -115,7 +115,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 		if (this.surname.equals("")) {
 			// Bring the error message using the Faces Context
@@ -123,7 +123,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 		if (this.email.equals("")) {
 			// Bring the error message using the Faces Context
@@ -131,7 +131,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 		if (this.password.equals("")) {
 			// Bring the error message using the Faces Context
@@ -139,7 +139,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 		if (registerDriverRemote.existsDriver(nif, email) == true) {
 			// Bring the error message using the Faces Context
@@ -149,13 +149,13 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerDriverRemote.existsPassengerEmail(nif, email) == true) {
+		if (registerDriverRemote.existsPassengerEmail(nif, name, surname, email) == true) {
 			// Bring the error message using the Faces Context
-			errorMessage = "Passenger already exists with some email";
+			errorMessage = "Passenger already exists with some email or some nif and different name-surname";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 
 		Pattern patN = Pattern.compile("([0-9]{8})([A-Za-z])");
@@ -166,7 +166,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 
 		Pattern patP = Pattern.compile("\\d{9}");
@@ -177,7 +177,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 
 		Pattern patE = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -188,7 +188,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			FacesContext.getCurrentInstance().addMessage("form:pages/errorView", message);
 		}
 
 		if (errorMessage != null) {
@@ -202,7 +202,7 @@ public class RegisterDriverMBean implements Serializable {
 			this.setPassword("");
 			this.setEmail("");
 
-			return "findTripsView.xhtml";
+			return "findTripsView";
 		}
 	}
 

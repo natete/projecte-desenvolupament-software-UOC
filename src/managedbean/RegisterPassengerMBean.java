@@ -142,17 +142,17 @@ public class RegisterPassengerMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerPassengerRemote.existsDriver(nif, email) == true) {
+		if (registerPassengerRemote.existsPassenger(nif, email) == true) {
 			// Bring the error message using the Faces Context
-			errorMessage = "Driver already exists";
+			errorMessage = "Passenger already exists";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerPassengerRemote.existsDriverEmail(nif, email) == true) {
+		if (registerPassengerRemote.existsDriverEmail(nif, name, surname, email) == true) {
 			// Bring the error message using the Faces Context
-			errorMessage = "Driver already exists with some email";
+			errorMessage = "Driver already exists with some email or some nif and different name-surname";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
@@ -161,7 +161,7 @@ public class RegisterPassengerMBean implements Serializable {
 		
 		Pattern patN = Pattern.compile("([0-9]{8})([A-Za-z])");
 		Matcher matN = patN.matcher(this.nif);
-		if (!(this.phone.equals("")) && !(matN.matches())) {
+		if (!(this.nif.equals("")) && !(matN.matches())) {
 			// Bring the error message using the Faces Context
 			errorMessage = "NIF format not valid. Ej.: 12345678a or 12345678A";
 			// Add View Faces Message
@@ -195,7 +195,7 @@ public class RegisterPassengerMBean implements Serializable {
 		if (errorMessage != null) {
 			return "errorView";
 		} else {
-			registerPassengerRemote.registerDriver(nif, name, surname, phone, password, email);
+			registerPassengerRemote.registerPassenger(nif, name, surname, phone, password, email);
 			this.setNif("");
 			this.setName("");
 			this.setSurname("");
@@ -203,7 +203,7 @@ public class RegisterPassengerMBean implements Serializable {
 			this.setPassword("");
 			this.setEmail("");
 
-			return "findTripsView.xhtml";
+			return "findTripsView";
 		}
 	}
 

@@ -74,6 +74,9 @@ public class LoginMBean implements Serializable {
 		StringBuilder result = new StringBuilder();
 		for (UserDTO.Role role : this.user.getRoles()) {
 			result.append(role.getValue());
+			if (this.user.getRoles().size() > 1 && (result.indexOf("/") == -1)) {
+				result.append(" / ");
+			}
 		}
 		return result.toString();
 	}
@@ -119,24 +122,6 @@ public class LoginMBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 			return "errorView";
 		}
-		//
-		// boolean valid = loginRemote.login(email, password);
-		// if (valid) {
-		// HttpSession session = SessionMBean.getSession();
-		// session.setAttribute("email", email);
-		// return "findTripsView.xhtml";
-		// } else {
-		// // Bring the error message using the Faces Context
-		// errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct
-		// E-mail and Password";
-		// // Add View Faces Message
-		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
-		// errorMessage);
-		// // Add the message into context for a specific component
-		// FacesContext.getCurrentInstance().addMessage("form:errorView",
-		// message);
-		// return "errorView";
-		// }
 	}
 
 	// logout event, invalidate session

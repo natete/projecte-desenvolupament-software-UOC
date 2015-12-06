@@ -162,7 +162,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (updatePersonalDataRemote.existsPassengerEmail(nif, email) == true) {
+		if (updatePersonalDataRemote.existsPassengerEmail(nif, name, surname, email) == true) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Passenger already exists with some email";
 			// Add View Faces Message

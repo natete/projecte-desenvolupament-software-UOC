@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+ url(https://fonts.googleapis.com/css?family=Indie+Flower);
 
 .navbar-brand {
 	font-family: 'Indie Flower', 'Helvetica Neue',Helvetica,Arial,sans-serif, cursive;
@@ -11,4 +11,20 @@
 
 .search-btn {
 	margin-top: 5px;
+}
+
+.details-icon {
+	padding-right: 10px;
+}
+
+.well.well-success {
+	background-color: #DFF0D8;
+}
+
+.well.well-info {
+	background-color: #d9edf7;
+}
+
+.well > h2 {
+	margin-top: 10px;
 }

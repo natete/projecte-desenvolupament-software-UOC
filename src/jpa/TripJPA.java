@@ -12,13 +12,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "trip")
+@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId") })
 public class TripJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,12 +32,15 @@ public class TripJPA implements Serializable {
 	private Integer id;
 
 	@Column(name = "description")
+	@Size(min = 0, max = 250)
 	private String description;
 
 	@Column(name = "departureCity", nullable = false)
+	@Size(min = 1, max = 50)
 	private String departureCity;
 
 	@Column(name = "fromPlace", nullable = false)
+	@Size(min = 1, max = 80)
 	private String fromPlace;
 
 	@Column(name = "departureDate", nullable = false)
@@ -46,9 +52,11 @@ public class TripJPA implements Serializable {
 	private Date departureTime;
 
 	@Column(name = "arrivalCity", nullable = false)
+	@Size(min = 1, max = 50)
 	private String arrivalCity;
 
 	@Column(name = "toPlace", nullable = false)
+	@Size(min = 1, max = 80)
 	private String toPlace;
 
 	@Column(name = "availableSeats", nullable = false)
@@ -63,6 +71,10 @@ public class TripJPA implements Serializable {
 
 	@ManyToMany(mappedBy = "trips")
 	private List<PassengerJPA> passengers;
+
+	public TripJPA() {
+		super();
+	}
 
 	public TripJPA(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime,
 			String arrivalCity, String toPlace, Integer availableSeats, float price) {
@@ -152,5 +164,21 @@ public class TripJPA implements Serializable {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public DriverJPA getDriver() {
+		return driver;
+	}
+
+	public void setDriver(DriverJPA driver) {
+		this.driver = driver;
+	}
+
+	public List<PassengerJPA> getPassengers() {
+		return passengers;
+	}
+
+	public void setPassengers(List<PassengerJPA> passengers) {
+		this.passengers = passengers;
 	}
 }

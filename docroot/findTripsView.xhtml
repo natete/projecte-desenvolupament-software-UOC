@@ -17,18 +17,18 @@
 			<h:form>
 				<div class="col-xs-3 form-group">
 					<label for="departureCity" class="control-label">Ciutat d'origen</label>
-					<h:inputText value="#{findTripsController.departureCity}" class="form-control"></h:inputText>
+					<h:inputText value="#{findTripsController.departureCity}" styleClass="form-control"></h:inputText>
 				</div>
 				<div class="col-xs-3 form-group">
 					<label for="departureDate" class="control-label">Data de sortida</label>
 					<h:inputText value="#{findTripsController.departureDate}"
-						class="form-control">
+						styleClass="form-control" converterMessage="La data introduïda no té el format correcte (dd/mm/aaaa)">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:inputText>
 				</div>
 				<div class="col-xs-3 form-group">
 					<label for="arrivalCity" class="control-label">Ciutat de destí</label>
-					<h:inputText value="#{findTripsController.arrivalCity}" class="form-control" />
+					<h:inputText value="#{findTripsController.arrivalCity}" styleClass="form-control" />
 				</div>
 				<div class="col-xs-3 form-group">
 					<label></label>
@@ -41,7 +41,6 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h3>
-					
 					<h:outputText escape="false" value="#{findTripsController.emptyListMessage}" rendered="#{empty findTripsController.trips}"></h:outputText>
 				</h3>
 				
@@ -49,44 +48,79 @@
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:outputText value="Ciutat origen"></h:outputText>
+							<div class="text-center">
+								<h:outputText value="Ciutat origen"></h:outputText>
+							</div>
 						</f:facet>
 						<!-- row record  -->
-						<h:outputText value="#{trip.departureCity}"/>
+						<div class="text-center">
+							<h:outputText value="#{trip.departureCity}"/>
+						</div>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:outputText value="Data sortida"/>
+							<div class="text-center">
+								<h:outputText value="Data sortida"/>
+							</div>
 						</f:facet>
 						<!-- row record  -->
-						<h:outputText value="#{trip.departureDate}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</h:outputText>
+						<div class="text-center">
+							<h:outputText value="#{trip.departureDate}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</div>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:outputText value="Ciutat destí"/>
+							<div class="text-center">
+								<h:outputText value="Ciutat destí"/>
+							</div>
 						</f:facet>
 						<!-- row record  -->
-						<h:outputText value="#{trip.arrivalCity}"/>
+						<div class="text-center">
+							<h:outputText value="#{trip.arrivalCity}"/>
+						</div>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:outputText value="Preu"/>
+							<div class="text-center">
+								<h:outputText value="Seients lliures"/>
+							</div>
 						</f:facet>
 						<!-- row record  -->
-						<h:outputText value="#{trip.price} €" /> 
+						<div class="text-center">
+							<h:outputText value="#{trip.availableSeats}"/>
+						</div>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:outputText value="Accions" />
+							<div class="text-center">
+								<h:outputText value="Preu"/>
+							</div>
 						</f:facet>
 						<!-- row record  -->
-						<a href="#"><i class="fa fa-plus-circle"></i></a>
+						<div class="text-center">
+							<h:outputText value="#{trip.price} €"/>
+						</div>
+					</h:column>
+					<h:column>
+						<!-- Column header -->
+						<f:facet name="header">
+							<div class="text-center">
+								<h:outputText value="Accions" />
+							</div>
+						</f:facet>
+						<!-- row record  -->
+						<div class="text-center">
+							<h:outputLink value="showTripView.xhtml" styleClass="btn btn-info">
+								<f:param name="tripId" value="#{trip.id}"/>
+								<h:outputText value="Detalles"/>
+							</h:outputLink>
+						</div>
 					</h:column>
 				</h:dataTable>
 			</div>

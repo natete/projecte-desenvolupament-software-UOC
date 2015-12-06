@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+
+<ui:composition template="templates/main.xhtml">
+	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="tripId" value="#{showTripController.tripId}"/>
+		<f:event listener="#{showTripController.init()}" type="preRenderView"/>
+	</f:metadata>
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-info-circle"></i> Trip details
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-8">
+						<div class="row">
+							<div class="col-xs-3">
+								<h:outputLabel value="Pickup point"/>
+							</div>
+							<div class="col-xs-9">
+								<i class="fa fa-play text-success details-icon"></i>
+								<h:outputText value="#{showTripController.pickupPoint}"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								<h:outputLabel value="Dropoff point"/>
+							</div>
+							<div class="col-xs-9">
+								<i class="fa fa-stop text-danger details-icon"></i>
+								<h:outputText value="#{showTripController.dropoffPoint}"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								<h:outputLabel value="Date"/>
+							</div>
+							<div class="col-xs-9">
+								<i class="fa fa-calendar text-info details-icon"></i>
+								<h:outputText value="#{showTripController.date}"/>
+							</div>
+						</div>
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-xs-3"> -->
+<!-- 								<h:outputLabel value="Driver"/> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-xs-9"> -->
+<!-- 								<i class="fa fa-stop text-danger details-icon"></i> -->
+<!-- 								<h:outputText value="#{showTripController.driver}"/> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+					</div>
+					<div class="col-xs-2">
+						<div class="well well-success text-center">
+							<h2><h:outputText value="#{showTripController.price} €"/></h2>
+						</div>
+					</div>
+					<div class="col-xs-2">
+						<div class="well well-info text-center">
+							<h2><h:outputText value="#{showTripController.availableSeats} seats"/></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2 well">
+				<div class="row">
+					<h3 class="col-xs-12">
+						<i class="fa fa-user details-icon"></i>
+						<h:outputText value="#{showTripController.driver}"/>
+					</h3>
+				</div>
+				<div class="row">
+					<h3 class="col-xs-10 col-xs-offset-1 text-justify">
+						<h:outputText value="#{showTripController.description}"/>
+					</h3>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

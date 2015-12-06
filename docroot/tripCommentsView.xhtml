@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="templates/main.xhtml">
+	<ui:define name="content">
+
+	<h:body> 	
+	  <h:form align="left" >	
+		<h:commandLink action="#{tripcomments.previousScreen}" value="Previous" />
+		<h:outputText value="   " />
+		<h:commandLink action="#{tripcomments.nextScreen}" value="Next" />		
+		<h:dataTable value="#{tripcomments.tripcommentsListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  >
+ 			<f:facet name="header">			
+  			<h:outputText align="center" value="Trip Comments: trip.description    Driver: trip.driver.name" />		
+  			</f:facet> 
+  			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Passenger"/>
+   				</f:facet> 
+     			<h:outputText value="#{item.passenger.name}" />
+ 			</h:column>
+ 			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Subject"/>
+   				</f:facet> 
+     			<h:outputText value="#{item.subject}" />
+ 			</h:column>
+ 			<h:column>
+   				<f:facet name="header">
+   					<h:outputText value="Body" />
+   				</f:facet> 
+    			<h:outputText value="#{item.body}" />
+ 			</h:column>
+ 			<h:column>			                         
+				<h:commandButton  value="Reply" action="#{replyquestion.replyQuestion(item.questionId)}">
+				</h:commandButton>		
+ 			</h:column>
+  		</h:dataTable>
+ 		<p align="center">
+ 			<h:commandButton value="Ask Question" action="#{tripcomments.askQuestion}"/>
+ 			<h:commandButton value="Return" immediate="true" action="showTripView" />
+ 	  	</p>
+ 	  </h:form>		
+	</h:body>
+	
+  </ui:define>
+  </ui:composition>
+</html>

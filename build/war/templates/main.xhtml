@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<f:facet name="first">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>CarSharing</title>
+	</f:facet>
+
+	<f:facet name="middle">
+		<h:outputStylesheet library="css" name="bootstrap.min.css"/>
+		<h:outputStylesheet library="css" name="estilos.css"/>
+	</f:facet>
+
+	<f:facet name="last">
+		<h:outputStylesheet library="css" name="font-awesome.min.css"/>
+	</f:facet>
+</h:head>
+<h:body>
+	<ui:include src="navbar.xhtml" />
+	<ui:include src="content.xhtml" />
+		<h:outputScript library="js" name="jquery-2.1.4.min.js"/>
+		<h:outputScript library="js" name="bootstrap.min.js"/>
+</h:body>
+</html>

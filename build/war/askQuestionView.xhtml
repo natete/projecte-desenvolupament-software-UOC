@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+	
+<ui:composition template="templates/main.xhtml">
+<ui:define name="content">  
+
+  <h:body>
+		<br/>
+ 		<h:form>
+ 			<div align="center">
+ 				<table border="1" width="50%" id="table1">
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Trip:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:outputText value="trip.description" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Driver:</font></b></i></td>
+						<td>
+							<p align="left"/><h:outputText value="trip.driver.name" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Subject:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:inputText value="#{askquestion.subject}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Body:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/> <h:inputText value="#{askquestion.body}" /> 
+						</td>
+					</tr>
+				</table> 	
+			</div> 
+			<p align="center">
+				<h:commandButton value="Save"  action="#{askquestion.setDataTripComment}" />
+				<h:commandButton value="Return" immediate="true" action="tripCommentsView" />
+			</p>
+ 		</h:form>
+	</h:body>
+  </ui:define>
+  </ui:composition>
+</html>

@@ -71,7 +71,12 @@ public class TripJPA implements Serializable {
 	
 	
 	
-
+	/**
+	 * Class constructor methods
+	 */
+	public TripJPA() {
+		super();
+	}
 
 	public TripJPA(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime,
 			String arrivalCity, String toPlace, Integer availableSeats, float price) {

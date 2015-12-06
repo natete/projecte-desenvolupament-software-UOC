@@ -29,7 +29,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public java.util.Collection<?> showTripComments(int tripId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<MessageJPA> tripComments = entman.createQuery("FROM MessageJPA b WHERE b.tripId = :tripId").setParameter("tripId", tripId).getResultList();
+		Collection<MessageJPA> tripComments = entman.createQuery("FROM MessageJPA b WHERE b.trip.id = :tripId AND b.replyQuestionId = 0").setParameter("tripId", tripId).getResultList();
 		
 	    return tripComments;
 	}
@@ -47,13 +47,12 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that adds a question
 	 */
-	public void askQuestion(int tripId, int questionId, String passengerId, String subject, String body) throws PersistenceException {
+	public void askQuestion(int tripId, String passengerId, String subject, String body) throws PersistenceException {
 
 		MessageJPA message = new MessageJPA();
 		TripJPA t = findTrip(tripId);
-		message.setTrip(t);
-		message.setQuestionId(questionId);
 		PassengerJPA p = findPassenger(passengerId);
+		message.setTrip(t);
 		message.setPassenger(p);
 		message.setSubject(subject);
 		message.setBody(body);
@@ -143,7 +142,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public TripJPA findTrip(int tripId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		TripJPA trip = (TripJPA) entman.createQuery("FROM TripJPA b WHERE b.tripId = ?1").setParameter(1, tripId).getSingleResult();
+		TripJPA trip = (TripJPA) entman.createQuery("FROM TripJPA b WHERE b.id = ?1").setParameter(1, tripId).getSingleResult();
 		return trip;
 	}	
 	

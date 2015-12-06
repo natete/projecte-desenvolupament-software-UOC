@@ -25,6 +25,8 @@ public class ShowTripMBean implements Serializable {
 	private CommunicationFacadeRemote driverCommentsRemote;
 
 	// stores the name of the category of cars to be displayed
+	private int tripId;
+	// stores the name of the category of cars to be displayed
 	private String driverId;
 	// stores the name of the category of cars to be displayed
 	private String driverName;
@@ -37,6 +39,7 @@ public class ShowTripMBean implements Serializable {
 	 * @throws Exception
 	 */
 	public ShowTripMBean() throws Exception {
+		tripId = 1;
 		driverId = "00000000X" ;
 		driverName = "Carlos Sainz";
 
@@ -48,6 +51,14 @@ public class ShowTripMBean implements Serializable {
 	 * 
 	 * @return Collection DriverCommentJPA
 	 */
+	
+	public int getTripId() {
+		return this.tripId;
+	}
+
+	public void setTripId(int tripId) {
+		this.tripId = tripId;
+	}
 	
 	public String getdriverId() {
 		return this.driverId;

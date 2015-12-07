@@ -2,78 +2,130 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.servlet.http.HttpSession;
 
-import jpa.DriverCommentJPA;
-import ejb.CommunicationFacadeRemote;
+import ejb.UserFacadeRemote;
+import jpa.UserDTO;
 
 /**
- * Managed Bean ShowDriverCommentsMBean
+ * Managed Bean LoginMBean
  */
-@ManagedBean(name = "trip")
+@ManagedBean(name = "login")
 @SessionScoped
-public class ShowTripMBean implements Serializable {
+public class LoginMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private CommunicationFacadeRemote driverCommentsRemote;
+	private UserFacadeRemote loginRemote;
 
-	// stores the name of the category of cars to be displayed
-	private int tripId;
-	// stores the name of the category of cars to be displayed
-	private String driverId;
-	// stores the name of the category of cars to be displayed
-	private String driverName;
+	private String password;
+	private String email;
+	private UserDTO user;
+	private String errorMessage;
 
-	
+	private FacesMessage message;
 
 	/**
 	 * Constructor method
-	 * 
-	 * @throws Exception
 	 */
-	public ShowTripMBean() throws Exception {
-		tripId = 1;
-		driverId = "00000000X" ;
-		driverName = "Carlos Sainz";
-
+	public LoginMBean() {
+		// this.setEmail(email);
 	}
 
-	/**
-	 * Method that returns an instance Collection of 10 or less DriverCommentJPA according
-	 * screen where the user is.
-	 * 
-	 * @return Collection DriverCommentJPA
-	 */
-	
-	public int getTripId() {
-		return this.tripId;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setTripId(int tripId) {
-		this.tripId = tripId;
-	}
-	
-	public String getdriverId() {
-		return this.driverId;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
-	public void setdriverId(String driverId) {
-		this.driverId = driverId;
-	}
-	
-	public String getdriverName() {
-		return this.driverName;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setdriverName(String driverName) {
-		this.driverName = driverName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-	
+
+	public String getUsername() {
+		return this.user.getUsername();
+	}
+
+	public String getRoles() {
+		StringBuilder result = new StringBuilder();
+		for (UserDTO.Role role : this.user.getRoles()) {
+			result.append(role.getValue());
+			if (this.user.getRoles().size() > 1 && (result.indexOf("/") == -1)) {
+				result.append(" / ");
+			}
+		}
+		return result.toString();
+	}
+
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	// validate login
+	public String validateData() throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		if (this.email.equals("")) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Email is missing";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+		if (this.password.equals("")) {
+			// Bring the error message using the Faces Context
+			errorMessage = "Password is missing";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+
+		this.user = loginRemote.login(this.email, this.password);
+
+		if (this.user != null) {
+			SessionBean.setLoggedUser(user);
+
+			return "findTripsView.xhtml";
+		} else {
+			errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct E-mail and Password";
+			// Add View Faces Message
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+			return "errorView";
+		}
+	}
+
+	// logout event, invalidate session
+	public String logout() {
+		HttpSession session = SessionBean.getSession();
+		session.invalidate();
+		this.user = null;
+		return "login";
+	}
+
+	public boolean isLogged() {
+		return this.user != null;
+	}
+
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition>
+	<div class="navbar navbar-default">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar-collapse"
+					aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml">CarSharing</a>
+			</div>
+
+			<div class="collapse navbar-collapse" id="navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="dropdown"><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" role="button" aria-haspopup="true"
+						aria-expanded="false">Personal <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="#"><i class="fa fa-car"></i> My cars</a></li>
+							<li><a href="#"><i class="fa fa-globe"></i> My trips</a></li>
+							<li role="separator" class="divider"></li>
+							<li><a href="#"><i class="fa fa-user"></i> My profile</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml">Trips <span class="sr-only">(current)</span></a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<ui:fragment rendered="#{not login.isLogged()}">
+							<a href="#" class="dropdwon-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								aria-expanded="false">Sign in <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+				 					<li>
+				 						<a href="/CAT-PDP-GRUP6/pages/public/registerDriverView.xhtml">As a driver</a>
+									</li>
+				        			<li>
+				        				<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">As a passenger</a>
+				       				</li>
+								</ul>
+						</ui:fragment>
+					</li>
+       				<li>
+       					<ui:fragment rendered="#{not login.isLogged()}">
+       						<a href="/CAT-PDP-GRUP6/pages/public/login.xhtml">Login</a>
+    					</ui:fragment>
+   					</li>
+       				<li>
+       					<h:form rendered="#{login.isLogged()}">
+							<a href="#"><i class="fa fa-user"></i><h:outputLabel value="#{login.username} (#{login.roles})" /></a>       				
+       						<h:commandLink value="Logout" action="#{login.logout}" />
+     					</h:form>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</ui:composition>
+</html>

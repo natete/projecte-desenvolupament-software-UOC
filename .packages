@@ -21,7 +21,7 @@
       <fileset dir="/CAT-PDP-GRUP6/docroot/WEB-INF" flatten="false" inWorkspace="true" includes="**/*">
         <properties/>
       </fileset>
-      <folder name="classes\managedbean">
+      <folder name="classes/managedbean">
         <fileset dir="bin/managedbean" flatten="false" inWorkspace="true" includes="**">
           <properties/>
         </fileset>

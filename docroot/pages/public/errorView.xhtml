@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<ui:composition template="templates/main.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="message" value="#{errorController.message}"/>
+			<f:viewParam name="fromPage" value="#{errorController.redirectTo}"/>
+		</f:metadata>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<h1 class="page-header">
+					<i class="fa fa-exclamation-triangle"></i> Ooops... Something went wrong
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2">
+				<h4>
+					<h:outputText value="#{errorController.message}" styleClass="text-danger"/>
+				</h4>
+				<br/>
+				<div align="center">
+					<h:outputLink value="#{errorController.redirectTo}" styleClass="btn btn-primary">
+						<h:outputText value="Return"/>
+					</h:outputLink>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

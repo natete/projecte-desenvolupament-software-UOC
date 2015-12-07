@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+
+<ui:composition template="templates/main.xhtml">
+	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="tripId" value="#{showTripController.tripId}"/>
+		<f:event listener="#{showTripController.init()}" type="preRenderView"/>
+	</f:metadata>
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-info-circle"></i> Trip details
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-8">
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Pickup point"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-play text-success details-icon"></i>
+						<h:outputText value="#{showTripController.pickupPoint}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Dropoff point"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-stop text-danger details-icon"></i>
+						<h:outputText value="#{showTripController.dropoffPoint}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Date"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-calendar text-info details-icon"></i>
+						<h:outputText value="#{showTripController.date}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Driver"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-user text-info details-icon"></i>
+						<h:outputText value="#{showTripController.driver}" styleClass="driver-header"/>
+						<h:outputText value="#{showTripController.rating}" styleClass="driver-header" escape="false"/>
+						<h:outputLink value="driverCommentsView.xhtml">
+							<f:param name="tripId" value="#{showTripController.tripId}"/>
+							<h:outputText value="View comments"/>
+						</h:outputLink>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Car"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-car text-info details-icon"></i>
+						<h:outputText value="#{showTripController.car}"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<div class="well well-success text-center">
+					<h2><h:outputText value="#{showTripController.price} €"/></h2>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<div class="well well-info text-center">
+					<h2><h:outputText value="#{showTripController.availableSeats} seats"/></h2>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2 well">
+				<div class="row">
+					<div class="col-xs-12">
+						<h4 class="driver-header">
+							<i class="fa fa-user details-icon"></i>
+							<h:outputText value="#{showTripController.driver}"/>
+						</h4>
+						<h:outputLink value="rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
+							<f:param name="tripId" value="#{showTripController.tripId}"/>
+							<h:outputText value="Rate driver"/>
+						</h:outputLink>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-10 col-xs-offset-1 text-justify">
+						<h:outputText value="#{showTripController.description}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 text-right">
+						<ul class="list-inline">
+							<li>
+								<h:outputLink value="tripCommentsView.xhtml" styleClass="btn btn-warning">
+									<f:param name="tripId" value="#{showTripController.tripId}"/>
+									<h:outputText value="View more comments"/>
+								</h:outputLink>
+							</li>
+							<li>
+								<h:outputLink value="askQuestionView.xhtml" styleClass="btn btn-primary" rendered="#{not showTripController.driverLogged}">
+									<f:param name="tripId" value="#{showTripController.tripId}"/>
+									<h:outputText value="Ask a question"/>
+								</h:outputLink>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 text-center">
+				<h:outputLink value="registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.passengerLogged and not showTripController.loggedUserInTrip}">
+					<f:param name="tripId" value="#{showTripController.tripId}"/>
+					<h:outputText value="Join to trip"/>
+				</h:outputLink>
+				<h:outputLink value="removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.loggedUserInTrip}">
+					<f:param name="tripId" value="#{showTripController.tripId}"/>
+					<h:outputText value="Leave trip"/>
+				</h:outputLink>
+				<h:outputLink value="addTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.tripDriver}">
+					<f:param name="tripId" value="#{showTripController.tripId}"/>
+					<h:outputText value="Edit trip"/>
+				</h:outputLink>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

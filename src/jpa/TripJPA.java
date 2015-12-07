@@ -1,12 +1,12 @@
 package jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,13 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "trip")
+@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId") })
 public class TripJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,12 +35,15 @@ public class TripJPA implements Serializable {
 	private Integer id;
 
 	@Column(name = "description")
+	@Size(min = 0, max = 250)
 	private String description;
 
 	@Column(name = "departureCity", nullable = false)
+	@Size(min = 1, max = 50)
 	private String departureCity;
 
 	@Column(name = "fromPlace", nullable = false)
+	@Size(min = 1, max = 80)
 	private String fromPlace;
 
 	@Column(name = "departureDate", nullable = false)
@@ -48,9 +55,11 @@ public class TripJPA implements Serializable {
 	private Date departureTime;
 
 	@Column(name = "arrivalCity", nullable = false)
+	@Size(min = 1, max = 50)
 	private String arrivalCity;
 
 	@Column(name = "toPlace", nullable = false)
+	@Size(min = 1, max = 80)
 	private String toPlace;
 
 	@Column(name = "availableSeats", nullable = false)
@@ -63,12 +72,15 @@ public class TripJPA implements Serializable {
 	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
-	@ManyToMany(mappedBy = "trips")
+	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<PassengerJPA> passengers;
 	
 	@OneToMany(mappedBy = "trip")
 	private List<MessageJPA> messages;
 	
+	@ManyToOne
+	@JoinColumn(name = "car")
+	private CarJPA car;
 	
 	
 	/**
@@ -166,5 +178,43 @@ public class TripJPA implements Serializable {
 
 	public void setPrice(float price) {
 		this.price = price;
+	}
+
+	public DriverJPA getDriver() {
+		return driver;
+	}
+
+	public void setDriver(DriverJPA driver) {
+		this.driver = driver;
+	}
+
+	public List<PassengerJPA> getPassengers() {
+		return passengers;
+	}
+
+	public void setPassengers(List<PassengerJPA> passengers) {
+		this.passengers = passengers;
+	}
+
+	public CarJPA getCar() {
+		return car;
+	}
+
+	public void setCar(CarJPA car) {
+		this.car = car;
+	}
+
+	@Transient
+	public boolean hasPassengenr(String passengerId) {
+		boolean result = false;
+		if (passengers != null && !passengers.isEmpty()) {
+			for (PassengerJPA passenger : passengers) {
+				if (passenger.getNif().equals(passengerId)) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 }

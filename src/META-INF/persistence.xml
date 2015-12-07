@@ -14,9 +14,6 @@
          <property name="hibernate.default_schema" value="carsharing"/>
          <property name="hibernate.show_sql" value="true" />
          <property name="hibernate.forma_sql" value="true" />
-         <property name="hibernate.connection.useUnicode" value="true" />
-         <property name="hibernate.connection.characterEncoding" value="UTF-8" />
-		 <property name="hibernate.connection.charSet" value="UTF-8" />         
       </properties> 
    </persistence-unit>
 </persistence>

@@ -10,5 +10,3 @@ doc/
 *.class
 *.jsfdia
 .*.xml
-*.project
-*.classpath

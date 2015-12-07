@@ -37,21 +37,24 @@ public class ShowTripMBean implements Serializable {
 	private Integer tripId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
+	private String errorMessage;
 
 	public ShowTripMBean() {
 		super();
 	}
 
-	public void init() throws NamingException {
+	public String init() throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripFacadeRemote = (TripFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripFacadeBean!ejb.TripFacadeRemote");
 		trip = tripFacadeRemote.showTrip(tripId);
 		if (trip == null) {
-
+			errorMessage = "The required trip does not exist";
+			return "errorView";
 		}
 		loggedUser = SessionBean.getLoggedUser();
+		return "";
 	}
 
 	public Integer getTripId() {
@@ -127,5 +130,9 @@ public class ShowTripMBean implements Serializable {
 
 	public boolean isTripDriver() {
 		return isDriverLogged() && trip.getDriver().getNif().equals(loggedUser.getId());
+	}
+
+	public String getErrorMessage() {
+		return this.errorMessage;
 	}
 }

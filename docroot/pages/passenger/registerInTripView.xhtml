@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/pages/public/templates/main.xhtml">
+	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="tripId" value="#{registerInTripController.tripId}"/>
+		<f:event listener="#{registerInTripController.init()}" type="preRenderView"/>
+	</f:metadata>
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-search"></i> Join to trip
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>
+					Are you sure you want to join the following trip?
+				</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<h:outputLabel value="From"/>
+				<div>
+					<h:outputText value="lorem ipsum"/>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<h:outputLabel value="To"/>
+				<div>
+					<h:outputText value="lorem ipsum"/>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<h:outputLabel value="Date"/>
+				<div>
+					<h:outputText value="lorem ipsum"/>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
+</html>

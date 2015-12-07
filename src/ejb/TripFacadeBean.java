@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -63,9 +64,14 @@ public class TripFacadeBean implements TripFacadeRemote {
 
 	@Override
 	public TripJPA showTrip(Integer id) {
-
+		TripJPA result;
 		Query query = entman.createNamedQuery(GET_TRIP_BY_ID);
 		query.setParameter(PARAMETER_TRIP_ID, id);
-		return (TripJPA) query.getSingleResult();
+		try {
+			result = (TripJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			result = null;
+		}
+		return result;
 	}
 }

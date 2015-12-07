@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -69,7 +71,7 @@ public class TripJPA implements Serializable {
 	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
-	@ManyToMany(mappedBy = "trips")
+	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<PassengerJPA> passengers;
 
 	@ManyToOne
@@ -192,5 +194,19 @@ public class TripJPA implements Serializable {
 
 	public void setCar(CarJPA car) {
 		this.car = car;
+	}
+
+	@Transient
+	public boolean hasPassengenr(String passengerId) {
+		boolean result = false;
+		if (passengers != null && !passengers.isEmpty()) {
+			for (PassengerJPA passenger : passengers) {
+				if (passenger.getNif().equals(passengerId)) {
+					result = true;
+					break;
+				}
+			}
+		}
+		return result;
 	}
 }

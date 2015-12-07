@@ -16,6 +16,7 @@ import ejb.TripFacadeRemote;
 import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.TripJPA;
+import jpa.UserDTO;
 
 @ManagedBean(name = "showTripController")
 @ViewScoped
@@ -35,6 +36,7 @@ public class ShowTripMBean implements Serializable {
 
 	private Integer tripId;
 	private TripJPA trip;
+	private UserDTO loggedUser;
 
 	public ShowTripMBean() {
 		super();
@@ -46,6 +48,10 @@ public class ShowTripMBean implements Serializable {
 		tripFacadeRemote = (TripFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripFacadeBean!ejb.TripFacadeRemote");
 		trip = tripFacadeRemote.showTrip(tripId);
+		if (trip == null) {
+
+		}
+		loggedUser = SessionBean.getLoggedUser();
 	}
 
 	public Integer getTripId() {
@@ -105,5 +111,21 @@ public class ShowTripMBean implements Serializable {
 		}
 
 		return result.toString();
+	}
+
+	public boolean isDriverLogged() {
+		return loggedUser != null && loggedUser.isDriver();
+	}
+
+	public boolean isPassengerLogged() {
+		return loggedUser != null && loggedUser.isPassenger();
+	}
+
+	public boolean isLoggedUserInTrip() {
+		return isPassengerLogged() && trip.hasPassengenr(loggedUser.getId());
+	}
+
+	public boolean isTripDriver() {
+		return isDriverLogged() && trip.getDriver().getNif().equals(loggedUser.getId());
 	}
 }

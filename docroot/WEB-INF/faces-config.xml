@@ -10,7 +10,7 @@
 			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
 			<redirect>
 				<view-param>
-					<name>messageg</name>
+					<name>message</name>
 					<value>#{login.errorMessage}</value>
 				</view-param>
 				<view-param>

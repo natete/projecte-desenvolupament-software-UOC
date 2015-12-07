@@ -81,7 +81,7 @@ public class FindTripsMBean implements Serializable {
 		this.trips = trips;
 	}
 
-	public String getsearchMessage() {
+	public String getSearchMessage() {
 		return searchMessage;
 	}
 }

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,7 +18,12 @@ import javax.persistence.Table;
  * JPA Class PassengerJPA
  */
 @Entity
-@Table(name = "passenger")
+@Table(name="passenger")
+@NamedQuery(name="findPassenger", query="SELECT p " +
+										"FROM PassengerJPA p " +
+										"WHERE p.email = :email AND " +
+										"      p.password = :password")
+
 public class PassengerJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +37,7 @@ public class PassengerJPA implements Serializable {
 	private Collection<TripJPA> trips;
 	private Collection<DriverCommentJPA> driverComments;
 	private Collection<MessageJPA> messages;
-
+	
 	/**
 	 * Class constructor methods
 	 */
@@ -52,7 +58,7 @@ public class PassengerJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-
+	
 	@Id
 	public String getNif() {
 		return nif;
@@ -118,17 +124,17 @@ public class PassengerJPA implements Serializable {
 	public Collection<DriverCommentJPA> getDriverComments() {
 		return driverComments;
 	}
-
+	
 	public void setDriverComments(Collection<DriverCommentJPA> driverComments) {
 		this.driverComments = driverComments;
 	}
-
+	
 	// persistent relationships
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "passenger")
 	public Collection<MessageJPA> getMessages() {
 		return messages;
 	}
-
+	
 	public void setMessages(Collection<MessageJPA> messages) {
 		this.messages = messages;
 	}

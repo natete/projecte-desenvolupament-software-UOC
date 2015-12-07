@@ -44,6 +44,7 @@ public class ShowTripMBean implements Serializable {
 	}
 
 	public String init() throws NamingException {
+		String result = "";
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripFacadeRemote = (TripFacadeRemote) ctx
@@ -51,10 +52,10 @@ public class ShowTripMBean implements Serializable {
 		trip = tripFacadeRemote.showTrip(tripId);
 		if (trip == null) {
 			errorMessage = "The required trip does not exist";
-			return "errorView";
+			result = "errorView";
 		}
 		loggedUser = SessionBean.getLoggedUser();
-		return "";
+		return result;
 	}
 
 	public Integer getTripId() {

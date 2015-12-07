@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import jpa.PassengerJPA;
 import jpa.TripJPA;
 
 @Stateless
@@ -25,6 +26,10 @@ public class TripFacadeBean implements TripFacadeRemote {
 	private static final String GET_TRIP_BY_ID = "TripJPA.getTripById";
 
 	private static final String PARAMETER_TRIP_ID = "tripId";
+
+	private static final String GET_PASSENGER_BY_ID = "PassengerJPA.getPassengerById";
+
+	private static final String PARAMETER_PASSENGER_ID = "passengerId";
 
 	// Persistence Unit Context
 	@PersistenceContext(unitName = "CarSharing")
@@ -73,5 +78,46 @@ public class TripFacadeBean implements TripFacadeRemote {
 			result = null;
 		}
 		return result;
+	}
+
+	@Override
+	public void registerInTrip(String userId, Integer tripId) throws IllegalArgumentException {
+		TripJPA trip = showTrip(tripId);
+		PassengerJPA passenger;
+		Query query = entman.createNamedQuery(GET_PASSENGER_BY_ID);
+		query.setParameter(PARAMETER_PASSENGER_ID, userId);
+		try {
+			passenger = (PassengerJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			passenger = null;
+		}
+		if (passenger == null || trip == null) {
+			throw new IllegalArgumentException("Error obtaining trip or passenger from database");
+		} else if (trip.getAvailableSeats() == 0) {
+			throw new IllegalArgumentException(
+					"Sorry, the selected trip has not available seats. Please, try it later or find another trip");
+		} else {
+			trip.addPassenger(passenger);
+			entman.persist(trip);
+		}
+	}
+
+	@Override
+	public void removeFromTrip(String userId, Integer tripId) throws IllegalArgumentException {
+		TripJPA trip = showTrip(tripId);
+		PassengerJPA passenger;
+		Query query = entman.createNamedQuery(GET_PASSENGER_BY_ID);
+		query.setParameter(PARAMETER_PASSENGER_ID, userId);
+		try {
+			passenger = (PassengerJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			passenger = null;
+		}
+		if (passenger == null || trip == null) {
+			throw new IllegalArgumentException("Error obtaining trip or passenger from database");
+		} else {
+			trip.removePassenger(passenger);
+			entman.persist(trip);
+		}
 	}
 }

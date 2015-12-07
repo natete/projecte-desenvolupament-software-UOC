@@ -18,7 +18,6 @@ public interface TripFacadeRemote {
 
 	/**
 	 * Find the trips that match the given conditions
-	 * 
 	 * @param departureCity
 	 * @param departureDate
 	 * @param arrivalCity
@@ -26,5 +25,24 @@ public interface TripFacadeRemote {
 	 */
 	List<TripJPA> findTrips(String departureCity, Date departureDate, String arrivalCity);
 
+	/**
+	 * Find the trip with the given id 
+	 * @param id the id of the trip to be found
+	 * @return {{@link TripJPA} the trip
+	 */
 	TripJPA showTrip(Integer id);
+
+	/**
+	 * Registers a user in a trip
+	 * @param userId the id of the user to be registered
+	 * @param tripId the id of the trip where the user has to be registered
+	 */
+	void registerInTrip(String userId, Integer tripId);
+
+	/**
+	 * Removes a user from a trip
+	 * @param userId the id of the user to be removed
+	 * @param tripId the id of the trip where the user has to be removed
+	 */
+	void removeFromTrip(String id, Integer tripId);
 }

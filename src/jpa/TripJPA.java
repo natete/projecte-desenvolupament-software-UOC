@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -71,7 +72,10 @@ public class TripJPA implements Serializable {
 	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
-	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "passengers_trips", joinColumns = {
+			@JoinColumn(name = "trip_id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "passenger_id", nullable = false) })
 	private List<PassengerJPA> passengers;
 
 	@ManyToOne
@@ -208,5 +212,17 @@ public class TripJPA implements Serializable {
 			}
 		}
 		return result;
+	}
+
+	@Transient
+	public void addPassenger(PassengerJPA passenger) {
+		passengers.add(passenger);
+		availableSeats = availableSeats - 1;
+	}
+
+	@Transient
+	public void removePassenger(PassengerJPA passenger) {
+		passengers.remove(passenger);
+		availableSeats = availableSeats + 1;
 	}
 }

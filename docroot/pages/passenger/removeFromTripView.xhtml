@@ -7,20 +7,20 @@
 <ui:composition template="/pages/public/templates/main.xhtml">
 	<ui:define name="content">
 		<f:metadata>
-			<f:viewParam name="tripId" value="#{registerInTripController.tripId}"/>
-			<f:viewAction action="#{registerInTripController.init()}"/>
+			<f:viewParam name="tripId" value="#{removeFromTripController.tripId}"/>
+			<f:viewAction action="#{removeFromTripController.init()}"/>
 		</f:metadata>
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
-					<i class="fa fa-thumbs-o-up"></i> Join to trip
+					<i class="fa fa-thumbs-o-down"></i> Leave to trip
 				</h1>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
 				<h3>
-					<h:outputText value="#{registerInTripController.loggedUsername}" />, are you sure you want to join the following trip?
+					<h:outputText value="#{removeFromTripController.loggedUsername}" />, are you sure you want to leave the following trip?
 				</h3>
 			</div>
 		</div>
@@ -29,19 +29,19 @@
 			<div class="col-xs-4">
 				<h:outputLabel value="From"/>
 				<div>
-					<h:outputText value="#{registerInTripController.pickupPoint}"/>
+					<h:outputText value="#{removeFromTripController.pickupPoint}"/>
 				</div>
 			</div>
 			<div class="col-xs-4">
 				<h:outputLabel value="To"/>
 				<div>
-					<h:outputText value="#{registerInTripController.dropoffPoint}"/>
+					<h:outputText value="#{removeFromTripController.dropoffPoint}"/>
 				</div>
 			</div>
 			<div class="col-xs-4">
 				<h:outputLabel value="Date"/>
 				<div>
-					<h:outputText value="#{registerInTripController.date}"/>
+					<h:outputText value="#{removeFromTripController.date}"/>
 				</div>
 			</div>
 		</div>
@@ -51,10 +51,10 @@
 				<div class="col-xs-12 text-center">
 					<ul class="list-inline">
 						<li>
-							<h:commandButton value="Cancel" action="#{registerInTripController.cancelRegistration}" styleClass="btn btn-danger"/>
+							<h:commandButton value="Cancel" action="#{removeFromTripController.cancelRemoving}" styleClass="btn btn-danger"/>
 						</li>
 						<li>
-							<h:commandButton value="Confirm" action="#{registerInTripController.registerInTrip}" styleClass="btn btn-success"/>
+							<h:commandButton value="Confirm" action="#{removeFromTripController.removeFromTrip}" styleClass="btn btn-success"/>
 						</li>
 					</ul>
 				</div>

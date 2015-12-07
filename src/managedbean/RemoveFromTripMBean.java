@@ -16,9 +16,9 @@ import ejb.TripFacadeRemote;
 import jpa.TripJPA;
 import jpa.UserDTO;
 
-@ManagedBean(name = "registerInTripController")
+@ManagedBean(name = "removeFromTripController")
 @ViewScoped
-public class ResgisterInTripMBean implements Serializable {
+public class RemoveFromTripMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,10 +49,10 @@ public class ResgisterInTripMBean implements Serializable {
 		return result;
 	}
 
-	public String registerInTrip() {
+	public String removeFromTrip() {
 		String result = "showTrip";
 		try {
-			tripFacadeRemote.registerInTrip(loggedUser.getId(), tripId);
+			tripFacadeRemote.removeFromTrip(loggedUser.getId(), tripId);
 		} catch (IllegalArgumentException e) {
 			errorMessage = e.getMessage();
 			result = "errorView";
@@ -60,7 +60,7 @@ public class ResgisterInTripMBean implements Serializable {
 		return result;
 	}
 
-	public String cancelRegistration() {
+	public String cancelRemoving() {
 		return "showTrip";
 	}
 

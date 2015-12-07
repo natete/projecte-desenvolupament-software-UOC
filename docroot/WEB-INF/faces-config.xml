@@ -38,18 +38,110 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/pages/passenger/resgisterInTripView.xhtml</from-view-id>
+		<from-view-id>/pages/passenger/registerInTripView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>errorView</from-outcome>
 			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
 			<redirect>
 				<view-param>
 					<name>message</name>
-					<value>#{showTripController.errorMessage}</value>
+					<value>#{registerInTripController.errorMessage}</value>
 				</view-param>
 				<view-param>
 					<name>fromPage</name>
 					<value>/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{registerInTripController.registerInTrip}</from-action>
+			<from-outcome>showTrip</from-outcome>
+			<to-view-id>/pages/public/showTripView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{registerInTripController.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{registerInTripController.registerInTrip}</from-action>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{registerInTripController.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{registerInTripController.cancelRegistration}</from-action>
+			<from-outcome>showTrip</from-outcome>
+			<to-view-id>/pages/public/showTripView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{registerInTripController.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/pages/passenger/removeFromTripView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{removeFromTripController.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{removeFromTripController.removeFromTrip}</from-action>
+			<from-outcome>showTrip</from-outcome>
+			<to-view-id>/pages/public/showTripView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{removeFromTripController.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{removeFromTripController.removeFromTrip}</from-action>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{removeFromTripController.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-action>#{removeFromTripController.cancelRemoving}</from-action>
+			<from-outcome>showTrip</from-outcome>
+			<to-view-id>/pages/public/showTripView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{removeFromTripController.tripId}</value>
 				</view-param>
 			</redirect>
 		</navigation-case>

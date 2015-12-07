@@ -10,7 +10,7 @@ import jpa.TripJPA;
 /**
  * Interface to provide the methods to manage the trips
  * 
- * @author Ignacio González Bullón <nachoglezbul@uoc.edu>
+ * @author Ignacio González Bullón - nachoglezbul@uoc.edu
  *
  */
 @Remote
@@ -18,9 +18,9 @@ public interface TripFacadeRemote {
 
 	/**
 	 * Find the trips that match the given conditions
-	 * @param departureCity
-	 * @param departureDate
-	 * @param arrivalCity
+	 * @param departureCity the departure city of the trip
+	 * @param departureDate the departure date of the trip
+	 * @param arrivalCity the arrival city of the trip
 	 * @return a list of trips or an empty list
 	 */
 	List<TripJPA> findTrips(String departureCity, Date departureDate, String arrivalCity);
@@ -44,5 +44,5 @@ public interface TripFacadeRemote {
 	 * @param userId the id of the user to be removed
 	 * @param tripId the id of the trip where the user has to be removed
 	 */
-	void removeFromTrip(String id, Integer tripId);
+	void removeFromTrip(String userId, Integer tripId);
 }

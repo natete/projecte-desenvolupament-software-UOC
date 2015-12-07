@@ -18,6 +18,11 @@ import javax.persistence.criteria.Root;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
 
+/**
+ * Implementation of {@link TripFacadeRemote} that performs trip related actions
+ * @author Ignacio González Bullón - nachoglezbul@uoc.edu
+ *
+ */
 @Stateless
 public class TripFacadeBean implements TripFacadeRemote {
 
@@ -31,7 +36,6 @@ public class TripFacadeBean implements TripFacadeRemote {
 
 	private static final String PARAMETER_PASSENGER_ID = "passengerId";
 
-	// Persistence Unit Context
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
 
@@ -67,6 +71,9 @@ public class TripFacadeBean implements TripFacadeRemote {
 		return query.getResultList();
 	}
 
+	/**
+	 * @see TripFacadeRemote#showTrip(Integer)
+	 */
 	@Override
 	public TripJPA showTrip(Integer id) {
 		TripJPA result;
@@ -80,6 +87,9 @@ public class TripFacadeBean implements TripFacadeRemote {
 		return result;
 	}
 
+	/**
+	 * @see TripFacadeRemote#registerInTrip(String, Integer)
+	 */
 	@Override
 	public void registerInTrip(String userId, Integer tripId) throws IllegalArgumentException {
 		TripJPA trip = showTrip(tripId);
@@ -102,6 +112,9 @@ public class TripFacadeBean implements TripFacadeRemote {
 		}
 	}
 
+	/**
+	 * @see TripFacadeRemote#removeFromTrip(String, Integer)
+	 */
 	@Override
 	public void removeFromTrip(String userId, Integer tripId) throws IllegalArgumentException {
 		TripJPA trip = showTrip(tripId);

@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.persistence.PersistenceException;
 
 import jpa.MessageJPA;
 import ejb.CommunicationFacadeRemote;

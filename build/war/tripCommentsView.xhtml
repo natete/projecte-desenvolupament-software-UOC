@@ -34,10 +34,10 @@
    				</f:facet> 
     			<h:outputText value="#{item.body}" />
  			</h:column>
- 			<h:column>			                         
-				<h:commandButton  value="Reply" action="#{replyquestion.replyQuestion(item.questionId)}">
-				</h:commandButton>		
- 			</h:column>
+ 			<h:column>	
+				<h:commandButton  value="Reply" action="#{replyquestion.replyQuestion(item.questionId)}" rendered="#{item.passenger.name ne null}" >
+				</h:commandButton>	
+			</h:column>
   		</h:dataTable>
  		<p align="center">
  			<h:commandButton value="Ask Question" action="#{tripcomments.askQuestion}"/>

@@ -13,6 +13,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import ejb.TripFacadeRemote;
+import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.TripJPA;
 
@@ -21,6 +22,10 @@ import jpa.TripJPA;
 public class ShowTripMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private static final Object HTML_FULL_STAR = "<i class=\"fa fa-star\"></i>";
+
+	private static final Object HTML_EMPTY_STAR = "<i class=\"fa fa-star-o\"></i>";
 
 	@EJB
 	private TripFacadeRemote tripFacadeRemote;
@@ -79,5 +84,26 @@ public class ShowTripMBean implements Serializable {
 
 	public String getDescription() {
 		return trip.getDescription();
+	}
+
+	public String getCar() {
+		CarJPA car = trip.getCar();
+
+		return car.getBrand() + " " + car.getModel() + " color " + car.getColor();
+	}
+
+	public String getRating() {
+		StringBuilder result = new StringBuilder();
+		DriverJPA driver = trip.getDriver();
+
+		for (int i = 0; i < 10; i++) {
+			if (i < driver.getRating()) {
+				result.append(HTML_FULL_STAR);
+			} else {
+				result.append(HTML_EMPTY_STAR);
+			}
+		}
+
+		return result.toString();
 	}
 }

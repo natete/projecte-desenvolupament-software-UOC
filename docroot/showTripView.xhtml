@@ -19,72 +19,115 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-12">
+			<div class="col-xs-8">
 				<div class="row">
-					<div class="col-xs-8">
-						<div class="row">
-							<div class="col-xs-3">
-								<h:outputLabel value="Pickup point"/>
-							</div>
-							<div class="col-xs-9">
-								<i class="fa fa-play text-success details-icon"></i>
-								<h:outputText value="#{showTripController.pickupPoint}"/>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-xs-3">
-								<h:outputLabel value="Dropoff point"/>
-							</div>
-							<div class="col-xs-9">
-								<i class="fa fa-stop text-danger details-icon"></i>
-								<h:outputText value="#{showTripController.dropoffPoint}"/>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-xs-3">
-								<h:outputLabel value="Date"/>
-							</div>
-							<div class="col-xs-9">
-								<i class="fa fa-calendar text-info details-icon"></i>
-								<h:outputText value="#{showTripController.date}"/>
-							</div>
-						</div>
-<!-- 						<div class="row"> -->
-<!-- 							<div class="col-xs-3"> -->
-<!-- 								<h:outputLabel value="Driver"/> -->
-<!-- 							</div> -->
-<!-- 							<div class="col-xs-9"> -->
-<!-- 								<i class="fa fa-stop text-danger details-icon"></i> -->
-<!-- 								<h:outputText value="#{showTripController.driver}"/> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-					</div>
 					<div class="col-xs-2">
-						<div class="well well-success text-center">
-							<h2><h:outputText value="#{showTripController.price} €"/></h2>
-						</div>
+						<h:outputLabel value="Pickup point"/>
 					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-play text-success details-icon"></i>
+						<h:outputText value="#{showTripController.pickupPoint}"/>
+					</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-2">
-						<div class="well well-info text-center">
-							<h2><h:outputText value="#{showTripController.availableSeats} seats"/></h2>
-						</div>
+						<h:outputLabel value="Dropoff point"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-stop text-danger details-icon"></i>
+						<h:outputText value="#{showTripController.dropoffPoint}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Date"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-calendar text-info details-icon"></i>
+						<h:outputText value="#{showTripController.date}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Driver"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-user text-info details-icon"></i>
+						<h:outputText value="#{showTripController.driver}" styleClass="driver-header"/>
+						<h:outputText value="#{showTripController.rating}" styleClass="driver-header" escape="false"/>
+						<h:outputLink value="driverCommentsView.xhtml">
+							<f:param name="tripId" value="#{showTripController.tripId}"/>
+							<h:outputText value="View comments"/>
+						</h:outputLink>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<h:outputLabel value="Car"/>
+					</div>
+					<div class="col-xs-10">
+						<i class="fa fa-car text-info details-icon"></i>
+						<h:outputText value="#{showTripController.car}"/>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<div class="well well-success text-center">
+					<h2><h:outputText value="#{showTripController.price} €"/></h2>
+				</div>
+			</div>
+			<div class="col-xs-2">
+				<div class="well well-info text-center">
+					<h2><h:outputText value="#{showTripController.availableSeats} seats"/></h2>
+				</div>
+			</div>
+		</div>
+		<br/>
+		<div class="row">
+			<div class="col-xs-8 col-xs-offset-2 well">
+				<div class="row">
+					<div class="col-xs-12">
+						<h4 class="driver-header">
+							<i class="fa fa-user details-icon"></i>
+							<h:outputText value="#{showTripController.driver}"/>
+						</h4>
+						<h:outputLink value="rateDriverView.xhtml">
+							<f:param name="tripId" value="#{showTripController.tripId}"/>
+							<h:outputText value="Rate driver"/>
+						</h:outputLink>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-10 col-xs-offset-1 text-justify">
+						<h:outputText value="#{showTripController.description}"/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 text-right">
+						<ul class="list-inline">
+							<li>
+								<h:outputLink value="tripCommentsView.xhtml" styleClass="btn btn-warning">
+									<f:param name="tripId" value="#{showTripController.tripId}"/>
+									<h:outputText value="View more comments"/>
+								</h:outputLink>
+							</li>
+							<li>
+								<h:outputLink value="askQuestionView.xhtml" styleClass="btn btn-primary">
+									<f:param name="tripId" value="#{showTripController.tripId}"/>
+									<h:outputText value="Ask a question"/>
+								</h:outputLink>
+							</li>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2 well">
-				<div class="row">
-					<h3 class="col-xs-12">
-						<i class="fa fa-user details-icon"></i>
-						<h:outputText value="#{showTripController.driver}"/>
-					</h3>
-				</div>
-				<div class="row">
-					<h3 class="col-xs-10 col-xs-offset-1 text-justify">
-						<h:outputText value="#{showTripController.description}"/>
-					</h3>
-				</div>
+			<div class="col-xs-12 text-center">
+				<h:outputLink value="registerInTripView.xhtml" styleClass="btn btn-info">
+					<f:param name="tripId" value="#{showTripController.tripId}"/>
+					<h:outputText value="Join to trip"/>
+				</h:outputLink>
 			</div>
 		</div>
 	</ui:define>

@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * JPA Class CarJPA
  */
 @Entity
-@Table(name="car")
+@Table(name = "car")
 public class CarJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +27,7 @@ public class CarJPA implements Serializable {
 	private String color;
 	private Collection<TripJPA> trips;
 	private DriverJPA driver;
-	
+
 	/**
 	 * Class constructor methods
 	 */
@@ -45,7 +45,7 @@ public class CarJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	
+
 	@Id
 	public String getCarRegistrationId() {
 		return carRegistrationId;
@@ -78,24 +78,23 @@ public class CarJPA implements Serializable {
 	public void setColor(String color) {
 		this.color = color;
 	}
-	
+
 	// persistent relationships
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER )
-	@JoinColumn(name = "car")
-	public Collection<TripJPA> getTripsByCar() {
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car")
+	public Collection<TripJPA> getTrips() {
 		return trips;
 	}
-	
-	public void setTripsByCar(Collection<TripJPA> trips) {
+
+	public void setTrips(Collection<TripJPA> trips) {
 		this.trips = trips;
 	}
 
 	@ManyToOne
-	@JoinColumn (name="driver")
+	@JoinColumn(name = "driver")
 	public DriverJPA getDriver() {
 		return driver;
 	}
-	
+
 	public void setDriver(DriverJPA driver) {
 		this.driver = driver;
 	}

@@ -28,3 +28,17 @@
 .well > h2 {
 	margin-top: 10px;
 }
+
+.driver-header {
+	padding-right: 15px;
+	display: inline;
+}
+
+.fa.fa-star {
+	font-size: 18px;
+	color: #DAA520;
+}
+
+.fa.fa-star-o {
+	font-size: 18px;
+}

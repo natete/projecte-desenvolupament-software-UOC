@@ -72,6 +72,10 @@ public class TripJPA implements Serializable {
 	@ManyToMany(mappedBy = "trips")
 	private List<PassengerJPA> passengers;
 
+	@ManyToOne
+	@JoinColumn(name = "car")
+	private CarJPA car;
+
 	public TripJPA() {
 		super();
 	}
@@ -180,5 +184,13 @@ public class TripJPA implements Serializable {
 
 	public void setPassengers(List<PassengerJPA> passengers) {
 		this.passengers = passengers;
+	}
+
+	public CarJPA getCar() {
+		return car;
+	}
+
+	public void setCar(CarJPA car) {
+		this.car = car;
 	}
 }

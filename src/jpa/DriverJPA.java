@@ -7,15 +7,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * JPA Class DriverJPA
  */
 @Entity
-@Table(name="driver")
+@Table(name = "driver")
 public class DriverJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -30,7 +30,7 @@ public class DriverJPA implements Serializable {
 	private Collection<TripJPA> trips;
 	private Collection<DriverCommentJPA> driverComments;
 	private Collection<MessageJPA> messages;
-	
+
 	/**
 	 * Class constructor methods
 	 */
@@ -51,7 +51,7 @@ public class DriverJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	
+
 	@Id
 	public String getNif() {
 		return nif;
@@ -101,7 +101,6 @@ public class DriverJPA implements Serializable {
 		this.email = email;
 	}
 
-	
 	@OneToMany(mappedBy = "driver")
 	public Collection<CarJPA> getCars() {
 		return cars;
@@ -113,33 +112,45 @@ public class DriverJPA implements Serializable {
 
 	// persistent relationships
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "driver")
-	public Collection<TripJPA> getTripsByDriver() {
+	public Collection<TripJPA> getTrips() {
 		return trips;
 	}
-	
-	public void setTripsByDriver(Collection<TripJPA> trips) {
+
+	public void setTrips(Collection<TripJPA> trips) {
 		this.trips = trips;
 	}
 
-	@OneToMany(mappedBy = "driver")
-	public Collection<DriverCommentJPA> getDriverCommentsByDriver() {
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "driver")
+	public Collection<DriverCommentJPA> getDriverComments() {
 		return driverComments;
 	}
-	
-	public void setDriverCommentsByDriver(Collection<DriverCommentJPA> driverComments) {
+
+	public void setDriverComments(Collection<DriverCommentJPA> driverComments) {
 		this.driverComments = driverComments;
 	}
-	
+
 	// persistent relationships
 	@OneToMany(mappedBy = "driver")
-	public Collection<MessageJPA> getMessagesByDriver() {
+	public Collection<MessageJPA> getMessages() {
 		return messages;
 	}
-	
-	public void setMessagesByDriver(Collection<MessageJPA> messages) {
+
+	public void setMessages(Collection<MessageJPA> messages) {
 		this.messages = messages;
 	}
-	
-	
+
+	@Transient
+	public int getRating() {
+		int result = 0;
+
+		if (driverComments != null && driverComments.size() > 0) {
+			for (DriverCommentJPA driverCommentJPA : driverComments) {
+				result += driverCommentJPA.getRating();
+			}
+
+			result = result / driverComments.size();
+		}
+		return result;
+	}
 
 }

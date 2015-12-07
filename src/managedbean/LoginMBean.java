@@ -26,20 +26,13 @@ public class LoginMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final String USER_NAME = "username";
-
-	private static final String USER_ID = "userId";
-
-	private static final String DRIVER_ROLE = "driverRole";
-
-	private static final String PASSENGER_ROLE = "passengerRole";
-
 	@EJB
 	private UserFacadeRemote loginRemote;
 
 	private String password;
 	private String email;
 	private UserDTO user;
+	private String errorMessage;
 
 	private FacesMessage message;
 
@@ -81,9 +74,12 @@ public class LoginMBean implements Serializable {
 		return result.toString();
 	}
 
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
 	// validate login
 	public String validateData() throws NamingException {
-		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
@@ -107,11 +103,7 @@ public class LoginMBean implements Serializable {
 		this.user = loginRemote.login(this.email, this.password);
 
 		if (this.user != null) {
-			HttpSession session = SessionMBean.getSession();
-			session.setAttribute(USER_NAME, this.user.getUsername());
-			session.setAttribute(USER_ID, this.user.getId());
-			session.setAttribute(DRIVER_ROLE, this.user.isDriver());
-			session.setAttribute(PASSENGER_ROLE, this.user.isPassenger());
+			SessionBean.setLoggedUser(user);
 
 			return "findTripsView.xhtml";
 		} else {
@@ -126,7 +118,7 @@ public class LoginMBean implements Serializable {
 
 	// logout event, invalidate session
 	public String logout() {
-		HttpSession session = SessionMBean.getSession();
+		HttpSession session = SessionBean.getSession();
 		session.invalidate();
 		this.user = null;
 		return "login";

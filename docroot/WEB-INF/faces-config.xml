@@ -3,4 +3,21 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
- </faces-config>
+	<navigation-rule>
+		<from-view-id>/pages/public/login.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>messageg</name>
+					<value>#{login.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/login.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+	</navigation-rule>
+</faces-config>

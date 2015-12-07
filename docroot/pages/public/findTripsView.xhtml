@@ -9,31 +9,32 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
-					<i class="fa fa-search"></i> Troba els teus viatges
+					<i class="fa fa-search"></i> Find your trips
 				</h1>
 			</div>
 		</div>
 		<div class="row">
 			<h:form>
 				<div class="col-xs-3 form-group">
-					<label for="departureCity" class="control-label">Ciutat d'origen</label>
+					<label for="departureCity" class="control-label">From</label>
 					<h:inputText value="#{findTripsController.departureCity}" styleClass="form-control"></h:inputText>
 				</div>
 				<div class="col-xs-3 form-group">
-					<label for="departureDate" class="control-label">Data de sortida</label>
-					<h:inputText value="#{findTripsController.departureDate}"
-						styleClass="form-control" converterMessage="La data introduïda no té el format correcte (dd/mm/aaaa)">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:inputText>
+					<label for="arrivalCity" class="control-label">To</label>
+					<h:inputText value="#{findTripsController.arrivalCity}" styleClass="form-control" />
 				</div>
 				<div class="col-xs-3 form-group">
-					<label for="arrivalCity" class="control-label">Ciutat de destí</label>
-					<h:inputText value="#{findTripsController.arrivalCity}" styleClass="form-control" />
+					<label for="departureDate" class="control-label">Date</label>
+					<h:inputText id="date" value="#{findTripsController.departureDate}"
+						styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:inputText>
+					<h:message for="date" styleClass="text-danger"/>
 				</div>
 				<div class="col-xs-3 form-group">
 					<label></label>
 					<h:commandLink styleClass="btn btn-primary btn-block search-btn" action="#{findTripsController.findTrips}">
-						<i class="fa fa-search"></i> Buscar
+						<i class="fa fa-search"></i> Find
 					</h:commandLink>
 				</div>
 			</h:form>
@@ -41,7 +42,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h3>
-					<h:outputText escape="false" value="#{findTripsController.emptyListMessage}" rendered="#{empty findTripsController.trips}"></h:outputText>
+					<h:outputText escape="false" value="#{findTripsController.searchMessage}" rendered="#{empty findTripsController.trips}"></h:outputText>
 				</h3>
 				
 				<h:dataTable var="trip" value="#{findTripsController.trips}" class="table table-striped" rendered="#{not empty findTripsController.trips}">
@@ -49,7 +50,7 @@
 						<!-- Column header -->
 						<f:facet name="header">
 							<div class="text-center">
-								<h:outputText value="Ciutat origen"></h:outputText>
+								<h:outputText value="From"></h:outputText>
 							</div>
 						</f:facet>
 						<!-- row record  -->
@@ -61,7 +62,19 @@
 						<!-- Column header -->
 						<f:facet name="header">
 							<div class="text-center">
-								<h:outputText value="Data sortida"/>
+								<h:outputText value="To"/>
+							</div>
+						</f:facet>
+						<!-- row record  -->
+						<div class="text-center">
+							<h:outputText value="#{trip.arrivalCity}"/>
+						</div>
+					</h:column>
+					<h:column>
+						<!-- Column header -->
+						<f:facet name="header">
+							<div class="text-center">
+								<h:outputText value="Date"/>
 							</div>
 						</f:facet>
 						<!-- row record  -->
@@ -75,19 +88,7 @@
 						<!-- Column header -->
 						<f:facet name="header">
 							<div class="text-center">
-								<h:outputText value="Ciutat destí"/>
-							</div>
-						</f:facet>
-						<!-- row record  -->
-						<div class="text-center">
-							<h:outputText value="#{trip.arrivalCity}"/>
-						</div>
-					</h:column>
-					<h:column>
-						<!-- Column header -->
-						<f:facet name="header">
-							<div class="text-center">
-								<h:outputText value="Seients lliures"/>
+								<h:outputText value="Available seats"/>
 							</div>
 						</f:facet>
 						<!-- row record  -->
@@ -99,7 +100,7 @@
 						<!-- Column header -->
 						<f:facet name="header">
 							<div class="text-center">
-								<h:outputText value="Preu"/>
+								<h:outputText value="Price"/>
 							</div>
 						</f:facet>
 						<!-- row record  -->
@@ -111,21 +112,20 @@
 						<!-- Column header -->
 						<f:facet name="header">
 							<div class="text-center">
-								<h:outputText value="Accions" />
+								<h:outputText value="" />
 							</div>
 						</f:facet>
 						<!-- row record  -->
 						<div class="text-center">
 							<h:outputLink value="showTripView.xhtml" styleClass="btn btn-info">
 								<f:param name="tripId" value="#{trip.id}"/>
-								<h:outputText value="Detalles"/>
+								<h:outputText value="Details"/>
 							</h:outputLink>
 						</div>
 					</h:column>
 				</h:dataTable>
 			</div>
 		</div>
-
 	</ui:define>
 </ui:composition>
 

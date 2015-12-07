@@ -24,29 +24,27 @@
 						data-toggle="dropdown" role="button" aria-haspopup="true"
 						aria-expanded="false">Personal <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><i class="fa fa-car"></i> Els meus
-									cotxes</a></li>
-							<li><a href="#"><i class="fa fa-globe"></i> Els meus
-									viatges</a></li>
+							<li><a href="#"><i class="fa fa-car"></i> My cars</a></li>
+							<li><a href="#"><i class="fa fa-globe"></i> My trips</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#"><i class="fa fa-user"></i> El meu perfil</a></li>
+							<li><a href="#"><i class="fa fa-user"></i> My profile</a></li>
 						</ul>
 					</li>
 					<li>
-						<a href="#">Viatges <span class="sr-only">(current)</span></a>
+						<a href="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml">Trips <span class="sr-only">(current)</span></a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li class="dropdown">
 						<ui:fragment rendered="#{not login.isLogged()}">
 							<a href="#" class="dropdwon-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-								aria-expanded="false">Registrar-se <span class="caret"></span></a>
+								aria-expanded="false">Sign in <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 				 					<li>
-				 						<a href="/CAT-PDP-GRUP6/pages/public/registerDriverView.xhtml">Com a conductor</a>
+				 						<a href="/CAT-PDP-GRUP6/pages/public/registerDriverView.xhtml">As a driver</a>
 									</li>
 				        			<li>
-				        				<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">Com a passatger</a>
+				        				<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">As a passenger</a>
 				       				</li>
 								</ul>
 						</ui:fragment>

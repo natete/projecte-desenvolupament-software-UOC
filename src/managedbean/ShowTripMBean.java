@@ -1,131 +1,131 @@
-
 package managedbean;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.servlet.http.HttpSession;
 
-import ejb.UserFacadeRemote;
+import ejb.TripFacadeRemote;
+import jpa.CarJPA;
+import jpa.DriverJPA;
+import jpa.TripJPA;
 import jpa.UserDTO;
 
-/**
- * Managed Bean LoginMBean
- */
-@ManagedBean(name = "login")
-@SessionScoped
-public class LoginMBean implements Serializable {
+@ManagedBean(name = "showTripController")
+@ViewScoped
+public class ShowTripMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Object HTML_FULL_STAR = "<i class=\"fa fa-star\"></i>";
+
+	private static final Object HTML_EMPTY_STAR = "<i class=\"fa fa-star-o\"></i>";
+
 	@EJB
-	private UserFacadeRemote loginRemote;
+	private TripFacadeRemote tripFacadeRemote;
 
-	private String password;
-	private String email;
-	private UserDTO user;
-	private String errorMessage;
+	DateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy");
+	DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-	private FacesMessage message;
+	private Integer tripId;
+	private TripJPA trip;
+	private UserDTO loggedUser;
 
-	/**
-	 * Constructor method
-	 */
-	public LoginMBean() {
-		// this.setEmail(email);
+	public ShowTripMBean() {
+		super();
 	}
 
-	public String getPassword() {
-		return password;
+	public void init() throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		tripFacadeRemote = (TripFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/TripFacadeBean!ejb.TripFacadeRemote");
+		trip = tripFacadeRemote.showTrip(tripId);
+		if (trip == null) {
+
+		}
+		loggedUser = SessionBean.getLoggedUser();
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public Integer getTripId() {
+		return tripId;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setTripId(Integer tripId) {
+		this.tripId = tripId;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getPickupPoint() {
+		return trip.getDepartureCity() + ", " + trip.getFromPlace();
 	}
 
-	public String getUsername() {
-		return this.user.getUsername();
+	public String getDropoffPoint() {
+		return trip.getArrivalCity() + ", " + trip.getToPlace();
 	}
 
-	public String getRoles() {
+	public String getDate() {
+		return dateFormat.format(trip.getDepartureDate()) + " - " + timeFormat.format(trip.getDepartureTime());
+	}
+
+	public String getDriver() {
+		DriverJPA driver = trip.getDriver();
+
+		return driver.getName() + " " + driver.getSurname();
+	}
+
+	public float getPrice() {
+		return trip.getPrice();
+	}
+
+	public int getAvailableSeats() {
+		return trip.getAvailableSeats();
+	}
+
+	public String getDescription() {
+		return trip.getDescription();
+	}
+
+	public String getCar() {
+		CarJPA car = trip.getCar();
+
+		return car.getBrand() + " " + car.getModel() + " color " + car.getColor();
+	}
+
+	public String getRating() {
 		StringBuilder result = new StringBuilder();
-		for (UserDTO.Role role : this.user.getRoles()) {
-			result.append(role.getValue());
-			if (this.user.getRoles().size() > 1 && (result.indexOf("/") == -1)) {
-				result.append(" / ");
+		DriverJPA driver = trip.getDriver();
+
+		for (int i = 0; i < 10; i++) {
+			if (i < driver.getRating()) {
+				result.append(HTML_FULL_STAR);
+			} else {
+				result.append(HTML_EMPTY_STAR);
 			}
 		}
+
 		return result.toString();
 	}
 
-	public String getErrorMessage() {
-		return errorMessage;
+	public boolean isDriverLogged() {
+		return loggedUser != null && loggedUser.isDriver();
 	}
 
-	// validate login
-	public String validateData() throws NamingException {
-		Properties props = System.getProperties();
-		Context ctx = new InitialContext(props);
-		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		if (this.email.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Email is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.password.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Password is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-
-		this.user = loginRemote.login(this.email, this.password);
-
-		if (this.user != null) {
-			SessionBean.setLoggedUser(user);
-
-			return "findTripsView.xhtml";
-		} else {
-			errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct E-mail and Password";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-			return "errorView";
-		}
+	public boolean isPassengerLogged() {
+		return loggedUser != null && loggedUser.isPassenger();
 	}
 
-	// logout event, invalidate session
-	public String logout() {
-		HttpSession session = SessionBean.getSession();
-		session.invalidate();
-		this.user = null;
-		return "login";
+	public boolean isLoggedUserInTrip() {
+		return isPassengerLogged() && trip.hasPassengenr(loggedUser.getId());
 	}
 
-	public boolean isLogged() {
-		return this.user != null;
+	public boolean isTripDriver() {
+		return isDriverLogged() && trip.getDriver().getNif().equals(loggedUser.getId());
 	}
-
 }

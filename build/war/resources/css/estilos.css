@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+ url(https://fonts.googleapis.com/css?family=Indie+Flower);
 
 .navbar-brand {
 	font-family: 'Indie Flower', 'Helvetica Neue',Helvetica,Arial,sans-serif, cursive;
@@ -9,6 +9,63 @@
 	font-size: 18px;
 } 
 
+.nav.navbar-nav form {
+    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
+    color: #fff;
+    padding-top: 15px;
+    line-height: 20px;
+    
+}
+
+.nav.navbar-nav form i {
+	padding-right: 5px;
+}
+
+.nav.navbar-nav form label {
+	padding-right: 5px;
+	font-weight: normal;
+}
+
+.nav.navbar-nav form a {
+	padding: 15px;
+	color: #fff;	
+}
+
+.nav.navbar-nav form a:HOVER {
+	background-color: #178acc;
+	text-decoration: none;
+}
+
 .search-btn {
 	margin-top: 5px;
+}
+
+.details-icon {
+	padding-right: 10px;
+}
+
+.well.well-success {
+	background-color: #DFF0D8;
+}
+
+.well.well-info {
+	background-color: #d9edf7;
+}
+
+.well > h2 {
+	margin-top: 10px;
+}
+
+.driver-header {
+	padding-right: 15px;
+	display: inline;
+}
+
+.fa.fa-star {
+	font-size: 18px;
+	color: #DAA520;
+}
+
+.fa.fa-star-o {
+	font-size: 18px;
 }

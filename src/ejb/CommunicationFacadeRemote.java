@@ -3,8 +3,11 @@ package ejb;
 import java.util.Collection;
 
 import javax.ejb.Remote;
+import javax.persistence.PersistenceException;
 
 import jpa.DriverCommentJPA;
+import jpa.DriverJPA;
+import jpa.TripJPA;
 
 
 /**
@@ -23,4 +26,6 @@ public interface CommunicationFacadeRemote {
 	  public void rateDriver(String driver, String passenger, String comment, int rating);
 	  public DriverCommentJPA getDriverComment(String driver, String Passenger);
 	  public void updateRateDriver(String driverId, String passengerId, String comment, int rating);
+	  public TripJPA findTrip(int tripId); 
+	  public DriverJPA findDriver(String driverId); 
 }

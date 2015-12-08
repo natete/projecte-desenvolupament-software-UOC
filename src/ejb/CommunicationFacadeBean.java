@@ -162,7 +162,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	}	
 	
 	/**
-	 * Method that find a passenger
+	 * Method that find a driver
 	 */
 	public DriverJPA findDriver(String driverId) throws PersistenceException {
 		@SuppressWarnings("unchecked")

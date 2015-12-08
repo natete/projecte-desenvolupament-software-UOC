@@ -8,8 +8,12 @@ import javax.ejb.EJB;
 import javax.faces.bean.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import jpa.DriverCommentJPA;
+import jpa.DriverJPA;
+import jpa.TripJPA;
+import jpa.UserDTO;
 import ejb.CommunicationFacadeRemote;
 
 /**
@@ -34,9 +38,12 @@ public class ShowDriverCommentsMBean implements Serializable {
 	private int screen = 0;
 	// stores ten or fewer DriverCommentJPA instances that the user can see on a screen
 	protected Collection<DriverCommentJPA> driverCommentsView;
-	// stores the total number of instances of DriverCommentJPA
+	// stores a instance of DriverJPA
+	protected DriverJPA driver;
 	protected int numberDriverComments = 0;
-	protected ShowTripMBean t;
+	protected int tripId;
+	protected TripJPA trip;
+	private UserDTO loggedUser;
 
 	/**
 	 * Constructor method
@@ -44,12 +51,18 @@ public class ShowDriverCommentsMBean implements Serializable {
 	 * @throws Exception
 	 */
 	public ShowDriverCommentsMBean() throws Exception {
-		LoginMBean l = new LoginMBean(); 
-		t = new ShowTripMBean();
-	    this.setPassengerId(l.getPassengerId());
-	    this.setDriverId(t.getdriverId());
-
+		super();
 	}
+	
+	public void init() throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		driverCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		trip = (TripJPA) driverCommentsRemote.findTrip(this.getTripId());
+						
+		loggedUser = SessionBean.getLoggedUser();
+	}
+
 
 	/**
 	 * Method that returns an instance Collection of 10 or less DriverCommentJPA according
@@ -111,7 +124,20 @@ public class ShowDriverCommentsMBean implements Serializable {
 	public void setPassengerId(String passengerId) {
 		this.passengerId = passengerId;
 	}
+	
+	public int getTripId() {
+		return this.tripId;
+	}
 
+	public void setTripId(int tripId) {
+		this.tripId = tripId;
+	}
+
+	public String getDriver() {
+		DriverJPA driver = trip.getDriver();
+
+		return driver.getName() + " " + driver.getSurname();
+	}
 	/**
 	 * Method used for Facelet to call driverCommentsView Facelet
 	 * 
@@ -143,6 +169,6 @@ public class ShowDriverCommentsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		screen = 0;
 		driverCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		driverCommentsList = (Collection<DriverCommentJPA>) driverCommentsRemote.showDriverComments(t.getdriverId());
+		driverCommentsList = (Collection<DriverCommentJPA>) driverCommentsRemote.showDriverComments(this.getDriverId());
 	}
 }

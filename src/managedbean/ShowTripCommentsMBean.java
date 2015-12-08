@@ -45,11 +45,7 @@ public class ShowTripCommentsMBean implements Serializable {
 	 * @throws Exception
 	 */
 	public ShowTripCommentsMBean() throws Exception {
-		LoginMBean l = new LoginMBean(); 
-		t = new ShowTripMBean();
-	    this.setPassengerId(l.getPassengerId());
-	    this.setDriverId(t.getdriverId());
-
+		
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		driverCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		trip = (TripJPA) driverCommentsRemote.findTrip(this.getTripId());
+		driver = (DriverJPA) driverCommentsRemote.findDriver(this.getDriverId());
 					
 		loggedUser = SessionBean.getLoggedUser();
 	}
@@ -135,8 +135,6 @@ public class ShowDriverCommentsMBean implements Serializable {
 	}
 
 	public String getDriver() {
-		DriverJPA driver = trip.getDriver();
-
 		return driver.getName() + " " + driver.getSurname();
 	}
 	/**

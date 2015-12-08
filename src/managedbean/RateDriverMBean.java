@@ -38,8 +38,7 @@ public class RateDriverMBean implements Serializable{
 	private String passengerId;
 	private String comment;
 	private int rating;
-	public int tripId;
-	private TripJPA trip;
+	private DriverJPA driver;
 	private PassengerJPA passenger;
 	private UserDTO loggedUser;
 	
@@ -59,15 +58,14 @@ public class RateDriverMBean implements Serializable{
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		System.out.println("TripId " + this.getTripId());
-		trip = (TripJPA) rateDriverRemote.findTrip(this.getTripId());
+		driver = (DriverJPA) rateDriverRemote.findDriver(this.getDriverId());
 						
 		loggedUser = SessionBean.getLoggedUser();
 		
 		if(loggedUser.isPassenger()) {
-			System.out.println("PassengerId " + loggedUser.getId());
 			passenger = (PassengerJPA) rateDriverRemote.findPassenger(loggedUser.getId());
 		}
+		driverComment = (DriverCommentJPA) rateDriverRemote.getDriverComment(this.getDriverId(),passenger.getNif());
 	}
 	
 	public String getDriverId() {
@@ -116,17 +114,7 @@ public class RateDriverMBean implements Serializable{
 		this.rating = rating;
 	}
 	
-	public int getTripId() {
-		return this.tripId;
-	}
-
-	public void setTripId(int tripId) {
-		this.tripId = tripId;
-	}
-
 	public String getDriver() {
-		DriverJPA driver = trip.getDriver();
-
 		return driver.getName() + " " + driver.getSurname();
 	}
 	
@@ -160,9 +148,9 @@ public class RateDriverMBean implements Serializable{
 		}
 		else {	
 			if (driverComment == null) {
-				rateDriverRemote.rateDriver(driverId, passengerId, comment, rating);
+				rateDriverRemote.rateDriver(this.getDriverId(),passenger.getNif(), comment, rating);
 			} else {
-				rateDriverRemote.updateRateDriver(driverId, passengerId, comment, rating);
+				rateDriverRemote.updateRateDriver(this.getDriverId(),passenger.getNif(), comment, rating);
 			}
 			
 						

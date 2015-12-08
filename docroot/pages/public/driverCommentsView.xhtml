@@ -7,6 +7,7 @@
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
 	<f:metadata>
+		<f:viewParam name="driverId" value="#{drivercomments.driverId}"/>
 		<f:viewParam name="tripId" value="#{drivercomments.tripId}"/>
 		<f:event listener="#{drivercomments.init()}" type="preRenderView"/>
 	</f:metadata>
@@ -40,14 +41,15 @@
  			</h:column>
   		</h:dataTable>
  		<p align="center">
- 			<h:commandButton value="Rate Driver" action="#{drivercomments.rateDriver}">
- 				<f:param name="tripId" immediate="true" value="#{drivercomments.tripId}"/>
- 					                                         
- 			</h:commandButton>
- 			<h:commandButton value="Return"  action="showTripView" >
- 				<f:param name="tripId" immediate="true" value="#{drivercomments.tripId}"/>
-  			</h:commandButton>
-  	  	</p>
+ 			<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml">
+				<f:param name="driverId" value="#{drivercomments.driverId}"/>
+					<h:outputText value="Rate Driver"/>
+			</h:outputLink>
+			<h:outputLink value="showTripView.xhtml">
+				<f:param name="tripId" value="#{drivercomments.tripId}"/>
+					<h:outputText value="Return"/>
+			</h:outputLink>
+   	  	</p>
  	  </h:form>		
 	</h:body>
 	

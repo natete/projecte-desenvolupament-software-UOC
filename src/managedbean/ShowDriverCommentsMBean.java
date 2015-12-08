@@ -41,7 +41,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 	// stores a instance of DriverJPA
 	protected DriverJPA driver;
 	protected int numberDriverComments = 0;
-	protected int tripId;
+	public int tripId;
 	protected TripJPA trip;
 	private UserDTO loggedUser;
 
@@ -59,7 +59,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		driverCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		trip = (TripJPA) driverCommentsRemote.findTrip(this.getTripId());
-						
+					
 		loggedUser = SessionBean.getLoggedUser();
 	}
 
@@ -81,6 +81,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 			}
 			n += 1;
 		}
+		System.out.println("TripId " + this.getTripId());
 		this.numberDriverComments = n;
 		return driverCommentsView;
 	}

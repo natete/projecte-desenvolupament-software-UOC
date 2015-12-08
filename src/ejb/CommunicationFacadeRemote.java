@@ -7,6 +7,7 @@ import javax.persistence.PersistenceException;
 
 import jpa.DriverCommentJPA;
 import jpa.DriverJPA;
+import jpa.PassengerJPA;
 import jpa.TripJPA;
 
 
@@ -28,4 +29,5 @@ public interface CommunicationFacadeRemote {
 	  public void updateRateDriver(String driverId, String passengerId, String comment, int rating);
 	  public TripJPA findTrip(int tripId); 
 	  public DriverJPA findDriver(String driverId); 
+	  public PassengerJPA findPassenger(String passengerId);
 }

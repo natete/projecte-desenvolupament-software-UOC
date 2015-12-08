@@ -8,12 +8,17 @@ import javax.ejb.EJB;
 import javax.faces.bean.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 
 import ejb.CommunicationFacadeRemote;
 
 import jpa.DriverCommentJPA;
+import jpa.DriverJPA;
+import jpa.PassengerJPA;
+import jpa.TripJPA;
+import jpa.UserDTO;
 
 /**
  * Managed Bean RateDriver
@@ -33,6 +38,10 @@ public class RateDriverMBean implements Serializable{
 	private String passengerId;
 	private String comment;
 	private int rating;
+	public int tripId;
+	private TripJPA trip;
+	private PassengerJPA passenger;
+	private UserDTO loggedUser;
 	
 	private FacesMessage message;
 	
@@ -43,19 +52,24 @@ public class RateDriverMBean implements Serializable{
 	 */
 	public RateDriverMBean() throws Exception
 	{
-		this.setPassengerId("22222222X");
-	    this.setDriverId("00000000X");
-	    driverComment = getDataDriverComment(driverId,passengerId);
-	    if (driverComment==null) {
-	    	setComment("");
-	    	setRating(0); 
-	    }else{
-	    	this.comment = driverComment.getComment();
-	    	this.rating = driverComment.getRating();
-	    }		
+		super();
 	}
 	
+	public void init() throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		System.out.println("TripId " + this.getTripId());
+		trip = (TripJPA) rateDriverRemote.findTrip(this.getTripId());
+						
+		loggedUser = SessionBean.getLoggedUser();
 		
+		if(loggedUser.isPassenger()) {
+			System.out.println("PassengerId " + loggedUser.getId());
+			passenger = (PassengerJPA) rateDriverRemote.findPassenger(loggedUser.getId());
+		}
+	}
+	
 	public String getDriverId() {
 		return driverId;
 	}
@@ -68,6 +82,7 @@ public class RateDriverMBean implements Serializable{
 
 
 	public String getPassengerId() {
+		passengerId = loggedUser.getId();
 		return passengerId;
 	}
 
@@ -100,8 +115,28 @@ public class RateDriverMBean implements Serializable{
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
+	
+	public int getTripId() {
+		return this.tripId;
+	}
 
+	public void setTripId(int tripId) {
+		this.tripId = tripId;
+	}
 
+	public String getDriver() {
+		DriverJPA driver = trip.getDriver();
+
+		return driver.getName() + " " + driver.getSurname();
+	}
+	
+	public String getPassenger()  {
+		return passenger.getName() + " " + passenger.getSurname();
+	}
+
+	public boolean isPassengerLogged() {
+		return loggedUser != null && loggedUser.isPassenger();
+	}
 
 	public String setDataDriverComment() throws Exception
 	{	

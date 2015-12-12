@@ -15,11 +15,14 @@ import jpa.UserDTO;
 public interface UserFacadeRemote {
 	/**
 	 * Remotely invoked method.
+	 * @param userLogged 
 	 */
-	public void addCar(String carRegistrationId, String brand, String model, String color);
+	public void addCar(String carRegistrationId, String brand, String model, String color, UserDTO userLogged);
 
 	public Collection<?> listAllCars(String nif);
 
+	public boolean existsTripsForCar(String carRegistrationId);
+		
 	public void deleteCar(String carRegistrationId);
 
 	public void registerDriver(String nif, String name, String surname, String phone, String password, String email);

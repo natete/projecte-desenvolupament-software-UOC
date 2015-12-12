@@ -127,5 +127,11 @@ public class LoginMBean implements Serializable {
 	public boolean isLogged() {
 		return this.user != null;
 	}
+	public boolean isDriver() {
+		return this.getRoles().contains("driver");
+	}
+	public boolean isPassenger() {
+		return this.getRoles().contains("passenger");
+	}
 
 }

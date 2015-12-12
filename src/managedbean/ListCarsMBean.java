@@ -24,7 +24,7 @@ public class ListCarsMBean implements Serializable {
 	@EJB
 	private UserFacadeRemote carsRemote;
 
-	// stores the name of the category of cars to be displayed
+	// stores the nif of the driver of cars to be displayed
 	private String nif = "00000000X";
 	// stores all the instances of CarJPA
 	private Collection<CarJPA> carsList;

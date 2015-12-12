@@ -20,4 +20,38 @@
 			</redirect>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/public/registerPassengerView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{registerpassenger.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/public/registerDriverView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{registerdriver.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/registerDriverView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+	</navigation-rule>
 </faces-config>

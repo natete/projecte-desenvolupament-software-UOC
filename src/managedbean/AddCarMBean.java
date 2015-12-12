@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 
 import ejb.UserFacadeRemote;
+import jpa.UserDTO;
 
 /**
  * Managed Bean ShowPetMBean
@@ -28,7 +29,8 @@ public class AddCarMBean implements Serializable {
 	private String brand;
 	private String model;
 	private String color;
-
+	private UserDTO userLogged = SessionBean.getLoggedUser();
+	
 	private FacesMessage message;
 
 	/**
@@ -107,7 +109,7 @@ public class AddCarMBean implements Serializable {
 		if (errorMessage != null) {
 			return "errorView";
 		} else {
-			addCarRemote.addCar(carRegistrationId, brand, model, color);
+			addCarRemote.addCar(carRegistrationId, brand, model, color, userLogged);
 			this.setCarRegistrationId("");
 			this.setBrand("");
 			this.setModel("");

@@ -35,6 +35,7 @@ public class ShowTripMBean implements Serializable {
 	DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	private Integer tripId;
+	private String driverId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
 	private String errorMessage;
@@ -54,6 +55,7 @@ public class ShowTripMBean implements Serializable {
 			errorMessage = "The required trip does not exist";
 			result = "errorView";
 		}
+		driverId = trip.getDriver().getNif();
 		loggedUser = SessionBean.getLoggedUser();
 		return result;
 	}
@@ -64,6 +66,10 @@ public class ShowTripMBean implements Serializable {
 
 	public void setTripId(Integer tripId) {
 		this.tripId = tripId;
+	}
+
+	public String getDriverId() {
+		return driverId;
 	}
 
 	public String getPickupPoint() {

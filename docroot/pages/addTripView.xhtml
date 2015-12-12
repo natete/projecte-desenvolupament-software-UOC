@@ -19,15 +19,15 @@
 		<h:form class="col-md-10 col-md-offset-1">
 			<h1 class="col-md-12">Afegir nou viatge</h1>
 			<div class="form-group col-md-6">
-				<label for="departureCity">Ciutat d'origen</label>
+				<label for="departureCity">City Origin</label>
 				<h:inputText value="#{addtrip.departureCity}" a:placeholder="Palma" class="form-control" />
 			</div>
 			<div class="form-group col-md-6">
-				<label for="arrivalCity">Ciutat de destí</label>
+				<label for="arrivalCity">City Destination</label>
 				<h:inputText value="#{addtrip.arrivalCity}" a:placeholder="Alcúdia" class="form-control" />
 			</div>
 			<div class="form-group col-md-6">
-				<label for="fromPlace">Lloc d'origen</label>
+				<label for="fromPlace">Place Origin</label>
 				<h:inputText value="#{addtrip.fromPlace}" a:placeholder="centre comercial Porto Pi" class="form-control" />
 			</div>
 			<div class="form-group col-md-6">
@@ -63,9 +63,6 @@
 					inmediate="true" action="/pages/addTripView.xhtml" />
 				<h:commandButton value="Guardar" class="btn btn-primary"
 					action="#{addtrip.addTrip}" />
-				<br />
-				<h:commandButton value="Inici" class="btn btn-default"
-					immediate="true" action="/pages/public/findTripsView.xhtml" />
 			</div>
 			
 		</h:form>

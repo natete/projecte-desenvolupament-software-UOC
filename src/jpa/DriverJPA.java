@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -17,8 +18,11 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "driver")
-@NamedQuery(name = "findDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.email = :email AND "
-		+ "      d.password = :password")
+@NamedQueries({
+	@NamedQuery(name = "findDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.email = :email AND "
+			+ "      d.password = :password"),
+	@NamedQuery(name = "findMyDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.nif = :nif")  
+})
 public class DriverJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;

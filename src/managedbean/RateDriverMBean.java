@@ -41,7 +41,7 @@ public class RateDriverMBean implements Serializable{
 	private DriverJPA driver;
 	private PassengerJPA passenger;
 	private UserDTO loggedUser;
-	
+	private String errorMessage;
 	private FacesMessage message;
 	
 		
@@ -62,10 +62,16 @@ public class RateDriverMBean implements Serializable{
 						
 		loggedUser = SessionBean.getLoggedUser();
 		
+		passenger = null;
 		if(loggedUser.isPassenger()) {
 			passenger = (PassengerJPA) rateDriverRemote.findPassenger(loggedUser.getId());
 		}
+		
 		driverComment = (DriverCommentJPA) rateDriverRemote.getDriverComment(this.getDriverId(),passenger.getNif());
+		if(driverComment != null) {
+			this.setComment(driverComment.getComment());
+			this.setRating(driverComment.getRating());
+		}
 	}
 	
 	public String getDriverId() {
@@ -126,6 +132,10 @@ public class RateDriverMBean implements Serializable{
 		return loggedUser != null && loggedUser.isPassenger();
 	}
 
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	
 	public String setDataDriverComment() throws Exception
 	{	
 		String errorMessage=null;
@@ -133,11 +143,10 @@ public class RateDriverMBean implements Serializable{
 		Context ctx = new InitialContext(props);
 		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		if (this.comment.equals("")){
-		    // Bring the error message using the Faces Context
+			// Bring the error message using the Faces Context
 			errorMessage = "Comment is missing";
 			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-			            errorMessage, errorMessage);
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}

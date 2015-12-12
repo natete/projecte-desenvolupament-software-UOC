@@ -8,12 +8,15 @@ import javax.ejb.EJB;
 import javax.faces.bean.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 
 import ejb.CommunicationFacadeRemote;
 
-import jpa.DriverCommentJPA;
+import jpa.PassengerJPA;
+import jpa.TripJPA;
+import jpa.UserDTO;
 
 /**
  * Managed Bean RateDriver
@@ -31,8 +34,12 @@ public class AskQuestionMBean implements Serializable{
 	private String passengerId;
 	private String subject;
 	private String body;
-	
+	private TripJPA trip;
+	private PassengerJPA passenger;
+	private UserDTO loggedUser;
+	private String errorMessage;
 	private FacesMessage message;
+	
 	
 		
 	/**
@@ -41,27 +48,48 @@ public class AskQuestionMBean implements Serializable{
 	 */
 	public AskQuestionMBean() throws Exception
 	{
-		this.setTripId(1);
-	    this.setPassengerId("22222222X");
-	    this.setSubject("");
-	    this.setBody(""); 
+		super();
 	}
 	
+	public void init() throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		askQuestionRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		trip = (TripJPA) askQuestionRemote.findTrip(this.getTripId());
+					
+		loggedUser = SessionBean.getLoggedUser();
 		
-	public int getTripId() {
-		return tripId;
+		System.out.println("loggedUser: " + loggedUser);
+		
+		passenger = null;
+		if(loggedUser != null && loggedUser.isPassenger()) {
+			passenger = (PassengerJPA) askQuestionRemote.findPassenger(loggedUser.getId());
+		}
 	}
-
+	
+	public int getTripId() {
+		return this.tripId;
+	}
 
 	public void setTripId(int tripId) {
 		this.tripId = tripId;
+	}
+	
+	public TripJPA getTrip() {
+		return this.trip;
+	}
+
+	public void setTrip(TripJPA trip) {
+		this.trip = trip;
+	}
+	
+	public String getDriver() {
+		return this.getTrip().getDriver().getName() + " " + this.getTrip().getDriver().getSurname();
 	}
 
 	public String getPassengerId() {
 		return passengerId;
 	}
-
-
 
 	public void setPassengerId(String passengerId) {
 		this.passengerId = passengerId;
@@ -86,10 +114,12 @@ public class AskQuestionMBean implements Serializable{
 		this.body = body;
 	}
 
-
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+	
 	public String setDataTripComment() throws Exception
 	{	
-		String errorMessage=null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		askQuestionRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
@@ -116,7 +146,11 @@ public class AskQuestionMBean implements Serializable{
 			return "errorView";
 		}
 		else {	
-			askQuestionRemote.askQuestion(tripId, passengerId, subject, body);
+			if (passenger != null) {
+				askQuestionRemote.askQuestion(this.trip.getId(), passenger.getNif(), subject, body);
+			}else{
+				askQuestionRemote.askQuestion(this.trip.getId(), null, subject, body);
+			}
 			this.setSubject("");
 			this.setBody("");
 			return "tripCommentsView"; 

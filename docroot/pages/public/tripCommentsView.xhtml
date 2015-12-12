@@ -6,7 +6,10 @@
 
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
-
+	<f:metadata>
+		<f:viewParam name="tripId" value="#{tripcomments.tripId}"/>
+		<f:event listener="#{tripcomments.init()}" type="preRenderView"/>
+	</f:metadata>
 	<h:body> 	
 	  <h:form align="left" >	
 		<h:commandLink action="#{tripcomments.previousScreen}" value="Previous" />
@@ -14,7 +17,7 @@
 		<h:commandLink action="#{tripcomments.nextScreen}" value="Next" />		
 		<h:dataTable value="#{tripcomments.tripcommentsListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  >
  			<f:facet name="header">			
-  			<h:outputText align="center" value="Trip Comments: trip.description    Driver: trip.driver.name" />		
+  			<h:outputText align="center" value="Trip Comments: #{tripcomments.trip.description}    Driver: #{tripcomments.driver}" />		
   			</f:facet> 
   			<h:column>
    				<f:facet name="header">
@@ -35,13 +38,19 @@
     			<h:outputText value="#{item.body}" />
  			</h:column>
  			<h:column>	
-				<h:commandButton  value="Reply" action="#{replyquestion.replyQuestion(item.questionId)}" rendered="#{item.passenger.name ne null}" >
+				<h:commandButton  value="Reply" action="#{replyquestion.replyQuestion(item.questionId)}" >
 				</h:commandButton>	
 			</h:column>
   		</h:dataTable>
  		<p align="center">
- 			<h:commandButton value="Ask Question" action="#{tripcomments.askQuestion}"/>
- 			<h:commandButton value="Return" immediate="true" action="showTripView" />
+ 			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/askQuestionView.xhtml">
+				<f:param name="tripId" value="#{tripcomments.tripId}"/>
+					<h:outputText value="Ask Question"/>
+			</h:outputLink>
+			<h:outputLink value="showTripView.xhtml">
+				<f:param name="tripId" value="#{drivercomments.tripId}"/>
+					<h:outputText value="Return"/>
+			</h:outputLink>
  	  	</p>
  	  </h:form>		
 	</h:body>

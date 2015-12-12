@@ -6,6 +6,10 @@
 	
 <ui:composition template="templates/main.xhtml">
 <ui:define name="content">  
+	<f:metadata>
+		<f:viewParam name="tripId" value="#{askquestion.tripId}"/>
+		<f:event listener="#{askquestion.init()}" type="preRenderView"/>
+	</f:metadata>
 
   <h:body>
 		<br/>
@@ -17,14 +21,14 @@
 							<p align="left"/><i><b><font size="4" face="Century">Trip:</font></b></i>
 						</td>
 						<td>
-							<p align="left"/><h:outputText value="trip.description" />
+							<p align="left"/><h:outputText value="#{askquestion.trip.description}" />
 						</td>
 					</tr>
 					<tr>
 						<td width="155">
 							<p align="left"/><i><b><font size="4" face="Century">Driver:</font></b></i></td>
 						<td>
-							<p align="left"/><h:outputText value="trip.driver.name" />
+							<p align="left"/><h:outputText value="#{askquestion.driver}" />
 						</td>
 					</tr>
 					<tr>

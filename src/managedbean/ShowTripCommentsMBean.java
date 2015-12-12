@@ -8,9 +8,13 @@ import javax.ejb.EJB;
 import javax.faces.bean.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.PersistenceException;
 
+import jpa.DriverJPA;
 import jpa.MessageJPA;
+import jpa.TripJPA;
+import jpa.UserDTO;
 import ejb.CommunicationFacadeRemote;
 
 /**
@@ -37,7 +41,9 @@ public class ShowTripCommentsMBean implements Serializable {
 	protected Collection<MessageJPA> tripCommentsView;
 	// stores the total number of instances of MessageJPA
 	protected int numberMessages = 0;
-	protected ShowTripMBean t;
+	protected int tripId;
+	protected TripJPA trip;
+	private UserDTO loggedUser;
 
 	/**
 	 * Constructor method
@@ -45,9 +51,18 @@ public class ShowTripCommentsMBean implements Serializable {
 	 * @throws Exception
 	 */
 	public ShowTripCommentsMBean() throws Exception {
-		
+		super();
 	}
 
+	public void init() throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
+					
+		loggedUser = SessionBean.getLoggedUser();
+	}
+	
 	/**
 	 * Method that returns an instance Collection of 10 or less MessageJPA according
 	 * screen where the user is.
@@ -92,13 +107,25 @@ public class ShowTripCommentsMBean implements Serializable {
 			screen -= 1;
 		}
 	}
-
-	public String getDriverId() {
-		return this.driverId;
+	
+	public TripJPA getTrip() {
+		return this.trip;
 	}
 
-	public void setDriverId(String driverId) {
-		this.driverId = driverId;
+	public void setTrip(TripJPA trip) {
+		this.trip = trip;
+	}
+	
+	public int getTripId() {
+		return this.tripId;
+	}
+
+	public void setTripId(int tripId) {
+		this.tripId = tripId;
+	}
+
+	public String getDriver() {
+		return trip.getDriver().getName() + " " + trip.getDriver().getSurname();
 	}
 	
 	public String getPassengerId() {
@@ -140,6 +167,6 @@ public class ShowTripCommentsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		screen = 0;
 		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		tripCommentsList = (Collection<MessageJPA>) tripCommentsRemote.showTripComments(t.getTripId());
+		tripCommentsList = (Collection<MessageJPA>) tripCommentsRemote.showTripComments(this.getTripId());
 	}
 }

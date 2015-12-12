@@ -66,7 +66,10 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
 		MessageJPA message = new MessageJPA();
 		TripJPA t = findTrip(tripId);
-		PassengerJPA p = findPassenger(passengerId);
+		PassengerJPA p = null;
+		if(passengerId != null){
+			p = findPassenger(passengerId);
+		}
 		message.setTrip(t);
 		message.setPassenger(p);
 		message.setSubject(subject);

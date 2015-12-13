@@ -34,6 +34,7 @@ public class RegisterPassengerMBean implements Serializable {
 	private String password;
 	private String email;
 
+	private String errorMessage;
 	private FacesMessage message;
 
 	/**
@@ -97,8 +98,11 @@ public class RegisterPassengerMBean implements Serializable {
 		this.email = email;
 	}
 
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
 	public String setDataPassenger() throws Exception {
-		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		registerPassengerRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");

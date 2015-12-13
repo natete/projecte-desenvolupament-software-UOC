@@ -17,7 +17,6 @@ import ejb.CommunicationFacadeRemote;
 import jpa.DriverCommentJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
-import jpa.TripJPA;
 import jpa.UserDTO;
 
 /**
@@ -43,6 +42,7 @@ public class RateDriverMBean implements Serializable{
 	private UserDTO loggedUser;
 	private String errorMessage;
 	private FacesMessage message;
+	private String redirectTo;
 	
 		
 	/**
@@ -78,43 +78,30 @@ public class RateDriverMBean implements Serializable{
 		return driverId;
 	}
 
-
 	public void setDriverId(String driverId) {
 		this.driverId = driverId;
 	}
-
-
 
 	public String getPassengerId() {
 		passengerId = loggedUser.getId();
 		return passengerId;
 	}
 
-
-
 	public void setPassengerId(String passengerId) {
 		this.passengerId = passengerId;
 	}
-
-
 
 	public String getComment() {
 		return comment;
 	}
 
-
-
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
-
-
 	public int getRating() {
 		return rating;
 	}
-
-
 
 	public void setRating(int rating) {
 		this.rating = rating;
@@ -127,6 +114,16 @@ public class RateDriverMBean implements Serializable{
 	public String getPassenger()  {
 		return passenger.getName() + " " + passenger.getSurname();
 	}
+	
+	public String getRedirectTo() {
+		System.out.println("redirectTo" + redirectTo);
+		return redirectTo;
+	}
+
+	public void setRedirectTo(String redirectTo) {
+		System.out.println("redirectTo" + redirectTo);
+		this.redirectTo = redirectTo;
+	}
 
 	public boolean isPassengerLogged() {
 		return loggedUser != null && loggedUser.isPassenger();
@@ -138,7 +135,6 @@ public class RateDriverMBean implements Serializable{
 	
 	public String setDataDriverComment() throws Exception
 	{	
-		String errorMessage=null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");

@@ -13,7 +13,6 @@ import javax.naming.NamingException;
 import jpa.DriverCommentJPA;
 import jpa.DriverJPA;
 import jpa.TripJPA;
-import jpa.UserDTO;
 import ejb.CommunicationFacadeRemote;
 
 /**
@@ -43,7 +42,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 	protected int numberDriverComments = 0;
 	public int tripId;
 	protected TripJPA trip;
-	private UserDTO loggedUser;
+	
 
 	/**
 	 * Constructor method
@@ -59,8 +58,6 @@ public class ShowDriverCommentsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		driverCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		driver = (DriverJPA) driverCommentsRemote.findDriver(this.getDriverId());
-					
-		loggedUser = SessionBean.getLoggedUser();
 	}
 
 

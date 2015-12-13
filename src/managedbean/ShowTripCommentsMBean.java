@@ -9,12 +9,9 @@ import javax.faces.bean.*;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.persistence.PersistenceException;
 
-import jpa.DriverJPA;
 import jpa.MessageJPA;
 import jpa.TripJPA;
-import jpa.UserDTO;
 import ejb.CommunicationFacadeRemote;
 
 /**
@@ -29,8 +26,6 @@ public class ShowTripCommentsMBean implements Serializable {
 	@EJB
 	private CommunicationFacadeRemote tripCommentsRemote;
 
-	// stores the nif driver
-	private String driverId;
 	// stores the nif passenger
 	private String passengerId;
 	// stores all the instances of MessageJPA
@@ -43,8 +38,7 @@ public class ShowTripCommentsMBean implements Serializable {
 	protected int numberMessages = 0;
 	protected int tripId;
 	protected TripJPA trip;
-	private UserDTO loggedUser;
-
+	
 	/**
 	 * Constructor method
 	 * 
@@ -59,8 +53,6 @@ public class ShowTripCommentsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
-					
-		loggedUser = SessionBean.getLoggedUser();
 	}
 	
 	/**

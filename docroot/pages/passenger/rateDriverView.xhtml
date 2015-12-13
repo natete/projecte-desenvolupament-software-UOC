@@ -8,6 +8,7 @@
 <ui:define name="content">  
 	<f:metadata>
 		<f:viewParam name="driverId" value="#{ratedriver.driverId}"/>
+		<f:viewParam name="fromPage" value="#{ratedriver.redirectTo}"/>
 		<f:event listener="#{ratedriver.init()}" type="preRenderView"/>
 	</f:metadata>
 
@@ -65,7 +66,9 @@
 			</div> 
 			<p align="center">
 				<h:commandButton value="Save"  action="#{ratedriver.setDataDriverComment}" />
-				<h:commandButton value="Return"  action="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml"/>
+				<h:outputLink value="#{ratedriver.redirectTo}" styleClass="btn btn-primary">
+						<h:outputText value="Return"/>
+				</h:outputLink>
 			</p>
  		</h:form>
 	</h:body>

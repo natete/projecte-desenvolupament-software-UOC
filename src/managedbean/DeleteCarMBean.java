@@ -25,6 +25,7 @@ public class DeleteCarMBean implements Serializable {
 	@EJB
 	private UserFacadeRemote deleteCarRemote;
 
+	private String errorMessage;
 	private FacesMessage message;
 
 	/**
@@ -36,15 +37,18 @@ public class DeleteCarMBean implements Serializable {
 
 	}
 
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
 	public String deleteCar(String carRegistrationId) throws Exception {
-		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		deleteCarRemote = (UserFacadeRemote) ctx
 			.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		if (deleteCarRemote.existsTripsForCar(carRegistrationId)) {
 			// Bring the error message using the Faces Context
-			errorMessage = "this car has associated trips";
+			errorMessage = "This car has associated trips";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component

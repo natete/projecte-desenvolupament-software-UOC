@@ -10,6 +10,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import jpa.CarJPA;
+import jpa.UserDTO;
 import ejb.UserFacadeRemote;
 
 /**
@@ -25,7 +26,9 @@ public class ListCarsMBean implements Serializable {
 	private UserFacadeRemote carsRemote;
 
 	// stores the nif of the driver of cars to be displayed
-	private String nif = "00000000X";
+	private UserDTO userLogged = SessionBean.getLoggedUser();
+	private String nif = userLogged.getId();
+	
 	// stores all the instances of CarJPA
 	private Collection<CarJPA> carsList;
 	// stores the screen number where the user is
@@ -50,7 +53,7 @@ public class ListCarsMBean implements Serializable {
 	 * 
 	 * @return Collection CarJPA
 	 */
-	public Collection<CarJPA> getCarListView() throws Exception {
+	public Collection<CarJPA> getCarsListView() throws Exception {
 		int n = 0;
 		carsListView = new ArrayList<CarJPA>();
 		this.carList();
@@ -70,7 +73,7 @@ public class ListCarsMBean implements Serializable {
 	 * 
 	 * @return Car number
 	 */
-	public int getNumbercars() {
+	public int getNumberCars() {
 		return this.numberCars;
 	}
 
@@ -97,15 +100,12 @@ public class ListCarsMBean implements Serializable {
 		this.nif = nif;
 	}
 
-	/**
-	 * Method used for Facelet to call listcarsView Facelet
-	 * 
-	 * @return Facelet name
-	 * @throws Exception
-	 */
-	public String listCars() throws Exception {
-		carList();
-		return "listcarsView";
+	public Collection<CarJPA> getCarsList() {
+		return this.carsList;
+	}
+
+	public void setCarsList(Collection<CarJPA> carsList) {
+		this.carsList = carsList;
 	}
 
 	/**
@@ -129,5 +129,7 @@ public class ListCarsMBean implements Serializable {
 		screen = 0;
 		carsRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		carsList = (Collection<CarJPA>) carsRemote.listAllCars(nif);
+		//return "carListView";
+
 	}
 }

@@ -27,12 +27,12 @@
 				<div class="form-group col-md-6">
 					<label for="name">Nom: (*)</label>
 					<h:inputText value="#{registerpassenger.name}" class="form-control" rendered="#{not login.isLogged()}"/>
-					<h:outputText value="#{updatepersonaldata.name}" class="form-control" rendered="#{login.isLogged()}"/>
+					<h:inputText value="#{updatepersonaldata.name}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="surname">Cognom: (*)</label>
 					<h:inputText value="#{registerpassenger.surname}" class="form-control" rendered="#{not login.isLogged()}"/>
-					<h:outputText value="#{updatepersonaldata.surname}" class="form-control" rendered="#{login.isLogged()}"/>
+					<h:inputText value="#{updatepersonaldata.surname}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="phone">Telèfon: </label>

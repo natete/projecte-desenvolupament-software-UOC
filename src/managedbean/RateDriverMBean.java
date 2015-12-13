@@ -159,7 +159,7 @@ public class RateDriverMBean implements Serializable{
 			}
 			
 						
-			return "driverCommentsView"; 
+			return "/pages/public/driverCommentsView"; 
 		}
 	}
 	

@@ -43,12 +43,12 @@
 			</h:column>
   		</h:dataTable>
  		<p align="center">
- 			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/askQuestionView.xhtml">
+ 			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/askQuestionView.xhtml" class="btn btn-primary">
 				<f:param name="tripId" value="#{tripcomments.tripId}"/>
 					<h:outputText value="Ask Question"/>
 			</h:outputLink>
-			<h:outputLink value="showTripView.xhtml">
-				<f:param name="tripId" value="#{drivercomments.tripId}"/>
+			<h:outputLink value="showTripView.xhtml" class="btn btn-default">
+				<f:param name="tripId" value="#{drivercomments.tripId}" />
 					<h:outputText value="Return"/>
 			</h:outputLink>
  	  	</p>

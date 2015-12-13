@@ -38,21 +38,7 @@
 			</redirect>
 		</navigation-case>
 	</navigation-rule>
-	
-	<navigation-rule>
-		<from-view-id>/pages/public/driverCommentsView.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>rateDriverView</from-outcome>
-			<to-view-id>/pages/passenger/rateDriverView.xhtml</to-view-id>
-			<redirect>
-				<view-param>
-					<name>fromPage</name>
-					<value>/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml</value>
-				</view-param>
-			</redirect>
-		</navigation-case>
-	</navigation-rule>
-	
+			
 	<navigation-rule>
 		<from-view-id>/pages/public/askQuestionView.xhtml</from-view-id>
 		<navigation-case>

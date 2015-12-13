@@ -41,11 +41,12 @@
  			</h:column>
   		</h:dataTable>
  		<p align="center">
- 			<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml">
+ 			<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" class="btn btn-primary">
 				<f:param name="driverId" value="#{drivercomments.driverId}"/>
+				<f:param name="fromPage" value="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml"/>
 					<h:outputText value="Rate Driver"/>
 			</h:outputLink>
-			<h:outputLink value="showTripView.xhtml">
+			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/showTripView.xhtml" class="btn btn-default">
 				<f:param name="tripId" value="#{drivercomments.tripId}"/>
 					<h:outputText value="Return"/>
 			</h:outputLink>

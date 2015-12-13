@@ -65,8 +65,9 @@
 				</table> 	
 			</div> 
 			<p align="center">
-				<h:commandButton value="Save"  action="#{ratedriver.setDataDriverComment}" />
-				<h:outputLink value="#{ratedriver.redirectTo}" styleClass="btn btn-primary">
+				<h:commandButton value="Save"  action="#{ratedriver.setDataDriverComment}" class="btn btn-primary" /> 
+				
+				<h:outputLink value="#{ratedriver.redirectTo}" styleClass="btn btn-default">
 						<h:outputText value="Return"/>
 				</h:outputLink>
 			</p>

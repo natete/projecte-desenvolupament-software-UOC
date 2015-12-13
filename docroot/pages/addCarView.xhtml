@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html">
 
 
-<ui:composition template="templates/main.xhtml">
+<ui:composition template="public/templates/main.xhtml">
 	<ui:define name="content">
 		<div class="row">
 			<div class="col-xs-12">
@@ -41,16 +41,14 @@
 					<ul class="list-inline">
 						<li>
 							<h:commandButton value="Cancelar" class="btn btn-default"
-								inmediate="true" action="findTripsView.xhtml" />
+								inmediate="true" action="carListView" />
 						</li>
 						<li>
 							<h:commandButton value="Guardar" class="btn btn-primary"
-								action="#{addcar.setDataCar}" />
+								action="#{addcar.setDataCar()}" />
 						</li>
 					</ul>
 				</div>
-	
-	
 			</h:form>
 		</div>
 	</ui:define>

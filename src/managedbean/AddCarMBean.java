@@ -30,7 +30,8 @@ public class AddCarMBean implements Serializable {
 	private String model;
 	private String color;
 	private UserDTO userLogged = SessionBean.getLoggedUser();
-	
+
+	private String errorMessage;
 	private FacesMessage message;
 
 	/**
@@ -76,8 +77,11 @@ public class AddCarMBean implements Serializable {
 		this.color = color;
 	}
 
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
 	public String setDataCar() throws Exception {
-		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		addCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");

@@ -224,10 +224,10 @@ public class UpdatePersonalDataMBean implements Serializable {
 			return "errorView";
 		} else {
 			if (loggedUser.getRoles().contains(Role.DRIVER)) {
-				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, password, email);
+				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, email, password);
 			}
 			if (loggedUser.getRoles().contains(Role.PASSENGER)) {
-				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, password, email);
+				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, email, password);
 			}
 			this.setNif("");
 			this.setName("");

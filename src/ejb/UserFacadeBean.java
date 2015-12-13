@@ -253,6 +253,46 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
+	 * Method that update a driver
+	 */
+	public void updateDriver(String nif, String name, String surname, String phone, String email, String password)
+			throws PersistenceException {
+
+		try {
+			DriverJPA driver = entman.find(DriverJPA.class, nif);
+			entman.getTransaction().begin();
+			driver.setName(name);
+			driver.setSurname(surname);
+			driver.setPhone(phone);
+			driver.setEmail(email);
+			driver.setPassword(password);
+			entman.getTransaction().commit();
+		} catch (PersistenceException e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
+	 * Method that adds a passenger
+	 */
+	public void updatePassenger(String nif, String name, String surname, String phone, String email, String password)
+			throws PersistenceException {
+
+		try {
+			PassengerJPA passenger = entman.find(PassengerJPA.class, nif);
+			entman.getTransaction().begin();
+			passenger.setName(name);
+			passenger.setSurname(surname);
+			passenger.setPhone(phone);
+			passenger.setEmail(email);
+			passenger.setPassword(password);
+			entman.getTransaction().commit();
+		} catch (PersistenceException e) {
+			System.out.println(e);
+		}
+	}
+
+	/**
 	 * Method that verify the existences of as Driver with some email
 	 */
 	public boolean existsDriverEmail(String nif, String name, String surname, String email) throws PersistenceException {

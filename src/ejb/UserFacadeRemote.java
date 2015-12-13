@@ -42,6 +42,10 @@ public interface UserFacadeRemote {
 
 	public PassengerJPA findPassenger(String nif);
 	
+	public void updateDriver(String nif, String name, String surname, String phone, String email, String password);
+
+	public void updatePassenger(String nif, String name, String surname, String phone, String email, String password);
+	
 	public boolean existsDriverEmail(String nif, String name, String surname, String email);
 
 	public boolean existsPassengerEmail(String nif, String name, String surname, String email);

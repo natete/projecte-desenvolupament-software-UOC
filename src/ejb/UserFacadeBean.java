@@ -209,6 +209,20 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
+	 * Method that find a driver
+	 */
+	public DriverJPA findDriver(String nif) throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		DriverJPA driver = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
+			.getSingleResult();
+		if (driver != null) {
+			return driver;
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Method that verify the existences of as passenger
 	 */
 	public boolean existsPassenger(String nif, String email) throws PersistenceException {
@@ -222,6 +236,20 @@ public class UserFacadeBean implements UserFacadeRemote {
 			return true;
 		else
 			return false;
+	}
+
+	/**
+	 * Method that find a passenger
+	 */
+	public PassengerJPA findPassenger(String nif) throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		PassengerJPA passenger = (PassengerJPA) entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif)
+			.getSingleResult();
+		if (passenger != null) {
+			return passenger;
+		} else {
+			return null;
+		}
 	}
 
 	/**

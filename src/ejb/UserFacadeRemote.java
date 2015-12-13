@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.ejb.Remote;
 import javax.persistence.PersistenceException;
 
+import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.UserDTO;
 
@@ -35,8 +36,12 @@ public interface UserFacadeRemote {
 
 	public boolean existsDriver(String nif, String email);
 
+	public DriverJPA findDriver(String nif);
+		
 	public boolean existsPassenger(String nif, String email);
 
+	public PassengerJPA findPassenger(String nif);
+	
 	public boolean existsDriverEmail(String nif, String name, String surname, String email);
 
 	public boolean existsPassengerEmail(String nif, String name, String surname, String email);

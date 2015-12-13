@@ -4,43 +4,50 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
 
-
+	
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
-					Registra't com a passatger
+					<h:outputText value="Modifica les teves dades" rendered="#{login.isLogged()}"/>
+					<h:outputText value="Registra't com a passatger" rendered="#{not login.isLogged()}"/>
 				</h1>
 			</div>
 		</div>
 		<div class="row">
 			<h:form class="col-md-10 col-md-offset-1">
-				<h1 class="col-md-12">Afegir nou passenger</h1>
+				<h1 class="col-md-12"><h:outputText value="Afegir nou passenger" rendered="#{not login.isLogged()}"/></h1>
+				<h1 class="col-md-12"><h:outputText value="Modificar #{login.roles}" rendered="#{login.isLogged()}"/></h1>
 				<div class="form-group col-md-6">
 					<label for="nif">NIF: (*) </label>
-					<h:inputText value="#{registerpassenger.nif}" class="form-control" />
+					<h:inputText value="#{registerpassenger.nif}" class="form-control" rendered="#{not login.isLogged()}"/>
+					<h:outputText value="#{updatepersonaldata.nif}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="name">Nom: (*)</label>
-					<h:inputText value="#{registerpassenger.name}" class="form-control" />
+					<h:inputText value="#{registerpassenger.name}" class="form-control" rendered="#{not login.isLogged()}"/>
+					<h:outputText value="#{updatepersonaldata.name}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="surname">Cognom: (*)</label>
-					<h:inputText value="#{registerpassenger.surname}" class="form-control" />
+					<h:inputText value="#{registerpassenger.surname}" class="form-control" rendered="#{not login.isLogged()}"/>
+					<h:outputText value="#{updatepersonaldata.surname}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="phone">Telèfon: </label>
-					<h:inputText value="#{registerpassenger.phone}" class="form-control" />
-					
+					<h:inputText value="#{registerpassenger.phone}" class="form-control" rendered="#{not login.isLogged()}"/>
+					<h:inputText value="#{updatepersonaldata.phone}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="email">E-Mail: (*) </label>
-					<h:inputText id="email" value="#{registerpassenger.email}" class="form-control" />
+					<h:inputText value="#{registerpassenger.email}" class="form-control" rendered="#{not login.isLogged()}"/>
+					<h:inputText value="#{updatepersonaldata.email}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="password">Password: (*) </label>
-					<h:inputText value="#{registerpassenger.password}" class="form-control" />
+					<h:inputText value="#{registerpassenger.password}" class="form-control" rendered="#{not login.isLogged()}"/>
+					<h:inputText value="#{updatepersonaldata.password}" class="form-control" rendered="#{login.isLogged()}"/>
 				</div>
 				<div class="col-md-12 text-left">
 					<label>(*) Camp obligatori</label>
@@ -53,12 +60,12 @@
 						</li>
 						<li>
 							<h:commandButton value="Guardar" class="btn btn-primary"
-								action="#{registerpassenger.setDataPassenger}" />
+								action="#{registerpassenger.setDataPassenger}" rendered="#{not login.isLogged()}" />
+							<h:commandButton value="Guardar" class="btn btn-primary"
+								action="#{updatepersonaldata.setDataUser}" rendered="#{login.isLogged()}" />
 						</li>
 					</ul>
 				</div>
-	
-	
 			</h:form>
 		</div>
 	</ui:define>

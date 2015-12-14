@@ -18,7 +18,7 @@ public interface TripAdministrationFacadeRemote {
 	 * INTERFACE METHODS
 	 */
 	public Collection<TripJPA> findMyTrips(String driver);
-	void addTrip(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price);
+	void addTrip(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif);
 	public Collection<PassengerJPA> findAllPassengers(int tripId);
 	public void updateTripInformation(int tripId, String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price);
 }

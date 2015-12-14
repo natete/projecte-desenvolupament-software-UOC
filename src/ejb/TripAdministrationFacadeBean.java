@@ -3,6 +3,8 @@ package ejb;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,6 +14,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
@@ -64,7 +67,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 */
 	@Override
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
-			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price) {
+			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif) {
 		// TODO Auto-generated method stub
 		
 		TripJPA trip = new TripJPA();
@@ -77,8 +80,15 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		trip.setToPlace(toPlace);
 		trip.setAvailableSeats(availableSeats);
 		trip.setPrice(price);
-		//trip.setDriver(driverJPA);
-		//trip.setCar(car)
+		
+		DriverJPA driverJPA = (DriverJPA) entityManager.createNamedQuery ("findMyDriver").setParameter("nif", nif).getSingleResult();
+		trip.setDriver(driverJPA);
+		
+		Collection<CarJPA> myCars = driverJPA.getCars();
+		Iterator<CarJPA> it = myCars.iterator();
+		CarJPA myCar = null;
+		while (it.hasNext()) myCar = it.next();
+		trip.setCar(myCar);
 		
 		try {
 			entityManager.persist(trip);

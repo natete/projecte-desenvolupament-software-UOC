@@ -2,9 +2,7 @@ package managedbean;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,9 +13,6 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.persistence.EntityManager;
-import javax.validation.constraints.Future;
-import org.hibernate.validator.constraints.NotEmpty;
 import ejb.TripAdministrationFacadeRemote;
 import jpa.UserDTO;
 
@@ -58,8 +53,9 @@ public class AddTripMBean implements Serializable {
 	//@Digits(integer = 2, fraction = 0, message = "You must provide a valid age!")
 	//@Range(min=0, max=20, message="Price between 0 and 20 €")
 	private float price;
-	private EntityManager entityManager;
+	
 	private FacesMessage message;
+	
 	
 	public AddTripMBean() throws Exception {
 		
@@ -72,57 +68,48 @@ public class AddTripMBean implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 	public String getDepartureCity() {
 		return departureCity;
 	}
 	public void setDepartureCity(String departureCity) {
 		this.departureCity = departureCity;
 	}
-	
 	public String getFromPlace() {
 		return fromPlace;
 	}
 	public void setFromPlace(String fromPlace) {
 		this.fromPlace = fromPlace;
 	}
-	
 	public Date getDepartureDate() {
 		return departureDate;
 	}
 	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
-	
 	public Date getDepartureTime() {
 		return departureTime;
 	}
-	
 	public void setDepartureTime(Date departureTime) {
 		this.departureTime = departureTime;
 	}
-	
 	public String getArrivalCity() {
 		return arrivalCity;
 	}
 	public void setArrivalCity(String arrivalCity) {
 		this.arrivalCity = arrivalCity;
 	}
-	
 	public String getToPlace() {
 		return toPlace;
 	}
 	public void setToPlace(String toPlace) {
 		this.toPlace = toPlace;
 	}
-	
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
 	public void setAvailableSeats(int availableSeats) {
 		this.availableSeats = availableSeats;
 	}
-	
 	public float getPrice() {
 		return price;
 	}
@@ -133,43 +120,48 @@ public class AddTripMBean implements Serializable {
 	
 	public String addTrip() throws Exception {
 		String errorMessage = null;
-		/*
-		UserDTO userDTO = SessionBean.getLoggedUser();
-		String nif = userDTO.getId();
-		DriverJPA driverJPA = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", nif).getSingleResult();
-		Collection<CarJPA> myCarsDriver = driverJPA.getCars();
-		*/
+		
 		Properties properties = System.getProperties();
 		Context context = new InitialContext(properties);
 		addTripRemote = (TripAdministrationFacadeRemote) context.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
 		
-		if (this.departureCity.equals("")) {
-			errorMessage = "Departure City is missing";
+		Pattern pattern = Pattern.compile("^[a-zA-Z]+( *[a-zA-Z])*$");
+		
+		Matcher matcher = pattern.matcher(this.departureCity);
+		if (!matcher.matches()) {
+			errorMessage = "You must enter a Departure City, without extra characters";
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
 		
-		if (this.fromPlace.equals("")) {
-			errorMessage = "From Place is missing";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.arrivalCity.equals("")) {
-			errorMessage = "Arrival City is missing";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.toPlace.equals("")) {
-			errorMessage = "To Place is missing";
+		matcher = pattern.matcher(this.fromPlace);
+		if (!matcher.matches()) {
+			errorMessage = "You must enter a Departure Place, without extra characters";
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
 		
+		matcher = pattern.matcher(this.arrivalCity);
+		if (!matcher.matches()) {
+			errorMessage = "You must enter an Arrival City, without extra characters";
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+		
+		matcher = pattern.matcher(this.toPlace);
+		if (!matcher.matches()) {
+			errorMessage = "You must enter an Arrival Place, without extra characters";
+			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
+			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
+		}
+				
 		Date date = new Date();
 		Integer thisDay = date.getDate();
 		Integer thisMonth = date.getMonth();
+		// add 1 to month because starts counting from 0;
 		thisMonth ++;
 		Integer thisYear = date.getYear();
+		// add 1900 to year beacause starts counting from 1900;
 		thisYear +=1900;
 		
         Integer depDay = this.departureDate.getDate();
@@ -178,7 +170,6 @@ public class AddTripMBean implements Serializable {
         Integer depYear = this.departureDate.getYear();
         depYear += 1900;
         
-        //if (thisYear.shortValue() < depYear.shortValue());
         if (thisYear.shortValue() == depYear.shortValue()) {
         	if (thisMonth.shortValue() < depMonth.shortValue());
         	if (thisMonth.shortValue() == depMonth.shortValue()) {
@@ -208,8 +199,8 @@ public class AddTripMBean implements Serializable {
         
         SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
     	String depTime = sdf.format(this.departureTime.getTime());
-        Pattern pattern = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]");
-        Matcher matcher = pattern.matcher(depTime);
+        pattern = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]");
+        matcher = pattern.matcher(depTime);
         if (!matcher.matches()) {
         	errorMessage = "You must enter a Time as like 09:15";
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
@@ -218,12 +209,12 @@ public class AddTripMBean implements Serializable {
         
         date = this.departureDate;
         Integer depHour = date.getHours();
-		Integer depMins = date.getMinutes();
 		if (depHour.intValue() < 0 && depHour.intValue() > 23) {
 			errorMessage = "Hour must be between 00 and 23";
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
+		Integer depMins = date.getMinutes();
 		if (depMins.intValue() < 0 && depMins.intValue() > 59) {
 			errorMessage = "Minuts must be between 00 and 59";
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
@@ -232,8 +223,13 @@ public class AddTripMBean implements Serializable {
         
         if (errorMessage != null) {
 			return "errorView";
+			
 		} else {
-			addTripRemote.addTrip(description, departureCity, fromPlace, departureDate, departureTime, arrivalCity, toPlace, availableSeats, price);
+			
+			UserDTO userDTO = SessionBean.getLoggedUser();
+			String nif = userDTO.getId();
+			
+			addTripRemote.addTrip(description, departureCity, fromPlace, departureDate, departureTime, arrivalCity, toPlace, availableSeats, price, nif);
 			
 			this.setDepartureCity("");
 			this.setFromPlace("");
@@ -244,8 +240,7 @@ public class AddTripMBean implements Serializable {
 			this.setAvailableSeats(0);
 			this.setPrice(0);
 			
-			return "findTripsView";
+			return "/pages/public/findTripsView";
 		}
 	}
 }
-

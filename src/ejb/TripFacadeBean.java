@@ -52,7 +52,7 @@ public class TripFacadeBean implements TripFacadeRemote {
 		List<Predicate> predicates = new ArrayList<>();
 
 		if (departureCity != null && !BLANK.equals(departureCity)) {
-			Predicate pred = cb.like(cb.upper(c.get("departureCity")), departureCity.toUpperCase() + "%");
+			Predicate pred = cb.like(cb.upper(c.<String>get("departureCity")), departureCity.toUpperCase() + "%");
 			predicates.add(pred);
 		}
 		if (departureDate != null) {
@@ -60,7 +60,7 @@ public class TripFacadeBean implements TripFacadeRemote {
 			predicates.add(pred);
 		}
 		if (arrivalCity != null && !BLANK.equals(arrivalCity)) {
-			Predicate pred = cb.like(cb.upper(c.get("arrivalCity")), arrivalCity.toUpperCase() + "%");
+			Predicate pred = cb.like(cb.upper(c.<String>get("arrivalCity")), arrivalCity.toUpperCase() + "%");
 			predicates.add(pred);
 		}
 

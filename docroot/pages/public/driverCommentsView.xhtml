@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="templates/main.xhtml">
+	<ui:define name="content">
+	<f:metadata>
+		<f:viewParam name="driverId" value="#{drivercomments.driverId}"/>
+		<f:viewParam name="tripId" value="#{drivercomments.tripId}"/>
+		<f:event listener="#{drivercomments.init()}" type="preRenderView"/>
+	</f:metadata>
+	
+	<div class="row">
+		<div class="col-xs-12">
+			<h1 class="page-header">
+				<i class="fa fa-commenting-o"></i> Comments about <em><h:outputText value="#{drivercomments.driver}" /></em>
+			</h1>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			<h3>
+				<h:outputText escape="false" value="#{drivercomments.noCommentsMsg}" rendered="#{empty drivercomments.driverCommentsList}"></h:outputText>
+			</h3>
+		
+			<h:dataTable var="comment" value="#{drivercomments.driverCommentsListView}" styleClass="table table-striped">
+				<h:column>
+	   				<f:facet name="header">
+	   					<div class="text-center">
+	   						<h:outputText value="Passenger"/>
+   						</div>
+	   				</f:facet>
+	   				<div class="text-center"> 
+	     				<h:outputText value="#{comment.passenger.name}" />
+     				</div>
+	 			</h:column>
+	 			<h:column>
+	   				<f:facet name="header">
+	   					<div class="text-center">
+	   						<h:outputText value="Comment"/>
+   						</div>
+	   				</f:facet>
+	   				<div class="text-center"> 
+	     				<h:outputText value="#{comment.comment}" />
+     				</div>
+	 			</h:column>
+	 			<h:column>
+	   				<f:facet name="header">
+	   					<div class="text-center">
+	   						<h:outputText value="Rating" />
+   						</div>
+	   				</f:facet>
+	   				<div class="text-center"> 
+	    				<h:outputText value="#{comment.rating}" />
+    				</div>
+	 			</h:column>
+			</h:dataTable>
+			
+			<ul class="list-inline text-center">
+				<li>
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/public/showTripView.xhtml" class="btn btn-default">
+						<f:param name="tripId" value="#{drivercomments.tripId}"/>
+							<h:outputText value="Return"/>
+					</h:outputLink>
+				</li>
+				<li>
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" class="btn btn-primary">
+						<f:param name="driverId" value="#{drivercomments.driverId}"/>
+						<f:param name="fromPage" value="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml"/>
+							<h:outputText value="Rate Driver"/>
+					</h:outputLink>
+				</li>
+			</ul>
+		</div>
+	</div>
+	
+
+<!-- 	<h:body> 	 -->
+<!-- 	  <h:form align="left" >	 -->
+<!-- 		<h:commandLink action="#{drivercomments.previousScreen}" value="Previous" /> -->
+<!-- 		<h:outputText value="   " /> -->
+<!-- 		<h:commandLink action="#{drivercomments.nextScreen}" value="Next" />		 -->
+<!-- 		<h:dataTable value="#{drivercomments.driverCommentsListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  > -->
+<!--  			<f:facet name="header">			 -->
+<!--   			<h:outputText align="center" value="List Driver Comments: #{drivercomments.driver}" />		 -->
+<!--   			</f:facet>  -->
+<!--   			<h:column> -->
+<!--    				<f:facet name="header"> -->
+<!--    					<h:outputText value="Passenger"/> -->
+<!--    				</f:facet>  -->
+<!--      			<h:outputText value="#{item.passenger.name}" /> -->
+<!--  			</h:column> -->
+<!--  			<h:column> -->
+<!--    				<f:facet name="header"> -->
+<!--    					<h:outputText value="Comment"/> -->
+<!--    				</f:facet>  -->
+<!--      			<h:outputText value="#{item.comment}" /> -->
+<!--  			</h:column> -->
+<!--  			<h:column> -->
+<!--    				<f:facet name="header"> -->
+<!--    					<h:outputText value="Rating" /> -->
+<!--    				</f:facet>  -->
+<!--     			<h:outputText value="#{item.rating}" /> -->
+<!--  			</h:column> -->
+<!--   		</h:dataTable> -->
+<!--  		<p align="center"> -->
+<!--  			<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" class="btn btn-primary"> -->
+<!-- 				<f:param name="driverId" value="#{drivercomments.driverId}"/> -->
+<!-- 				<f:param name="fromPage" value="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml"/> -->
+<!-- 					<h:outputText value="Rate Driver"/> -->
+<!-- 			</h:outputLink> -->
+<!-- 			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/showTripView.xhtml" class="btn btn-default"> -->
+<!-- 				<f:param name="tripId" value="#{drivercomments.tripId}"/> -->
+<!-- 					<h:outputText value="Return"/> -->
+<!-- 			</h:outputLink> -->
+<!--    	  	</p> -->
+<!--  	  </h:form>		 -->
+<!-- 	</h:body> -->
+	
+	</ui:define>
+</ui:composition>
+</html>

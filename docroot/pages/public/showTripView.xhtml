@@ -92,8 +92,8 @@
 							<i class="fa fa-user details-icon"></i>
 							<h:outputText value="#{showTripController.driver}"/>
 						</h4>
-						<h:outputLink value="rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
-							<f:param name="tripId" value="#{showTripController.tripId}"/>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
+							<f:param name="driverId" value="#{showTripController.driverId}"/>
 							<h:outputText value="Rate driver"/>
 						</h:outputLink>
 					</div>

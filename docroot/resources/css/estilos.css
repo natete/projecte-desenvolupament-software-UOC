@@ -1,4 +1,4 @@
- url(https://fonts.googleapis.com/css?family=Indie+Flower);
+@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
 
 .navbar-brand {
 	font-family: 'Indie Flower', 'Helvetica Neue',Helvetica,Arial,sans-serif, cursive;
@@ -68,4 +68,8 @@
 
 .fa.fa-star-o {
 	font-size: 18px;
+}
+
+.message-driver-name {
+	padding-top: 9px;
 }

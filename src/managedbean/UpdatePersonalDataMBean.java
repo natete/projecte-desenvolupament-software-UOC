@@ -13,12 +13,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
-import ejb.TripFacadeRemote;
 import ejb.UserFacadeRemote;
-import jpa.DriverJPA;
-import jpa.PassengerJPA;
+
 import jpa.UserDTO;
 import jpa.UserDTO.Role;
 
@@ -37,7 +33,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	private UserDTO loggedUser = SessionBean.getLoggedUser(); 
 	
 	
-	private String nif;
+	private String nif = loggedUser.getId();
 	private String name;
 	private String surname;
 	private String phone;
@@ -125,7 +121,6 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String setDataUser() throws Exception {
-		String errorMessage = null;
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		updatePersonalDataRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");

@@ -157,7 +157,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
 		if (loggedUser.getRoles().contains(Role.DRIVER)) {
-			if (updatePersonalDataRemote.existsDriver(nif, email) == true) {
+			if (updatePersonalDataRemote.existsDriver(null, email) == true) {
 				// Bring the error message using the Faces Context
 				errorMessage = "Driver already exists";
 				// Add View Faces Message
@@ -165,7 +165,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 				// Add the message into context for a specific component
 				FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 			}
-			if (updatePersonalDataRemote.existsPassengerEmail(nif, name, surname, email) == true) {
+			if (updatePersonalDataRemote.existsPassengerEmail(null, name, surname, email) == true) {
 				// Bring the error message using the Faces Context
 				errorMessage = "Passenger already exists with some email or some nif and different name-surname";
 				// Add View Faces Message
@@ -175,7 +175,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 			}
 		} 
 		if (loggedUser.getRoles().contains(Role.PASSENGER)) {
-			if (updatePersonalDataRemote.existsPassenger(nif, email) == true) {
+			if (updatePersonalDataRemote.existsPassenger(null, email) == true) {
 				// Bring the error message using the Faces Context
 				errorMessage = "Passenger already exists";
 				// Add View Faces Message
@@ -183,7 +183,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 				// Add the message into context for a specific component
 				FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 			}
-			if (updatePersonalDataRemote.existsDriverEmail(nif, name, surname, email) == true) {
+			if (updatePersonalDataRemote.existsDriverEmail(null, name, surname, email) == true) {
 				// Bring the error message using the Faces Context
 				errorMessage = "Driver already exists with some email or some nif and different name-surname";
 				// Add View Faces Message

@@ -35,6 +35,7 @@ public class ShowTripMBean implements Serializable {
 	DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	private Integer tripId;
+	private String driverId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
 
@@ -51,6 +52,7 @@ public class ShowTripMBean implements Serializable {
 		if (trip == null) {
 
 		}
+		driverId = trip.getDriver().getNif();
 		loggedUser = SessionBean.getLoggedUser();
 	}
 
@@ -60,6 +62,10 @@ public class ShowTripMBean implements Serializable {
 
 	public void setTripId(Integer tripId) {
 		this.tripId = tripId;
+	}
+	
+	public String getDriverId() {
+		return driverId;
 	}
 
 	public String getPickupPoint() {

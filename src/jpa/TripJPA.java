@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -78,11 +79,18 @@ public class TripJPA implements Serializable {
 
 	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<PassengerJPA> passengers;
-
+	
+	@OneToMany(mappedBy = "trip")
+	private List<MessageJPA> messages;
+	
 	@ManyToOne
 	@JoinColumn(name = "car")
 	private CarJPA car;
-
+	
+	
+	/**
+	 * Class constructor methods
+	 */
 	public TripJPA() {
 		super();
 	}

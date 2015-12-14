@@ -62,6 +62,14 @@ public class LoginMBean implements Serializable {
 	public String getUsername() {
 		return this.user.getUsername();
 	}
+	
+	public String getId() {
+		return this.user.getId();
+	}
+
+	public void setId(String id) {
+		this.user.setId(id);
+	}
 
 	public String getRoles() {
 		StringBuilder result = new StringBuilder();
@@ -107,7 +115,7 @@ public class LoginMBean implements Serializable {
 
 			return "findTripsView.xhtml";
 		} else {
-			errorMessage = "Incorrect E-mail and Passowrd.\nPlease enter correct E-mail and Password";
+			errorMessage = "Incorrect E-mail and Passowrd. Please enter correct E-mail and Password";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
 			// Add the message into context for a specific component
@@ -126,6 +134,12 @@ public class LoginMBean implements Serializable {
 
 	public boolean isLogged() {
 		return this.user != null;
+	}
+	public boolean isDriver() {
+		return this.getRoles().contains("Driver");
+	}
+	public boolean isPassenger() {
+		return this.getRoles().contains("Passenger");
 	}
 
 }

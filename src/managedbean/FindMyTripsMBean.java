@@ -13,9 +13,11 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import ejb.TripAdministrationFacadeRemote;
 import ejb.TripFacadeRemote;
+import jpa.DriverJPA;
 import jpa.TripJPA;
+import jpa.UserDTO;
 
-@ManagedBean(name="findMyTrips")
+@ManagedBean(name="myTrips")
 @ViewScoped
 
 public class FindMyTripsMBean implements Serializable{
@@ -36,7 +38,25 @@ public class FindMyTripsMBean implements Serializable{
 	}
 	
 	
-	public void findMyTrips() throws NamingException {
+	public String getDriver() {
+		return driver;
+	}
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+	public Collection<TripJPA> getTrips() {
+		return trips;
+	}
+	public void setTrips(Collection<TripJPA> trips) {
+		this.trips = trips;
+	}
+	
+	
+	public Collection<TripJPA> findMyTrips() throws NamingException {
+		
+		UserDTO userDTO = SessionBean.getLoggedUser();
+		driver = userDTO.getId();
+		
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
@@ -45,5 +65,6 @@ public class FindMyTripsMBean implements Serializable{
 		if (trips == null || trips.isEmpty()) {
 			searchMessage = EMPTY_LIST_MESSAGE;
 		}
+		return trips;
 	}
 }

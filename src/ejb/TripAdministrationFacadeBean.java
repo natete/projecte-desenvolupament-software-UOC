@@ -18,6 +18,8 @@ import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
+import jpa.UserDTO;
+import managedbean.SessionBean;
 
 /**
  * TripAdministrationFacadeBean
@@ -44,6 +46,10 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	@Override
 	public Collection<TripJPA> findMyTrips(String driver) {
 		
+		//DriverJPA myDriver = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", driver).getSingleResult();
+		Collection<TripJPA> myTrips = (Collection<TripJPA>) entityManager.createNamedQuery("findMyTrips").setParameter("driver", driver).getResultList();	
+		
+		/*
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<TripJPA> criteriaQuery = criteriaBuilder.createQuery(TripJPA.class);
 		Root<TripJPA> tripJPA = criteriaQuery.from(TripJPA.class);
@@ -59,6 +65,8 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		final TypedQuery<TripJPA> query = entityManager.createQuery(criteriaQuery);
 		
 		return query.getResultList();
+		*/
+		return myTrips;
 	}
 	
 	/**

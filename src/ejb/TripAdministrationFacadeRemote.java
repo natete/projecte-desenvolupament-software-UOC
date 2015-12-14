@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.Collection;
 import javax.ejb.Remote;
 import jpa.TripJPA;
+import jpa.DriverJPA;
 import jpa.PassengerJPA;
 
 /**
@@ -17,7 +18,7 @@ public interface TripAdministrationFacadeRemote {
 	 * INTERFACE METHODS
 	 */
 	public Collection<TripJPA> findMyTrips(String driver);
-	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price);
+	void addTrip(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price);
 	public Collection<PassengerJPA> findAllPassengers(int tripId);
 	public void updateTripInformation(int tripId, String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price);
 }

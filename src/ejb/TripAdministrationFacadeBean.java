@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import javax.ejb.Stateless;
-import managedbean.SessionBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
@@ -13,12 +12,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
-import jpa.UserDTO;
 
 /**
  * TripAdministrationFacadeBean
@@ -71,13 +67,6 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price) {
 		// TODO Auto-generated method stub
 		
-		UserDTO userDTO = SessionBean.getLoggedUser();
-		String myNifDriver = userDTO.getId();
-		DriverJPA driverJPA = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", myNifDriver).getSingleResult();
-		
-		Collection<CarJPA> myCarsDriver = driverJPA.getCars();
-		
-		
 		TripJPA trip = new TripJPA();
 		trip.setDescription(description);
 		trip.setDepartureCity(departureCity);
@@ -88,7 +77,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		trip.setToPlace(toPlace);
 		trip.setAvailableSeats(availableSeats);
 		trip.setPrice(price);
-		trip.setDriver(driverJPA);
+		//trip.setDriver(driverJPA);
 		//trip.setCar(car)
 		
 		try {
@@ -115,9 +104,8 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public void updateTripInformation(int tripId, String description, String departureCity, String fromPlace,
 			Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats,
 			float price) {
-		// TODO Auto-generated method stub
-		
+		// TODO Auto-generated method stub	
 	}
-
+	
 }
 

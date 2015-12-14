@@ -112,7 +112,12 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	@Override
 	public Collection<PassengerJPA> findAllPassengers(int tripId) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		Collection<PassengerJPA> passengersByTripId = null;
+		
+		
+		
+		return passengersByTripId;
 	}
 	
 	/**

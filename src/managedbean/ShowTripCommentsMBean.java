@@ -12,6 +12,7 @@ import javax.naming.NamingException;
 
 import jpa.MessageJPA;
 import jpa.TripJPA;
+import jpa.UserDTO;
 import ejb.CommunicationFacadeRemote;
 
 /**
@@ -38,6 +39,7 @@ public class ShowTripCommentsMBean implements Serializable {
 	protected int numberMessages = 0;
 	protected int tripId;
 	protected TripJPA trip;
+	private UserDTO loggedUser;
 	
 	/**
 	 * Constructor method
@@ -53,6 +55,8 @@ public class ShowTripCommentsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
+		
+		loggedUser = SessionBean.getLoggedUser();
 	}
 	
 	/**
@@ -126,6 +130,10 @@ public class ShowTripCommentsMBean implements Serializable {
 
 	public void setPassengerId(String passengerId) {
 		this.passengerId = passengerId;
+	}
+	
+	public boolean isDriverLogged() {
+		return loggedUser != null && loggedUser.isDriver();
 	}
 
 	/**

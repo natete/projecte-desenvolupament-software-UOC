@@ -13,11 +13,8 @@ public class MessageJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private int tripId;
-	private String driverId;
-	private String passengerId;
 	private int questionId;
-	private int replyQuestionId;
+	private MessageJPA replyQuestion;
 	private String subject;
 	private String body;
 	private TripJPA trip;
@@ -31,13 +28,13 @@ public class MessageJPA implements Serializable {
 		super();
 	}
 
-	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, int replyQuestionId,
+	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, MessageJPA replyQuestion,
 			String subject, String body) {
 		this.trip= trip;
 		this.questionId = questionId;
 		this.driver = driver;
 		this.passenger = passenger;
-		this.replyQuestionId = replyQuestionId;
+		this.replyQuestion = replyQuestion;
 		this.subject = subject;
 		this.body = body;
 
@@ -56,12 +53,12 @@ public class MessageJPA implements Serializable {
 		this.questionId = questionId;
 	}
 
-	public int getReplyQuestionId() {
-		return replyQuestionId;
+	public MessageJPA getReplyQuestion() {
+		return replyQuestion;
 	}
 
-	public void setReplyQuestionId(int replyQuestionId) {
-		this.replyQuestionId = replyQuestionId;
+	public void setReplyQuestion(MessageJPA replyQuestion) {
+		this.replyQuestion = replyQuestion;
 	}
 
 	public String getSubject() {

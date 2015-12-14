@@ -29,23 +29,27 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public java.util.Collection<?> showTripComments(int tripId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<MessageJPA> questions = entman.createQuery("FROM MessageJPA b WHERE b.trip.id = :tripId AND b.replyQuestionId = 0").setParameter("tripId", tripId).getResultList();
+		Collection<MessageJPA> questions = entman.createQuery("FROM MessageJPA b WHERE b.trip.id = :tripId AND b.replyQuestion = null").setParameter("tripId", tripId).getResultList();
 		
 		Collection<MessageJPA> tripComments = new ArrayList<MessageJPA>();
 		
 		for (Iterator<MessageJPA> iter2 = questions.iterator(); iter2.hasNext();) {
 			MessageJPA q = (MessageJPA) iter2.next();
 			tripComments.add(q);
-			try
-			{
-				MessageJPA answer = (MessageJPA) entman.createQuery("FROM MessageJPA b WHERE b.replyQuestionId = :questionId").setParameter("questionId", q.getQuestionId()).getSingleResult();
-				if (answer != null) {
-					tripComments.add(answer);
-				}
-			}catch (PersistenceException e) {
-				System.out.println(e);
-			} 
+			if (q.getReplyQuestion() != null) {
+				tripComments.add(q.getReplyQuestion());
+			}
 		}
+//			try
+//			{
+//				MessageJPA answer = (MessageJPA) entman.createQuery("FROM MessageJPA b WHERE b.replyQuestion.questionId = :questionId").setParameter("questionId", q.getQuestionId()).getSingleResult();
+//				if (answer != null) {
+//					tripComments.add(answer);
+//				}
+//			}catch (PersistenceException e) {
+//				System.out.println(e);
+//			} 
+//		}
 	    return tripComments;
 	}
    
@@ -74,6 +78,8 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 		message.setPassenger(p);
 		message.setSubject(subject);
 		message.setBody(body);
+		MessageJPA q = null;
+		message.setReplyQuestion(q);
 		try
 		{
 			entman.persist(message);
@@ -86,16 +92,17 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that replies a question
 	 */
-	public void replyQuestion(int tripId, int questionId, String driverId, String subject, String body) throws PersistenceException {
+	public void replyQuestion(int tripId, int replyQuestionId, String driverId, String subject, String body) throws PersistenceException {
 
 		MessageJPA message = new MessageJPA();
 		TripJPA t = findTrip(tripId);
 		message.setTrip(t);
-		message.setQuestionId(questionId);
 		DriverJPA d = findDriver(driverId);
 		message.setDriver(d);
 		message.setSubject(subject);
 		message.setBody(body);
+		MessageJPA q = findMessage(replyQuestionId);
+		message.setReplyQuestion(q);
 		try
 		{
 			entman.persist(message);
@@ -181,4 +188,13 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 		PassengerJPA passenger = (PassengerJPA) entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, passengerId).getSingleResult();
 		return passenger;
 	}	
-}
+
+	/**
+	 * Method that find a message
+	 */
+	public MessageJPA findMessage(int questionId) throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		MessageJPA message = (MessageJPA) entman.createQuery("FROM MessageJPA b WHERE b.questionId = ?1").setParameter(1, questionId).getSingleResult();
+		return message;
+	}
+}	

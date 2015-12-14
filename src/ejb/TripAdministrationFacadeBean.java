@@ -1,6 +1,5 @@
 package ejb;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -9,17 +8,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
 import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
-import jpa.UserDTO;
-import managedbean.SessionBean;
 
 /**
  * TripAdministrationFacadeBean
@@ -27,28 +20,33 @@ import managedbean.SessionBean;
  */
 @Stateless
 public class TripAdministrationFacadeBean implements TripAdministrationFacadeRemote {
-	
+
 	public static final String BLANK_SPACE = " ";
-	
+	public static final String QUERY_FIND_TRIPS_BY_DRIVER = "TripJPA.findTripsByDriver";
+	public static final String PARAMETER_DRIVER_NIF = "driverNif";
+
 	/**
 	 * PERSISTENCE CONTEXT
 	 */
-	@PersistenceContext(unitName="CarSharing") 
+	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entityManager;
-	
+
 	/**
 	 * INTERFACE IMPLEMENTATION
 	 */
-	
+
 	/**
 	 * findMyTrips
 	 */
 	@Override
-	public Collection<TripJPA> findMyTrips(String driver) {
-		
-		//DriverJPA myDriver = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", driver).getSingleResult();
-		Collection<TripJPA> myTrips = (Collection<TripJPA>) entityManager.createNamedQuery("findMyTrips").setParameter("driver", driver).getResultList();	
-		
+	public Collection<TripJPA> findMyTrips(String driverNif) {
+
+		// DriverJPA myDriver = (DriverJPA)
+		// entityManager.createNamedQuery("findMyDriver").setParameter("nif",
+		// driver).getSingleResult();
+		Collection<TripJPA> myTrips = (Collection<TripJPA>) entityManager.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER)
+				.setParameter(PARAMETER_DRIVER_NIF, driverNif).getResultList();
+
 		/*
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<TripJPA> criteriaQuery = criteriaBuilder.createQuery(TripJPA.class);
@@ -68,7 +66,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		*/
 		return myTrips;
 	}
-	
+
 	/**
 	 * addTrip
 	 * 
@@ -77,7 +75,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
 			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif) {
 		// TODO Auto-generated method stub
-		
+
 		TripJPA trip = new TripJPA();
 		trip.setDescription(description);
 		trip.setDepartureCity(departureCity);
@@ -88,24 +86,26 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		trip.setToPlace(toPlace);
 		trip.setAvailableSeats(availableSeats);
 		trip.setPrice(price);
-		
-		DriverJPA driverJPA = (DriverJPA) entityManager.createNamedQuery ("findMyDriver").setParameter("nif", nif).getSingleResult();
+
+		DriverJPA driverJPA = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", nif)
+				.getSingleResult();
 		trip.setDriver(driverJPA);
-		
+
 		Collection<CarJPA> myCars = driverJPA.getCars();
 		Iterator<CarJPA> it = myCars.iterator();
 		CarJPA myCar = null;
-		while (it.hasNext()) myCar = it.next();
+		while (it.hasNext())
+			myCar = it.next();
 		trip.setCar(myCar);
-		
+
 		try {
 			entityManager.persist(trip);
-			
+
 		} catch (PersistenceException e) {
 			System.out.println(e);
-		} 
+		}
 	}
-	
+
 	/**
 	 * findAllPassengers
 	 */
@@ -114,7 +114,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	/**
 	 * updateTripInformation
 	 */
@@ -122,8 +122,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public void updateTripInformation(int tripId, String description, String departureCity, String fromPlace,
 			Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats,
 			float price) {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 	}
-	
-}
 
+}

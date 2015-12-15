@@ -197,12 +197,14 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 */
 	public boolean existsDriver(String nif, String email) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
+		if (nif != null) {
+			Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
 				.getResultList();
+		}
 		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email)
 				.getResultList();
 
-		if (!(driversNif.isEmpty()) || !(driversEmail.isEmpty()))
+		if (((driversNif != null) && !(driversNif.isEmpty())) || !(driversEmail.isEmpty()))
 			return true;
 		else
 			return false;

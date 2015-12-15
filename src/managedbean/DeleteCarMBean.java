@@ -46,7 +46,7 @@ public class DeleteCarMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		deleteCarRemote = (UserFacadeRemote) ctx
 			.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		if (deleteCarRemote.existsTripsForCar(carRegistrationId)) {
+		if (deleteCarRemote.existsTripsByCar(carRegistrationId)) {
 			// Bring the error message using the Faces Context
 			errorMessage = "This car has associated trips";
 			// Add View Faces Message

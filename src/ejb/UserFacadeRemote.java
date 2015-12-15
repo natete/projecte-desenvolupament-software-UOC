@@ -22,7 +22,7 @@ public interface UserFacadeRemote {
 
 	public Collection<?> listAllCars(String nif);
 
-	public boolean existsTripsForCar(String carRegistrationId);
+	public boolean existsTripsByCar(String carRegistrationId);
 		
 	public void deleteCar(String carRegistrationId);
 
@@ -34,11 +34,11 @@ public interface UserFacadeRemote {
 
 	public boolean existsCar(String carRegistrationId);
 
-	public boolean existsDriver(String nif, String email);
+	public boolean existsDriver(String nif, String email, UserDTO userLogged);
 
 	public DriverJPA findDriver(String nif);
 		
-	public boolean existsPassenger(String nif, String email);
+	public boolean existsPassenger(String nif, String email, UserDTO userLogged);
 
 	public PassengerJPA findPassenger(String nif);
 	
@@ -46,8 +46,8 @@ public interface UserFacadeRemote {
 
 	public void updatePassenger(String nif, String name, String surname, String phone, String email, String password);
 	
-	public boolean existsDriverEmail(String nif, String name, String surname, String email);
+	public boolean existsDriverEmail(String nif, String name, String surname, String email, UserDTO userLogged);
 
-	public boolean existsPassengerEmail(String nif, String name, String surname, String email);
+	public boolean existsPassengerEmail(String nif, String name, String surname, String email, UserDTO userLogged);
 	
 }

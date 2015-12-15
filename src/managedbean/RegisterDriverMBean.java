@@ -144,7 +144,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerDriverRemote.existsDriver(nif, email) == true) {
+		if (registerDriverRemote.existsDriver(nif, email, null) == true) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Driver already exists";
 			// Add View Faces Message
@@ -152,7 +152,7 @@ public class RegisterDriverMBean implements Serializable {
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		if (registerDriverRemote.existsPassengerEmail(nif, name, surname, email) == true) {
+		if (registerDriverRemote.existsPassengerEmail(nif, name, surname, email, null) == true) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Passenger already exists with some email or some nif and different name-surname";
 			// Add View Faces Message

@@ -33,11 +33,12 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 		
 		Collection<MessageJPA> tripComments = new ArrayList<MessageJPA>();
 		
-		for (Iterator<MessageJPA> iter2 = questions.iterator(); iter2.hasNext();) {
-			MessageJPA q = (MessageJPA) iter2.next();
+		for (Iterator<MessageJPA> iter1 = questions.iterator(); iter1.hasNext();) {
+			MessageJPA q = (MessageJPA) iter1.next();
 			tripComments.add(q);
-			if (q.getReplyQuestion() != null) {
-				tripComments.add(q.getReplyQuestion());
+			for (Iterator<MessageJPA> iter2 = q.getAnswers().iterator(); iter2.hasNext();) {
+				MessageJPA a = (MessageJPA) iter2.next();
+				tripComments.add(a);
 			}
 		}
 //			try
@@ -78,8 +79,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 		message.setPassenger(p);
 		message.setSubject(subject);
 		message.setBody(body);
-		MessageJPA q = null;
-		message.setReplyQuestion(q);
+		message.answers = new ArrayList<MessageJPA>();
 		try
 		{
 			entman.persist(message);
@@ -92,20 +92,23 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that replies a question
 	 */
-	public void replyQuestion(int tripId, int replyQuestionId, String driverId, String subject, String body) throws PersistenceException {
+	public void replyQuestion(int tripId, int questionId, String driverId, String subject, String body) throws PersistenceException {
 
-		MessageJPA message = new MessageJPA();
+		MessageJPA answer = new MessageJPA();
 		TripJPA t = findTrip(tripId);
-		message.setTrip(t);
+		answer.setTrip(t);
 		DriverJPA d = findDriver(driverId);
-		message.setDriver(d);
-		message.setSubject(subject);
-		message.setBody(body);
-		MessageJPA q = findMessage(replyQuestionId);
-		message.setReplyQuestion(q);
+		answer.setDriver(d);
+		answer.setSubject(subject);
+		answer.setBody(body);
+		MessageJPA question = findMessage(questionId);
+		answer.setQuestion(question);
+		question.answers = (Arrays.asList(answer));
+		
 		try
 		{
-			entman.persist(message);
+			entman.persist(answer);
+			entman.persist(question);
 			
 		}catch (PersistenceException e) {
 			System.out.println(e);

@@ -38,8 +38,7 @@
     			<h:outputText value="#{item.body}" />
  			</h:column>
  			<h:column>	
-				<h:outputLink outcome="/CAT-PDP-GRUP6/pages/driver/replyQuestionView.xhtml" class="btn btn-primary" rendered="#{tripcomments.driverLogged}">
-						<f:param name="tripId" value="#{tripcomments.tripId}" />	
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/replyQuestionView.xhtml" class="btn btn-primary" rendered="#{tripcomments.driverLogged}">
 						<f:param name="questionId" value="#{item.questionId}" />	
 						<h:outputText value="Reply"/>					
 				</h:outputLink>	

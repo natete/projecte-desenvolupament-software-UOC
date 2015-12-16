@@ -1,6 +1,8 @@
 package jpa;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -14,13 +16,12 @@ public class MessageJPA implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private int questionId;
-	private MessageJPA replyQuestion;
 	private String subject;
 	private String body;
 	private TripJPA trip;
 	private DriverJPA driver;
 	private PassengerJPA passenger;
-
+		
 	/**
 	 * Class constructor methods
 	 */
@@ -34,7 +35,6 @@ public class MessageJPA implements Serializable {
 		this.questionId = questionId;
 		this.driver = driver;
 		this.passenger = passenger;
-		this.replyQuestion = replyQuestion;
 		this.subject = subject;
 		this.body = body;
 
@@ -52,16 +52,8 @@ public class MessageJPA implements Serializable {
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
-
-	public MessageJPA getReplyQuestion() {
-		return replyQuestion;
-	}
-
-	public void setReplyQuestion(MessageJPA replyQuestion) {
-		this.replyQuestion = replyQuestion;
-	}
-
-	public String getSubject() {
+	
+		public String getSubject() {
 		return subject;
 	}
 
@@ -76,7 +68,23 @@ public class MessageJPA implements Serializable {
 	public void setBody(String body) {
 		this.body = body;
 	}
+	
+	public MessageJPA getQuestion() {
+		return question;
+	}
 
+	public void setQuestion(MessageJPA question) {
+		this.question = question;
+	}
+	
+	public List<MessageJPA> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<MessageJPA> answers) {
+		this.answers = answers;
+	}
+		
 	/**
 	 * Methods get/set persistent relationships
 	 */
@@ -109,4 +117,11 @@ public class MessageJPA implements Serializable {
 	public void setPassenger(PassengerJPA passenger) {
 		this.passenger = passenger;
 	}
+	
+	@ManyToOne
+	public MessageJPA question;
+
+	@OneToMany(mappedBy="question")
+	public List<MessageJPA> answers;
+	
 }

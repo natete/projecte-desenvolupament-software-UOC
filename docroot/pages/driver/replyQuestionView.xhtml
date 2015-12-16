@@ -4,10 +4,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 	
-<ui:composition template="templates/main.xhtml">
+<ui:composition template="/pages/public/templates/main.xhtml">
 <ui:define name="content">  
 	<f:metadata>
-		<f:viewParam name="tripId" value="#{replyquestion.tripId}"/>
 		<f:viewParam name="questionId" value="#{replyquestion.questionId}"/>
 		<f:event listener="#{replyquestion.init()}" type="preRenderView"/>
 	</f:metadata>
@@ -37,7 +36,7 @@
 							<p align="left"/><i><b><font size="4" face="Century">Subject:</font></b></i>
 						</td>
 						<td>
-							<p align="left"/><h:inputText value="#{replyquestion.subject}" />
+							<p align="left"/><h:outputText value="#{replyquestion.subject}" />
 						</td>
 					</tr>
 					<tr>
@@ -45,15 +44,15 @@
 							<p align="left"/><i><b><font size="4" face="Century">Question:</font></b></i>
 						</td>
 						<td>
-							<p align="left"/> <h:outputText value="#{replyquestion.question.body}" /> 
+							<p align="left"/> <h:outputText value="#{replyquestion.body}" /> 
 						</td>
 					</tr>
 					<tr>
 						<td width="155">
-							<p align="left"/><i><b><font size="4" face="Century">Question:</font></b></i>
+							<p align="left"/><i><b><font size="4" face="Century">Answer:</font></b></i>
 						</td>
 						<td>
-							<p align="left"/> <h:inputText value="#{replyquestion.question.body}" /> 
+							<p align="left"/> <h:inputText value="#{replyquestion.answer}" /> 
 						</td>
 					</tr>
 				</table> 	

@@ -153,7 +153,7 @@ public class AskQuestionMBean implements Serializable{
 			}
 			this.setSubject("");
 			this.setBody("");
-			return "tripCommentsView"; 
+			return "/pages/public/tripCommentsView"; 
 		}
 	}
 }

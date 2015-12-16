@@ -53,6 +53,7 @@ public class ShowTripCommentsMBean implements Serializable {
 	public void init() throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
+		System.out.println("tripId " + tripId);
 		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
 		

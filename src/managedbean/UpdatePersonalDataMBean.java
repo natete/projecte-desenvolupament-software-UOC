@@ -13,6 +13,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.servlet.http.HttpSession;
+
 import ejb.UserFacadeRemote;
 
 import jpa.UserDTO;
@@ -42,7 +44,8 @@ public class UpdatePersonalDataMBean implements Serializable {
 
 	private String errorMessage;
 	private FacesMessage message;
-
+	private UserFacadeRemote loginRemote;
+	private UserDTO user;
 	
 	/**
 	 * Constructor method
@@ -124,6 +127,8 @@ public class UpdatePersonalDataMBean implements Serializable {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		updatePersonalDataRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
+
 		if (nif.equals("")) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Nif is missing";
@@ -232,6 +237,11 @@ public class UpdatePersonalDataMBean implements Serializable {
 			if (loggedUser.getRoles().contains(Role.PASSENGER)) {
 				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, email, password);
 			}
+//			HttpSession session = SessionBean.getSession();
+//			session.invalidate();
+			this.user = loginRemote.login(this.email, this.password);
+			SessionBean.setLoggedUser(user);
+		
 			this.setNif("");
 			this.setName("");
 			this.setSurname("");
@@ -239,7 +249,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 			this.setPassword("");
 			this.setEmail("");
 			
-			return "findTripsView";
+			return "findTripsView.xhtml";
 		}
 	}
 }

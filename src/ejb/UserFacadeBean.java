@@ -209,7 +209,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 				return false;
 		} else {
 			if (!(nif.equals(findDriver(nif).getNif())) || !(email.equals(findDriver(nif).getEmail()))) {
-				if (!(driversNif.isEmpty()) || !(driversEmail.isEmpty()))
+				if ((!(driversNif.isEmpty()) && !(nif.equals(findDriver(nif).getNif()))) || 
+						(!(driversEmail.isEmpty())) && !(email.equals(findDriver(nif).getEmail())))
 					return true;
 				else
 					return false;
@@ -250,7 +251,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 				return false;
 		} else {
 			if (!(nif.equals(findPassenger(nif).getNif())) || !(email.equals(findPassenger(nif).getEmail()))) {
-				if (!(passengersNif.isEmpty()) || !(passengersEmail.isEmpty()))
+				if ((!(passengersNif.isEmpty()) && !(nif.equals(findPassenger(nif).getNif()))) || 
+						(!(passengersEmail.isEmpty())) && !(email.equals(findPassenger(nif).getEmail())))
 					return true;
 				else
 					return false;
@@ -282,13 +284,14 @@ public class UserFacadeBean implements UserFacadeRemote {
 
 		try {
 			DriverJPA driver = entman.find(DriverJPA.class, nif);
-			entman.getTransaction().begin();
+			//entman.getTransaction().begin();
 			driver.setName(name);
 			driver.setSurname(surname);
 			driver.setPhone(phone);
 			driver.setEmail(email);
 			driver.setPassword(password);
-			entman.getTransaction().commit();
+			//entman.getTransaction().commit();
+			entman.persist(driver);
 		} catch (PersistenceException e) {
 			System.out.println(e);
 		}
@@ -302,13 +305,14 @@ public class UserFacadeBean implements UserFacadeRemote {
 
 		try {
 			PassengerJPA passenger = entman.find(PassengerJPA.class, nif);
-			entman.getTransaction().begin();
+			//entman.getTransaction().begin();
 			passenger.setName(name);
 			passenger.setSurname(surname);
 			passenger.setPhone(phone);
 			passenger.setEmail(email);
 			passenger.setPassword(password);
-			entman.getTransaction().commit();
+			//entman.getTransaction().commit();
+			entman.persist(passenger);
 		} catch (PersistenceException e) {
 			System.out.println(e);
 		}

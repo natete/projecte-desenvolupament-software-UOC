@@ -23,12 +23,17 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import managedbean.SessionBean;
+
 @Entity
 @Table(name = "trip")
-@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId") })
+@NamedQueries({
+	@NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId"),
+	@NamedQuery(name = "findMyTrips", query = "SELECT t FROM TripJPA t WHERE t.driver = :myDriver")
+})
 public class TripJPA implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;                                                                        
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -97,6 +102,7 @@ public class TripJPA implements Serializable {
 	public TripJPA(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime,
 			String arrivalCity, String toPlace, Integer availableSeats, float price) {
 		super();
+		
 		this.description = description;
 		this.departureCity = departureCity;
 		this.fromPlace = fromPlace;

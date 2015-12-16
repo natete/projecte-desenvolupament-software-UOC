@@ -118,9 +118,7 @@ public class AddCarMBean implements Serializable {
 			this.setBrand("");
 			this.setModel("");
 			this.setColor("");
-
 			return "carListView";
 		}
 	}
-
 }

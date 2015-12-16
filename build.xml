@@ -50,7 +50,6 @@
        	includes="ejb/*.java, jpa/*.java"
         classpathref="jboss.classpath"   
     	includeantruntime="true"
-   		debug="true"
     />
   </target>
 	
@@ -62,7 +61,6 @@
  	<javac srcdir="${sourcesrc}" destdir="${buildwar}/WEB-INF/classes" includes="managedbean/*.java"
         classpathref="jboss.classpath"   
     	includeantruntime="true"
- 		debug="true"
 	/>
   </target>
 

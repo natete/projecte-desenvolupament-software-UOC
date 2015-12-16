@@ -146,6 +146,13 @@
 			</redirect>
 		</navigation-case>
 	</navigation-rule>
+	<navigation-rule>
+	<from-view-id>/pages/addTripView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
 	
 	<navigation-rule>
 		<from-view-id>/pages/passenger/rateDriverView.xhtml</from-view-id>

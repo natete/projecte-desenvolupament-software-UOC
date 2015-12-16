@@ -14,7 +14,7 @@
 			</div>
 		</div>
 		<div class="row">
-		<h:form class="col-md-6 col-md-offset-3">
+		<h:form styleClass="col-md-6 col-md-offset-3" >
 			<div class="form-group col-md-12">
 				<label for="email">E-Mail: (*) </label>
 				<h:inputText id="email" value="#{login.email}" class="form-control" />
@@ -29,12 +29,12 @@
 			<div class="col-md-12 text-right">
 				<ul class="list-inline">
 					<li>
-						<h:commandButton value="Cancelar" class="btn btn-default"
+						<h:commandLink value="Cancelar" styleClass="btn btn-default"
 							inmediate="true" action="findTripsView" />
 					</li>
 					<li>
 						<h:commandButton value="Aceptar" class="btn btn-primary"
-							action="#{login.validateData}" />
+							action="#{login.validateData}" type="submit"/>
 					</li>
 				</ul>
 			</div>

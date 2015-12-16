@@ -1,52 +1,112 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+	
+<ui:composition template="public/templates/main.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="userId" value="#{login.id}"/>
+		</f:metadata>
+		<h:form>
+			<div class="row">
+				<div class="col-xs-12">
+					<h1 class="page-header">
+						<i><h:outputLabel class="fa fa-user" value=" Coches de #{login.username}" /></i>
+					</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-left">
+					<ul class="list-inline">
+						<li>
+							<h:commandButton class="btn btn-primary" rendered="#{not empty cars.carsListView}"
+								action="#{cars.previousScreen()}" value="Previous" />
+						</li>
+						<li>
+							<h:commandButton class="btn btn-primary" rendered="#{not empty cars.carsListView}"
+								action="#{cars.nextScreen()}" value="Next" />
+						</li>
+						<li>
+							<h:commandButton value="Add Car" class="btn btn-primary"
+								action="addCarView" />
+						</li>
+					</ul>
+				</div>
+				<div class="col-xs-12">
+					<h3>
+						<h:outputText escape="false" value="No se han encontrado coches para #{login.username}" rendered="#{empty cars.carsListView}"></h:outputText>
+					</h3>
+					
+					<h:dataTable value="#{cars.carsListView}" var="item" class="table table-striped" rendered="#{not empty cars.carsListView}">
+			 			<h:column>
+							<!-- Column header -->
+			   				<f:facet name="header">
+								<div class="text-center">
+									<h:outputText value="Registration Id"></h:outputText>
+								</div>
+							</f:facet> 
+							<!-- row record  -->
+							<div class="text-center">
+								<h:outputText value="#{item.carRegistrationId}"/>
+							</div>
+			 			</h:column>
+			 			<h:column>
+							<!-- Column header -->
+			   				<f:facet name="header">
+								<div class="text-center">
+									<h:outputText value="Brand"></h:outputText>
+								</div>
+							</f:facet> 
+							<!-- row record  -->
+							<div class="text-center">
+								<h:outputText value="#{item.brand}"/>
+							</div>
+			 			</h:column>
+			 			<h:column>
+							<!-- Column header -->
+			   				<f:facet name="header">
+								<div class="text-center">
+									<h:outputText value="Model"></h:outputText>
+								</div>
+							</f:facet> 
+							<!-- row record  -->
+							<div class="text-center">
+								<h:outputText value="#{item.model}"/>
+							</div>
+			 			</h:column>
+			 			<h:column>
+							<!-- Column header -->
+			   				<f:facet name="header">
+								<div class="text-center">
+									<h:outputText value="Color"></h:outputText>
+								</div>
+							</f:facet> 
+							<!-- row record  -->
+							<div class="text-center">
+								<h:outputText value="#{item.color}"/>
+							</div>
+			 			</h:column>
+			 			<h:column>
+							<!-- Column header -->
+			   				<f:facet name="header">
+								<div class="text-center">
+									<h:outputText value=""></h:outputText>
+								</div>
+							</f:facet> 
+							<!-- row record  -->
+							<div class="text-center">
+								<h:commandButton value="Delete Car" class="btn btn-primary"
+									action="#{deletecar.deleteCar(item.carRegistrationId)}" />
+							</div>
+			 			</h:column>
+			 		</h:dataTable>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
-
-
-	<h:body> 	
-	  <h:form align="left" >	
-		<h:commandLink action="#{cars.previousScreen}" value="Previous" />
-		<h:outputText value="   " />
-		<h:commandLink action="#{cars.nextScreen}" value="Next" />		
-		<h:dataTable value="#{cars.carListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  >
- 			<f:facet name="header">			
-  			<h:outputText align="center" value="List cars: #{cars.nif}" />		
-  			</f:facet> 
- 			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Registration Id"/>
-   				</f:facet> 
-     			<h:outputText value="#{item.carRegistrationId}" />
- 			</h:column>
- 			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Brand" />
-   				</f:facet> 
-    			<h:outputText value="#{item.brand}" />
- 			</h:column>
- 			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Model" />
-   				</f:facet> 
-    			<h:outputText  value="#{item.model} " />
- 			</h:column>
- 			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Color"/>
-   				</f:facet>
-     			<h:outputText align="right" value="#{item.color}" />
-   			</h:column>
- 			<h:column>			                         
-					<h:commandButton  value="Delete Car" action="#{deletecar.deleteCar(item.carRegistrationId)}">
-					</h:commandButton>		
- 			</h:column>
- 		</h:dataTable>
- 		<p align="center">
- 			<h:commandButton value="Add Car" action="#{cars.addCar}">
- 			</h:commandButton>
- 	  	</p>
- 	  </h:form>		
-	</h:body>
 </html>
+

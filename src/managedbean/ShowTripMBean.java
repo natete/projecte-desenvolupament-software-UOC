@@ -35,23 +35,29 @@ public class ShowTripMBean implements Serializable {
 	DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	private Integer tripId;
+	private String driverId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
+	private String errorMessage;
 
 	public ShowTripMBean() {
 		super();
 	}
 
-	public void init() throws NamingException {
+	public String init() throws NamingException {
+		String result = "";
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripFacadeRemote = (TripFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripFacadeBean!ejb.TripFacadeRemote");
 		trip = tripFacadeRemote.showTrip(tripId);
 		if (trip == null) {
-
+			errorMessage = "The required trip does not exist";
+			result = "errorView";
 		}
+		driverId = trip.getDriver().getNif();
 		loggedUser = SessionBean.getLoggedUser();
+		return result;
 	}
 
 	public Integer getTripId() {
@@ -60,6 +66,10 @@ public class ShowTripMBean implements Serializable {
 
 	public void setTripId(Integer tripId) {
 		this.tripId = tripId;
+	}
+
+	public String getDriverId() {
+		return driverId;
 	}
 
 	public String getPickupPoint() {
@@ -127,5 +137,9 @@ public class ShowTripMBean implements Serializable {
 
 	public boolean isTripDriver() {
 		return isDriverLogged() && trip.getDriver().getNif().equals(loggedUser.getId());
+	}
+
+	public String getErrorMessage() {
+		return this.errorMessage;
 	}
 }

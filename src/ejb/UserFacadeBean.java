@@ -26,13 +26,17 @@ public class UserFacadeBean implements UserFacadeRemote {
 	/**
 	 * Method that adds a car
 	 */
-	public void addCar(String carRegistrationId, String brand, String model, String color) throws PersistenceException {
+	public void addCar(String carRegistrationId, String brand, String model, String color, UserDTO driver) throws PersistenceException {
 
 		CarJPA car = new CarJPA();
 		car.setCarRegistrationId(carRegistrationId);
 		car.setBrand(brand);
 		car.setModel(model);
 		car.setColor(color);
+		String nif = driver.getId();
+		DriverJPA driverJPA = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1")
+				.setParameter(1, nif).getSingleResult();
+		car.setDriver(driverJPA);
 		try {
 			entman.persist(car);
 
@@ -46,19 +50,33 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 */
 	public java.util.Collection<?> listAllCars(String nif) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<CarJPA> cars = entman.createQuery("FROM CarJPA b WHERE b.nif = :nif").setParameter("nif", nif)
+		Collection<CarJPA> cars = entman.createQuery("FROM CarJPA b WHERE b.driver.nif = :nif").setParameter("nif", nif)
 				.getResultList();
 
 		return cars;
 	}
 
 	/**
+	 * Method that verify the existences of trips for car
+	 */
+	public boolean existsTripsForCar(String carRegistrationId) throws PersistenceException {
+		@SuppressWarnings("unchecked")
+		CarJPA car = (CarJPA) entman.createQuery("FROM CarJPA b WHERE b.carRegistrationId = ?1")
+				.setParameter(1, carRegistrationId).getSingleResult();
+		if (car.getTrips().isEmpty())
+			return false;
+		else
+			return true;
+	}
+
+	/**
 	 * Method that delete a instance of the class car
 	 */
 	public void deleteCar(String carRegistrationId) throws PersistenceException {
+		
 		try {
 			entman.createQuery("DELETE FROM CarJPA b WHERE b.carRegistrationId = ?1").setParameter(1, carRegistrationId)
-					.executeUpdate();
+				.executeUpdate();
 
 		} catch (PersistenceException e) {
 			System.out.println(e);

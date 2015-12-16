@@ -10,40 +10,65 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
-					Registra't com a passatger
+					<i class="fa fa-user"></i> Registra't com a passatger
 				</h1>
 			</div>
 		</div>
 		<div class="row">
 			<h:form class="col-md-10 col-md-offset-1">
-				<h1 class="col-md-12">Afegir nou passenger</h1>
-				<div class="form-group col-md-6">
-					<label for="nif">NIF: (*) </label>
-					<h:inputText value="#{registerpassenger.nif}" class="form-control" />
+				<div class="row">
+					<h1 class="col-md-12">Afegir nou passenger</h1>
 				</div>
-				<div class="form-group col-md-6">
-					<label for="name">Nom: (*)</label>
-					<h:inputText value="#{registerpassenger.name}" class="form-control" />
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="nif">NIF: (*)</label>
+						<h:inputText id="nif" value="#{registerpassenger.nif}" class="form-control" required="true" requiredMessage="This field is mandatory">
+							<f:validator validatorId="validator.NifValidator" />
+						</h:inputText>
+						<h:message for="nif" styleClass="text-danger"/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="name">Nom: (*)</label>
+						<h:inputText id="name" value="#{registerpassenger.name}" class="form-control" required="true" requiredMessage="This field is mandatory">
+							<f:validator validatorId="validator.NameValidator"/>
+						</h:inputText>
+						<h:message for="name" styleClass="text-danger"/>
+					</div>
 				</div>
-				<div class="form-group col-md-6">
-					<label for="surname">Cognom: (*)</label>
-					<h:inputText value="#{registerpassenger.surname}" class="form-control" />
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="surname">Cognom: (*)</label>
+						<h:inputText id="surname" value="#{registerpassenger.surname}" class="form-control" required="true" requiredMessage="This field is mandatory">
+							<f:validator validatorId="validator.NameValidator"/>
+						</h:inputText>
+						<h:message for="surname" styleClass="text-danger"/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="phone">Telèfon: </label>
+						<h:inputText id="phone" value="#{registerpassenger.phone}" class="form-control">
+							<f:validator validatorId="validator.PhoneValidator"/>
+						</h:inputText>
+						<h:message for="phone" styleClass="text-danger"/>
+					</div>
 				</div>
-				<div class="form-group col-md-6">
-					<label for="phone">Telèfon: </label>
-					<h:inputText value="#{registerpassenger.phone}" class="form-control" />
-					
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="email">E-Mail: (*) </label>
+						<h:inputText id="email" value="#{registerpassenger.email}" class="form-control" required="true" requiredMessage="This field is mandatory">
+							<f:validator validatorId="validator.EmailValidator"/>
+						</h:inputText>
+						<h:message for="email" styleClass="text-danger"/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="password">Password: (*) </label>
+						<h:inputSecret id="password" value="#{registerpassenger.password}" class="form-control" required="true" requiredMessage="This field is mandatory"/>
+						<h:message for="password" styleClass="text-danger"/>
+					</div>
 				</div>
-				<div class="form-group col-md-6">
-					<label for="email">E-Mail: (*) </label>
-					<h:inputText id="email" value="#{registerpassenger.email}" class="form-control" />
-				</div>
-				<div class="form-group col-md-6">
-					<label for="password">Password: (*) </label>
-					<h:inputText value="#{registerpassenger.password}" class="form-control" />
-				</div>
-				<div class="col-md-12 text-left">
-					<label>(*) Camp obligatori</label>
+				<div class="row">
+					<div class="col-md-12 text-left">
+						<label>(*) Camp obligatori</label>
+					</div>
 				</div>
 				<div class="col-md-12 text-right">
 					<ul class="list-inline">

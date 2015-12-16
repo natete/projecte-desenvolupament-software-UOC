@@ -58,7 +58,13 @@ public class FindTripsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		tripFacadeRemote = (TripFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripFacadeBean!ejb.TripFacadeRemote");
-		TripsDTO tripsDto = tripFacadeRemote.findTrips(departureCity, departureDate, arrivalCity, page - 1);
+		TripsDTO tripsDto;
+		if (isAdvancedSearch) {
+			tripsDto = tripFacadeRemote.advancedSearch(departureCity, arrivalCity, initialDate, finalDate, minPrice,
+					maxPrice, hasSeats, page - 1);
+		} else {
+			tripsDto = tripFacadeRemote.findTrips(departureCity, departureDate, arrivalCity, page - 1);
+		}
 		trips = tripsDto.getTrips();
 		currentPage = page;
 		if (trips == null || trips.isEmpty()) {

@@ -242,5 +242,4 @@ public class UpdatePersonalDataMBean implements Serializable {
 			return "findTripsView";
 		}
 	}
-
 }

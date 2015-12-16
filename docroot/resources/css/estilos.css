@@ -73,3 +73,25 @@
 .message-driver-name {
 	padding-top: 9px;
 }
+
+.pagination>.active>a {
+	background-color: #54B4EB;
+	color: white;
+}
+
+.pagination>li>a:hover {
+	background-color: rgba(84, 180, 235, 0.69);
+	color: white;
+}
+
+.table>tbody>tr>td {
+	vertical-align: middle;
+}
+
+.checkbox {
+	margin-top: 35px;
+}
+
+.checkbox label {
+	font-weight: bold;
+}

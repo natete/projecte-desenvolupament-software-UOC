@@ -2,16 +2,13 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
 
 import ejb.UserFacadeRemote;
 
@@ -35,7 +32,7 @@ public class RegisterPassengerMBean implements Serializable {
 	private String email;
 
 	private String errorMessage;
-	private FacesMessage message;
+	// private FacesMessage message;
 
 	/**
 	 * Constructor method
@@ -103,101 +100,20 @@ public class RegisterPassengerMBean implements Serializable {
 	}
 
 	public String setDataPassenger() throws Exception {
+
+		String result;
+
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		registerPassengerRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		if (this.nif.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "NIF is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.name.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Name is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.surname.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Surname is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.email.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Email is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.password.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Password is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
+		registerPassengerRemote = (UserFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
+
 		if (registerPassengerRemote.existsPassenger(nif, email) == true) {
-			// Bring the error message using the Faces Context
 			errorMessage = "Passenger already exists";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (registerPassengerRemote.existsDriverEmail(nif, name, surname, email) == true) {
-			// Bring the error message using the Faces Context
+			result = "errorView";
+		} else if (registerPassengerRemote.existsDriverEmail(nif, name, surname, email) == true) {
 			errorMessage = "Driver already exists with some email or some nif and different name-surname";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		
-		Pattern patN = Pattern.compile("([0-9]{8})([A-Za-z])");
-		Matcher matN = patN.matcher(this.nif);
-		if (!(this.nif.equals("")) && !(matN.matches())) {
-			// Bring the error message using the Faces Context
-			errorMessage = "NIF format not valid. Ej.: 12345678a or 12345678A";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-
-		Pattern patP = Pattern.compile("\\d{9}");
-		Matcher matP = patP.matcher(this.phone);
-		if (!(this.phone.equals("")) && !(matP.matches())) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Phone format not valid. Ej.: 123456789";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-
-		Pattern patE = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-		Matcher matE = patE.matcher(this.email);
-		if (!(this.email.equals("")) && !(matE.matches())) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Email format not valid. Ej.: example@domain.com";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		
-		if (errorMessage != null) {
-			return "errorView";
+			result = "errorView";
 		} else {
 			registerPassengerRemote.registerPassenger(nif, name, surname, phone, password, email);
 			this.setNif("");
@@ -207,8 +123,138 @@ public class RegisterPassengerMBean implements Serializable {
 			this.setPassword("");
 			this.setEmail("");
 
-			return "findTripsView";
+			result = "findTripsView";
 		}
+
+		return result;
+
+		// if (this.nif.equals("")) {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "NIF is missing";
+		// // Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+		// errorMessage);
+		// // Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
+		// }
+		// if (this.name.equals("")) {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "Name is missing";
+		// // Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+		// errorMessage);
+		// // Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
+		// }
+		// if (this.surname.equals("")) {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "Surname is missing";
+		// // Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+		// errorMessage);
+		// // Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
+		// }
+		// if (this.email.equals("")) {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "Email is missing";
+		// // Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+		// errorMessage);
+		// // Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
+		// }
+		// if (this.password.equals("")) {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "Password is missing";
+		// // Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+		// errorMessage);
+		// // Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
+		// }
+		// if (registerPassengerRemote.existsPassenger(nif, email) == true) {
+		// // Bring the error message using the Faces Context
+		// errorMessage = "Passenger already exists";
+		// // // Add View Faces Message
+		// // message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		// // errorMessage, errorMessage);
+		// // // Add the message into context for a specific component
+		// // FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// // message);
+		// }
+		// if (registerPassengerRemote.existsDriverEmail(nif, name, surname,
+		// email) == true) {
+		// Bring the error message using the Faces Context
+		// errorMessage = "Driver already exists with some email or some nif and
+		// different name-surname";
+		// Add View Faces Message
+		// message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+		// errorMessage, errorMessage);
+		// Add the message into context for a specific component
+		// FacesContext.getCurrentInstance().addMessage("form:errorView",
+		// message);
 	}
+
+	// Pattern patN = Pattern.compile("([0-9]{8})([A-Za-z])");
+	// Matcher matN = patN.matcher(this.nif);
+	// if (!(this.nif.equals("")) && !(matN.matches())) {
+	// // Bring the error message using the Faces Context
+	// errorMessage = "NIF format not valid. Ej.: 12345678a or 12345678A";
+	// // Add View Faces Message
+	// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+	// errorMessage);
+	// // Add the message into context for a specific component
+	// FacesContext.getCurrentInstance().addMessage("form:errorView",
+	// message);
+	// }
+	//
+	// Pattern patP = Pattern.compile("\\d{9}");
+	// Matcher matP = patP.matcher(this.phone);
+	// if (!(this.phone.equals("")) && !(matP.matches())) {
+	// // Bring the error message using the Faces Context
+	// errorMessage = "Phone format not valid. Ej.: 123456789";
+	// // Add View Faces Message
+	// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+	// errorMessage);
+	// // Add the message into context for a specific component
+	// FacesContext.getCurrentInstance().addMessage("form:errorView",
+	// message);
+	// }
+	//
+	// Pattern patE =
+	// Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+	// Matcher matE = patE.matcher(this.email);
+	// if (!(this.email.equals("")) && !(matE.matches())) {
+	// // Bring the error message using the Faces Context
+	// errorMessage = "Email format not valid. Ej.: example@domain.com";
+	// // Add View Faces Message
+	// message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage,
+	// errorMessage);
+	// // Add the message into context for a specific component
+	// FacesContext.getCurrentInstance().addMessage("form:errorView",
+	// message);
+	// }
+
+	// if (errorMessage != null) {
+	// return "errorView";
+	// } else {
+	// registerPassengerRemote.registerPassenger(nif, name, surname, phone,
+	// password, email);
+	// this.setNif("");
+	// this.setName("");
+	// this.setSurname("");
+	// this.setPhone("");
+	// this.setPassword("");
+	// this.setEmail("");
+	//
+	// return "findTripsView";
+	// }
+	// }
 
 }

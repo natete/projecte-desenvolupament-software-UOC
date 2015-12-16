@@ -1,6 +1,7 @@
 package managedbean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -14,12 +15,15 @@ import javax.naming.NamingException;
 
 import ejb.TripFacadeRemote;
 import jpa.TripJPA;
+import jpa.TripsDTO;
 
 @ManagedBean(name = "findTripsController")
 @ViewScoped
 public class FindTripsMBean implements Serializable {
 
 	private static final long serialVersionUID = -8313865001184025539L;
+
+	private static final int PAGE_SIZE = 10;
 
 	@EJB
 	private TripFacadeRemote tripFacadeRemote;
@@ -28,6 +32,15 @@ public class FindTripsMBean implements Serializable {
 	private Date departureDate;
 	private String arrivalCity;
 	private List<TripJPA> trips;
+	private int currentPage;
+	private List<Integer> pages;
+	private Long totalResults;
+	private boolean isAdvancedSearch;
+	private Date initialDate;
+	private Date finalDate;
+	private boolean hasSeats;
+	private float minPrice;
+	private float maxPrice;
 
 	private final String emptyListMessage = "<i class='fa fa-times'></i> Sorry we have no trips matching your search criteria right now...";
 
@@ -35,17 +48,31 @@ public class FindTripsMBean implements Serializable {
 
 	public FindTripsMBean() {
 		super();
-
+		currentPage = 1;
+		pages = new ArrayList<>();
+		isAdvancedSearch = false;
 	}
 
-	public void findTrips() throws NamingException {
+	public void findTrips(int page) throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripFacadeRemote = (TripFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripFacadeBean!ejb.TripFacadeRemote");
-		trips = tripFacadeRemote.findTrips(departureCity, departureDate, arrivalCity);
+		TripsDTO tripsDto = tripFacadeRemote.findTrips(departureCity, departureDate, arrivalCity, page - 1);
+		trips = tripsDto.getTrips();
+		currentPage = page;
 		if (trips == null || trips.isEmpty()) {
 			searchMessage = emptyListMessage;
+		} else if (tripsDto.getTotal() != totalResults) {
+			totalResults = tripsDto.getTotal();
+			populatePagesList(tripsDto.getTotal());
+		}
+	}
+
+	private void populatePagesList(Long total) {
+		pages.clear();
+		for (int i = 0; i * PAGE_SIZE < totalResults; i++) {
+			pages.add(i + 1);
 		}
 	}
 
@@ -83,5 +110,65 @@ public class FindTripsMBean implements Serializable {
 
 	public String getSearchMessage() {
 		return searchMessage;
+	}
+
+	public int getCurrentPage() {
+		return currentPage;
+	}
+
+	public List<Integer> getPages() {
+		return pages;
+	}
+
+	public Long getTotalResults() {
+		return totalResults;
+	}
+
+	public boolean getIsAdvancedSearch() {
+		return isAdvancedSearch;
+	}
+
+	public void setAdvancedSearch(boolean isAdvancedSearch) {
+		this.isAdvancedSearch = isAdvancedSearch;
+	}
+
+	public Date getInitialDate() {
+		return initialDate;
+	}
+
+	public void setInitialDate(Date initialDate) {
+		this.initialDate = initialDate;
+	}
+
+	public Date getFinalDate() {
+		return finalDate;
+	}
+
+	public void setFinalDate(Date finalDate) {
+		this.finalDate = finalDate;
+	}
+
+	public boolean getHasSeats() {
+		return hasSeats;
+	}
+
+	public void setHasSeats(boolean hasSeats) {
+		this.hasSeats = hasSeats;
+	}
+
+	public float getMinPrice() {
+		return minPrice;
+	}
+
+	public void setMinPrice(float minPrice) {
+		this.minPrice = minPrice;
+	}
+
+	public float getMaxPrice() {
+		return maxPrice;
+	}
+
+	public void setMaxPrice(float maxPrice) {
+		this.maxPrice = maxPrice;
 	}
 }

@@ -23,39 +23,46 @@
 					<div class="form-group col-md-6">
 						<label for="nif">NIF: (*)</label>
 						<h:inputText id="nif" value="#{registerpassenger.nif}" class="form-control" required="true" requiredMessage="This field is mandatory">
-							<f:validateRegex pattern="" ></f:validateRegex>
+							<f:validator validatorId="validator.NifValidator" />
 						</h:inputText>
-						<h:message for="nif" styleClass="text-danger"></h:message>
+						<h:message for="nif" styleClass="text-danger"/>
 					</div>
 					<div class="form-group col-md-6">
 						<label for="name">Nom: (*)</label>
-						<h:inputText id="name" value="#{registerpassenger.name}" class="form-control" required="true" requiredMessage="This field is mandatory" />
-						<h:message for="name" styleClass="text-danger"></h:message>
+						<h:inputText id="name" value="#{registerpassenger.name}" class="form-control" required="true" requiredMessage="This field is mandatory">
+							<f:validator validatorId="validator.NameValidator"/>
+						</h:inputText>
+						<h:message for="name" styleClass="text-danger"/>
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group col-md-6">
 						<label for="surname">Cognom: (*)</label>
-						<h:inputText id="surname" value="#{registerpassenger.surname}" class="form-control" required="true" requiredMessage="This field is mandatory"/>
-						<h:message for="surname" styleClass="text-danger"></h:message>
+						<h:inputText id="surname" value="#{registerpassenger.surname}" class="form-control" required="true" requiredMessage="This field is mandatory">
+							<f:validator validatorId="validator.NameValidator"/>
+						</h:inputText>
+						<h:message for="surname" styleClass="text-danger"/>
 					</div>
 					<div class="form-group col-md-6">
 						<label for="phone">Telèfon: </label>
-						<h:inputText value="#{registerpassenger.phone}" class="form-control" />
+						<h:inputText id="phone" value="#{registerpassenger.phone}" class="form-control">
+							<f:validator validatorId="validator.PhoneValidator"/>
+						</h:inputText>
+						<h:message for="phone" styleClass="text-danger"/>
 					</div>
 				</div>
 				<div class="row">
 					<div class="form-group col-md-6">
 						<label for="email">E-Mail: (*) </label>
 						<h:inputText id="email" value="#{registerpassenger.email}" class="form-control" required="true" requiredMessage="This field is mandatory">
-							<f:validator validatorId="validator.EmailValidator"></f:validator>
+							<f:validator validatorId="validator.EmailValidator"/>
 						</h:inputText>
-						<h:message for="email" styleClass="text-danger"></h:message>
+						<h:message for="email" styleClass="text-danger"/>
 					</div>
 					<div class="form-group col-md-6">
 						<label for="password">Password: (*) </label>
 						<h:inputSecret id="password" value="#{registerpassenger.password}" class="form-control" required="true" requiredMessage="This field is mandatory"/>
-						<h:message for="password" styleClass="text-danger"></h:message>
+						<h:message for="password" styleClass="text-danger"/>
 					</div>
 				</div>
 				<div class="row">

@@ -11,19 +11,19 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 /**
- * Validates an email address
- *
+ * Validates a NIF field with the pattern eight numbers followed by a letter
+ * 
  */
-@FacesValidator("validator.EmailValidator")
-public class EmailValidator implements Validator {
+@FacesValidator("validator.NifValidator")
+public class NifValidator implements Validator {
 
-	private static final String EMAIL_PATTERN = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private static final String NIF_PATTERN = "([0-9]{8})([A-Za-z])";
 
 	Pattern pattern;
 	Matcher matcher;
 
-	public EmailValidator() {
-		this.pattern = Pattern.compile(EMAIL_PATTERN);
+	public NifValidator() {
+		this.pattern = Pattern.compile(NIF_PATTERN);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class EmailValidator implements Validator {
 		matcher = pattern.matcher(value.toString());
 
 		if (!matcher.matches()) {
-			FacesMessage msg = new FacesMessage("Email format not valid. (Ej.: example@domain.com)");
+			FacesMessage msg = new FacesMessage("NIF format not valid. (Ej.: 12345678a or 12345678A)");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 
 			throw new ValidatorException(msg);

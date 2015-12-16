@@ -11,19 +11,19 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 /**
- * Validates an email address
+ * Validates a phone number which is a serie of nine numbers. 
  *
  */
-@FacesValidator("validator.EmailValidator")
-public class EmailValidator implements Validator {
+@FacesValidator("validator.PhoneValidator")
+public class PhoneValidator implements Validator {
 
-	private static final String EMAIL_PATTERN = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private static final String PHONE_PATTERN = "(^$)|(\\d{9})";
 
 	Pattern pattern;
 	Matcher matcher;
 
-	public EmailValidator() {
-		this.pattern = Pattern.compile(EMAIL_PATTERN);
+	public PhoneValidator() {
+		this.pattern = Pattern.compile(PHONE_PATTERN);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class EmailValidator implements Validator {
 		matcher = pattern.matcher(value.toString());
 
 		if (!matcher.matches()) {
-			FacesMessage msg = new FacesMessage("Email format not valid. (Ej.: example@domain.com)");
+			FacesMessage msg = new FacesMessage("Phone format not valid. Ej.: 123456789");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 
 			throw new ValidatorException(msg);

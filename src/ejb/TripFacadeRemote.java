@@ -1,11 +1,11 @@
 package ejb;
 
 import java.util.Date;
-import java.util.List;
 
 import javax.ejb.Remote;
 
 import jpa.TripJPA;
+import jpa.TripsDTO;
 
 /**
  * Interface to provide the methods to manage the trips
@@ -23,7 +23,7 @@ public interface TripFacadeRemote {
 	 * @param arrivalCity the arrival city of the trip
 	 * @return a list of trips or an empty list
 	 */
-	List<TripJPA> findTrips(String departureCity, Date departureDate, String arrivalCity);
+	TripsDTO findTrips(String departureCity, Date departureDate, String arrivalCity, int page);
 
 	/**
 	 * Find the trip with the given id 

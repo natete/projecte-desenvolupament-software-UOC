@@ -11,19 +11,19 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 
 /**
- * Validates an email address
+ * Validates a name which is any number of words (group of letters) separated by a whitespace or a dash character
  *
  */
-@FacesValidator("validator.EmailValidator")
-public class EmailValidator implements Validator {
+@FacesValidator("validator.NameValidator")
+public class NameValidator implements Validator {
 
-	private static final String EMAIL_PATTERN = "^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	private static final String NAME_PATTERN = "^(([a-zA-ZçñáàäâéèëêíìïîóòöôúùüûÇÑÁÀÄÂÉÈËÊÍÌÏÎÓÒÖÔÚÙÜÛ])+(([\\s-]?)([a-zA-ZçñáàäâéèëêíìïîóòöôúùüûÇÑÁÀÄÂÉÈËÊÍÌÏÎÓÒÖÔÚÙÜÛ])+)*)*$";
 
 	Pattern pattern;
 	Matcher matcher;
 
-	public EmailValidator() {
-		this.pattern = Pattern.compile(EMAIL_PATTERN);
+	public NameValidator() {
+		this.pattern = Pattern.compile(NAME_PATTERN);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class EmailValidator implements Validator {
 		matcher = pattern.matcher(value.toString());
 
 		if (!matcher.matches()) {
-			FacesMessage msg = new FacesMessage("Email format not valid. (Ej.: example@domain.com)");
+			FacesMessage msg = new FacesMessage("This field only accepts letters, spaces and dash characters");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 
 			throw new ValidatorException(msg);

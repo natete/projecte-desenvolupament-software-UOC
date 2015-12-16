@@ -3,6 +3,7 @@ package ejb;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -23,8 +24,20 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 
 	public static final String BLANK_SPACE = " ";
 	public static final String QUERY_FIND_TRIPS_BY_DRIVER = "TripJPA.findTripsByDriver";
+	public static final String QUERY_GET_TRIP_BY_ID = "TripJPA.getTripById";
+	public static final String QUERY_UPDATE_TRIP = "TripJPA.updateTrip";
 	public static final String PARAMETER_DRIVER_NIF = "driverNif";
-
+	public static final String PARAMETER_TRIP_ID = "tripId";
+	public static final String PARAMETER_TRIP_DESCRIPTION = "description";
+	public static final String PARAMETER_TRIP_DEPARTURE_CITY = "departureCity";
+	public static final String PARAMETER_TRIP_FROM_PLACE = "fromPlace";
+	public static final String PARAMETER_TRIP_DEPARTURE_DATE = "departureDate";
+	public static final String PARAMETER_TRIP_DEPARTURE_TIME = "departureTime";
+	public static final String PARAMETER_TRIP_ARRIVAL_CITY = "arrivalCity";
+	public static final String PARAMETER_TRIP_TO_PLACE = "toPlace";
+	public static final String PARAMETER_TRIP_AVAILABLE_SEATS = "availableSeats";
+	public static final String PARAMETER_TRIP_PRICE = "price";
+	
 	/**
 	 * PERSISTENCE CONTEXT
 	 */
@@ -41,29 +54,13 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	@Override
 	public Collection<TripJPA> findMyTrips(String driverNif) {
 
-		// DriverJPA myDriver = (DriverJPA)
-		// entityManager.createNamedQuery("findMyDriver").setParameter("nif",
-		// driver).getSingleResult();
-		Collection<TripJPA> myTrips = (Collection<TripJPA>) entityManager.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER)
+		Collection<TripJPA> myTrips = null;
+		try {
+		myTrips = (Collection<TripJPA>) entityManager.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER)
 				.setParameter(PARAMETER_DRIVER_NIF, driverNif).getResultList();
-
-		/*
-		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<TripJPA> criteriaQuery = criteriaBuilder.createQuery(TripJPA.class);
-		Root<TripJPA> tripJPA = criteriaQuery.from(TripJPA.class);
-		Collection<Predicate> predicates = new ArrayList<>();
-		
-		if(driver != null && !BLANK_SPACE.equals(driver)) {
-			Predicate predicate = criteriaBuilder.like(criteriaBuilder.upper(tripJPA.get("driver")), driver.toUpperCase() + "%");
-			predicates.add(predicate);
+		} catch (PersistenceException e) {
+			System.out.println(e);
 		}
-		
-		criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
-		
-		final TypedQuery<TripJPA> query = entityManager.createQuery(criteriaQuery);
-		
-		return query.getResultList();
-		*/
 		return myTrips;
 	}
 
@@ -86,9 +83,14 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		trip.setToPlace(toPlace);
 		trip.setAvailableSeats(availableSeats);
 		trip.setPrice(price);
-
-		DriverJPA driverJPA = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", nif)
-				.getSingleResult();
+		
+		DriverJPA driverJPA = null;
+		try {
+			driverJPA = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", nif)
+					.getSingleResult();
+		} catch (PersistenceException e) {
+				System.out.println(e);
+			}
 		trip.setDriver(driverJPA);
 
 		Collection<CarJPA> myCars = driverJPA.getCars();
@@ -110,9 +112,18 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 * findAllPassengers
 	 */
 	@Override
-	public Collection<PassengerJPA> findAllPassengers(int tripId) {
+	public List<PassengerJPA> findAllPassengers(int tripId) {
 		// TODO Auto-generated method stub
-		return null;
+		
+		TripJPA trip = null;
+		try {
+			trip = (TripJPA) entityManager.createNamedQuery(QUERY_GET_TRIP_BY_ID)
+					.setParameter(PARAMETER_TRIP_ID, tripId).getSingleResult();
+		} catch (PersistenceException e) {
+			System.out.println(e);
+		}
+		List<PassengerJPA> passengers = trip.getPassengers(); 
+		return passengers;
 	}
 
 	/**
@@ -123,6 +134,12 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats,
 			float price) {
 		// TODO Auto-generated method stub
+		
+		try {
+			entityManager.createNamedQuery(QUERY_UPDATE_TRIP)
+			.setParameter(PARAMETER_TRIP_ID, tripId);
+		} catch (PersistenceException e) {
+			System.out.println(e);
+		}
 	}
-
 }

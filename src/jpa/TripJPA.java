@@ -23,8 +23,18 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "trip")
-@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId"),
-		@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t WHERE t.driver.nif = :driverNif") })
+@NamedQueries({
+	@NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t "
+			+ "WHERE t.id = :tripId"),
+	@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t "
+			+ "WHERE t.driver.nif = :driverNif"),
+	@NamedQuery(name = "TripJPA.updateTrip", query = "UPDATE carsharing.TripJPA SET "
+			+ "description = :description, departureCity = :departureCity, "
+			+ "fromPlace = :fromPlace, departureDate = :departureDate, "
+			+ "departureTime = :departureTime, arrivalCity = :arrivalCity, "
+			+ "toPlace = :toPlace, availableSeats = :availableSeats, price = :price "
+			+ "WHERE tripId = :tripId")
+})
 public class TripJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -97,103 +107,79 @@ public class TripJPA implements Serializable {
 		this.availableSeats = availableSeats;
 		this.price = price;
 	}
-
+	
 	public Integer getId() {
 		return id;
 	}
-
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
 	public String getDepartureCity() {
 		return departureCity;
 	}
-
 	public void setDepartureCity(String departureCity) {
 		this.departureCity = departureCity;
 	}
-
 	public String getFromPlace() {
 		return fromPlace;
 	}
-
 	public void setFromPlace(String fromPlace) {
 		this.fromPlace = fromPlace;
 	}
-
 	public Date getDepartureDate() {
 		return departureDate;
 	}
-
 	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
-
 	public Date getDepartureTime() {
 		return departureTime;
 	}
-
 	public void setDepartureTime(Date departureTime) {
 		this.departureTime = departureTime;
 	}
-
 	public String getArrivalCity() {
 		return arrivalCity;
 	}
-
 	public void setArrivalCity(String arrivalCity) {
 		this.arrivalCity = arrivalCity;
 	}
-
 	public String getToPlace() {
 		return toPlace;
 	}
-
 	public void setToPlace(String toPlace) {
 		this.toPlace = toPlace;
 	}
-
 	public Integer getAvailableSeats() {
 		return availableSeats;
 	}
-
 	public void setAvailableSeats(Integer availableSeats) {
 		this.availableSeats = availableSeats;
 	}
-
 	public float getPrice() {
 		return price;
 	}
-
 	public void setPrice(float price) {
 		this.price = price;
 	}
-
 	public DriverJPA getDriver() {
 		return driver;
 	}
-
 	public void setDriver(DriverJPA driver) {
 		this.driver = driver;
 	}
-
 	public List<PassengerJPA> getPassengers() {
 		return passengers;
 	}
-
 	public void setPassengers(List<PassengerJPA> passengers) {
 		this.passengers = passengers;
 	}
-
 	public CarJPA getCar() {
 		return car;
 	}
-
 	public void setCar(CarJPA car) {
 		this.car = car;
 	}

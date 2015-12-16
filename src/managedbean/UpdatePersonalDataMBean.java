@@ -237,6 +237,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 			if (loggedUser.getRoles().contains(Role.PASSENGER)) {
 				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, email, password);
 			}
+			
 //			HttpSession session = SessionBean.getSession();
 //			session.invalidate();
 			this.user = loginRemote.login(this.email, this.password);

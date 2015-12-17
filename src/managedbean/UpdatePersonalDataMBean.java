@@ -9,7 +9,9 @@ import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -24,7 +26,7 @@ import jpa.UserDTO.Role;
  * Managed Bean UpdatePersonalDataMBean
  */
 @ManagedBean(name = "updatepersonaldata")
-@SessionScoped
+@ViewScoped
 public class UpdatePersonalDataMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -47,6 +49,16 @@ public class UpdatePersonalDataMBean implements Serializable {
 	private UserFacadeRemote loginRemote;
 	private UserDTO user;
 	
+	@ManagedProperty(value = "#{login}")
+	private LoginMBean loginMBean;
+	
+	/**
+	 * @param loginMBean the loginMBean to set
+	 */
+	public void setLoginMBean(LoginMBean loginMBean) {
+		this.loginMBean = loginMBean;
+	}
+
 	/**
 	 * Constructor method
 	 */
@@ -240,9 +252,14 @@ public class UpdatePersonalDataMBean implements Serializable {
 			
 //			HttpSession session = SessionBean.getSession();
 //			session.invalidate();
-			this.user = loginRemote.login(this.email, this.password);
-			SessionBean.setLoggedUser(user);
-		
+//			this.user = loginRemote.login(this.email, this.password);
+//			SessionBean.setLoggedUser(user);
+	
+			loggedUser.setId(this.nif);
+			loggedUser.setUsername(this.name + " " + this.surname);
+			SessionBean.setLoggedUser(loggedUser);
+			loginMBean.setUser(loggedUser);
+			
 			this.setNif("");
 			this.setName("");
 			this.setSurname("");

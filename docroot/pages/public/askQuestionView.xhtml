@@ -8,6 +8,7 @@
 <ui:define name="content">  
 	<f:metadata>
 		<f:viewParam name="tripId" value="#{askquestion.tripId}"/>
+		<f:viewParam name="fromPage" value="#{askquestion.redirectTo}"/>
 		<f:event listener="#{askquestion.init()}" type="preRenderView"/>
 	</f:metadata>
 
@@ -50,8 +51,11 @@
 				</table> 	
 			</div> 
 			<p align="center">
-				<h:commandButton value="Save"  action="#{askquestion.setDataTripComment}" />
-				<h:commandButton value="Return" immediate="true" action="tripCommentsView" />
+				<h:commandButton value="Save"  action="#{askquestion.setDataTripComment}" class="btn btn-primary" /> 
+				<h:outputLink value="#{askquestion.redirectTo}" class="btn btn-default">
+				    <f:param name="tripId" value="#{askquestion.tripId}" />
+					<h:outputText value="Return"/>
+				</h:outputLink>
 			</p>
  		</h:form>
 	</h:body>

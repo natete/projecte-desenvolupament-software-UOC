@@ -7,6 +7,7 @@
 <ui:composition template="/pages/public/templates/main.xhtml">
 <ui:define name="content">  
 	<f:metadata>
+		<f:viewParam name="tripId" value="#{replyquestion.tripId}"/>
 		<f:viewParam name="questionId" value="#{replyquestion.questionId}"/>
 		<f:event listener="#{replyquestion.init()}" type="preRenderView"/>
 	</f:metadata>
@@ -58,8 +59,12 @@
 				</table> 	
 			</div> 
 			<p align="center">
-				<h:commandButton value="Save"  action="#{replyquestion.setDataTripComment}" />
-				<h:commandButton value="Return" immediate="true" action="tripCommentsView" />
+				<h:commandButton value="Save"  action="#{replyquestion.setDataTripComment}" class="btn btn-primary" />
+				
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/public/tripCommentsView.xhtml" class="btn btn-default">
+				    <f:param name="tripId" value="#{replyquestion.tripId}" />
+					<h:outputText value="Return"/>
+				</h:outputLink>
 			</p>
  		</h:form>
 	</h:body>

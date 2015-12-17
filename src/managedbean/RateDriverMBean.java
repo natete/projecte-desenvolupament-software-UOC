@@ -116,7 +116,6 @@ public class RateDriverMBean implements Serializable{
 	}
 	
 	public String getRedirectTo() {
-		System.out.println("redirectTo" + redirectTo);
 		return redirectTo;
 	}
 

@@ -32,6 +32,7 @@ public class ReplyQuestionMBean implements Serializable{
 	private CommunicationFacadeRemote replyQuestionRemote;
 			
 	private int questionId;
+	private int tripId;
 	private String subject;
 	private String body;
 	private String answer;
@@ -81,6 +82,13 @@ public class ReplyQuestionMBean implements Serializable{
 		this.questionId = questionId;
 	}
 	
+	public int getTripId() {
+		return this.tripId;
+	}
+
+	public void setTripId(int tripId) {
+		this.tripId = tripId;
+	}
 	public TripJPA getTrip() {
 		return this.question.getTrip();
 	}
@@ -106,7 +114,6 @@ public class ReplyQuestionMBean implements Serializable{
 	public String getBody() {
 		return question.getBody();
 	}
-
 
 	public void setBody(String body) {
 		this.body = body;
@@ -144,7 +151,7 @@ public class ReplyQuestionMBean implements Serializable{
 			return "errorView";
 		}
 		else {	
-			replyQuestionRemote.replyQuestion(this.trip.getId(), question.getQuestionId(), driver.getNif(), subject, answer);
+			replyQuestionRemote.replyQuestion(this.trip.getId(), question.getQuestionId(), driver.getNif(), question.getSubject(), answer);
 			this.setAnswer("");
 			return "/pages/public/tripCommentsView"; 
 		}

@@ -29,7 +29,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public java.util.Collection<?> showTripComments(int tripId) throws PersistenceException {
 		@SuppressWarnings("unchecked")
-		Collection<MessageJPA> questions = entman.createQuery("FROM MessageJPA b WHERE b.trip.id = :tripId AND b.replyQuestion = null").setParameter("tripId", tripId).getResultList();
+		Collection<MessageJPA> questions = entman.createQuery("FROM MessageJPA b WHERE b.trip.id = :tripId AND b.question = null").setParameter("tripId", tripId).getResultList();
 		
 		Collection<MessageJPA> tripComments = new ArrayList<MessageJPA>();
 		
@@ -41,16 +41,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 				tripComments.add(a);
 			}
 		}
-//			try
-//			{
-//				MessageJPA answer = (MessageJPA) entman.createQuery("FROM MessageJPA b WHERE b.replyQuestion.questionId = :questionId").setParameter("questionId", q.getQuestionId()).getSingleResult();
-//				if (answer != null) {
-//					tripComments.add(answer);
-//				}
-//			}catch (PersistenceException e) {
-//				System.out.println(e);
-//			} 
-//		}
+
 	    return tripComments;
 	}
    
@@ -79,7 +70,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 		message.setPassenger(p);
 		message.setSubject(subject);
 		message.setBody(body);
-		message.answers = new ArrayList<MessageJPA>();
+		message.setAnswers(new ArrayList<MessageJPA>());
 		try
 		{
 			entman.persist(message);
@@ -94,6 +85,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public void replyQuestion(int tripId, int questionId, String driverId, String subject, String body) throws PersistenceException {
 
+		MessageJPA question = findMessage(questionId);
 		MessageJPA answer = new MessageJPA();
 		TripJPA t = findTrip(tripId);
 		answer.setTrip(t);
@@ -101,9 +93,8 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 		answer.setDriver(d);
 		answer.setSubject(subject);
 		answer.setBody(body);
-		MessageJPA question = findMessage(questionId);
-		answer.setQuestion(question);
-		question.answers = (Arrays.asList(answer));
+		answer.setQuestion(findMessage(questionId));
+		question.setAnswers(Arrays.asList(answer));
 		
 		try
 		{

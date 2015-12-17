@@ -39,6 +39,7 @@ public class AskQuestionMBean implements Serializable{
 	private UserDTO loggedUser;
 	private String errorMessage;
 	private FacesMessage message;
+	private String redirectTo;
 	
 	
 		
@@ -114,6 +115,14 @@ public class AskQuestionMBean implements Serializable{
 		this.body = body;
 	}
 
+	public String getRedirectTo() {
+		return redirectTo;
+	}
+
+	public void setRedirectTo(String redirectTo) {
+		this.redirectTo = redirectTo;
+	}
+	
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -147,9 +156,9 @@ public class AskQuestionMBean implements Serializable{
 		}
 		else {	
 			if (passenger != null) {
-				askQuestionRemote.askQuestion(this.trip.getId(), passenger.getNif(), subject, body);
+				askQuestionRemote.askQuestion(trip.getId(), passenger.getNif(), subject, body);
 			}else{
-				askQuestionRemote.askQuestion(this.trip.getId(), null, subject, body);
+				askQuestionRemote.askQuestion(trip.getId(), null, subject, body);
 			}
 			this.setSubject("");
 			this.setBody("");

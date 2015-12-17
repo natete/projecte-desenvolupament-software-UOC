@@ -39,6 +39,7 @@
  			</h:column>
  			<h:column>	
 				<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/replyQuestionView.xhtml" class="btn btn-primary" rendered="#{tripcomments.driverLogged}">
+						<f:param name="tripId" value="#{tripcomments.tripId}"/>
 						<f:param name="questionId" value="#{item.questionId}" />	
 						<h:outputText value="Reply"/>					
 				</h:outputLink>	
@@ -47,6 +48,7 @@
  		<p align="center">
  			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/askQuestionView.xhtml" class="btn btn-primary" rendered="#{not tripcomments.driverLogged}">
 				<f:param name="tripId" value="#{tripcomments.tripId}"/>
+				<f:param name="fromPage" value="/CAT-PDP-GRUP6/pages/public/tripCommentsView.xhtml"/>
 					<h:outputText value="Ask Question"/>
 			</h:outputLink>
 			<h:outputLink value="showTripView.xhtml" class="btn btn-default">

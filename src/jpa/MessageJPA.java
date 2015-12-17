@@ -14,13 +14,25 @@ import javax.persistence.*;
 public class MessageJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int questionId;
 	private String subject;
 	private String body;
+	@ManyToOne
+	@JoinColumn(name = "tripId")
 	private TripJPA trip;
+	@ManyToOne
+	@JoinColumn(name = "driverId")
 	private DriverJPA driver;
+	@ManyToOne
+	@JoinColumn(name = "passengerId")
 	private PassengerJPA passenger;
+	@ManyToOne
+	private MessageJPA question;
+	@OneToMany(mappedBy="question")
+	private List<MessageJPA> answers;
 		
 	/**
 	 * Class constructor methods
@@ -29,7 +41,7 @@ public class MessageJPA implements Serializable {
 		super();
 	}
 
-	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, MessageJPA replyQuestion,
+	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, 
 			String subject, String body) {
 		this.trip= trip;
 		this.questionId = questionId;
@@ -43,8 +55,7 @@ public class MessageJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	public int getQuestionId() {
 		return questionId;
 	}
@@ -53,7 +64,7 @@ public class MessageJPA implements Serializable {
 		this.questionId = questionId;
 	}
 	
-		public String getSubject() {
+	public String getSubject() {
 		return subject;
 	}
 
@@ -72,7 +83,7 @@ public class MessageJPA implements Serializable {
 	public MessageJPA getQuestion() {
 		return question;
 	}
-
+	
 	public void setQuestion(MessageJPA question) {
 		this.question = question;
 	}
@@ -84,12 +95,7 @@ public class MessageJPA implements Serializable {
 	public void setAnswers(List<MessageJPA> answers) {
 		this.answers = answers;
 	}
-		
-	/**
-	 * Methods get/set persistent relationships
-	 */
-	@ManyToOne
-	@JoinColumn(name = "tripId")
+			
 	public TripJPA getTrip() {
 		return trip;
 	}
@@ -98,8 +104,7 @@ public class MessageJPA implements Serializable {
 		this.trip = trip;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "driverId")
+	
 	public DriverJPA getDriver() {
 		return driver;
 	}
@@ -108,8 +113,7 @@ public class MessageJPA implements Serializable {
 		this.driver = driver;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "passengerId")
+	
 	public PassengerJPA getPassenger() {
 		return passenger;
 	}
@@ -118,10 +122,6 @@ public class MessageJPA implements Serializable {
 		this.passenger = passenger;
 	}
 	
-	@ManyToOne
-	public MessageJPA question;
-
-	@OneToMany(mappedBy="question")
-	public List<MessageJPA> answers;
+	
 	
 }

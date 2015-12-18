@@ -31,12 +31,6 @@ public class ListCarsMBean implements Serializable {
 	
 	// stores all the instances of CarJPA
 	private Collection<CarJPA> carsList;
-	// stores the screen number where the user is
-	private int screen = 0;
-	// stores ten or fewer CarJPA instances that the user can see on a screen
-	protected Collection<CarJPA> carsListView;
-	// stores the total number of instances of CarJPA
-	protected int numberCars = 0;
 
 	/**
 	 * Constructor method
@@ -46,52 +40,7 @@ public class ListCarsMBean implements Serializable {
 	public ListCarsMBean() throws Exception {
 
 	}
-
-	/**
-	 * Method that returns an instance Collection of 10 or less CarJPA according
-	 * screen where the user is.
-	 * 
-	 * @return Collection CarJPA
-	 */
-	public Collection<CarJPA> getCarsListView() throws Exception {
-		int n = 0;
-		carsListView = new ArrayList<CarJPA>();
-		this.carList();
-		for (Iterator<CarJPA> iter2 = carsList.iterator(); iter2.hasNext();) {
-			CarJPA car = (CarJPA) iter2.next();
-			if (n >= screen * 10 && n < (screen * 10 + 10)) {
-				this.carsListView.add(car);
-			}
-			n += 1;
-		}
-		this.numberCars = n;
-		return carsListView;
-	}
-
-	/**
-	 * Returns the total number of instances of CarJPA
-	 * 
-	 * @return Car number
-	 */
-	public int getNumberCars() {
-		return this.numberCars;
-	}
-
-	/**
-	 * allows forward or backward in user screens
-	 */
-	public void nextScreen() {
-		if (((screen + 1) * 10 < carsList.size())) {
-			screen += 1;
-		}
-	}
-
-	public void previousScreen() {
-		if ((screen > 0)) {
-			screen -= 1;
-		}
-	}
-
+	
 	public String getNif() {
 		return this.nif;
 	}
@@ -126,10 +75,7 @@ public class ListCarsMBean implements Serializable {
 	private void carList() throws Exception {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		screen = 0;
 		carsRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		carsList = (Collection<CarJPA>) carsRemote.listAllCars(nif);
-		//return "carListView";
-
 	}
 }

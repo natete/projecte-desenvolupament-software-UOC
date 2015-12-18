@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -22,12 +23,17 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import managedbean.SessionBean;
+
 @Entity
 @Table(name = "trip")
-@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId") })
+@NamedQueries({
+	@NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId"),
+	@NamedQuery(name = "findMyTrips", query = "SELECT t FROM TripJPA t WHERE t.driver = :myDriver")
+})
 public class TripJPA implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;                                                                        
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -72,7 +78,10 @@ public class TripJPA implements Serializable {
 	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
-	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "passengers_trips", joinColumns = {
+			@JoinColumn(name = "trip_id", nullable = false) }, inverseJoinColumns = {
+					@JoinColumn(name = "passenger_id", nullable = false) })
 	private List<PassengerJPA> passengers;
 	
 	@OneToMany(mappedBy = "trip")
@@ -93,6 +102,7 @@ public class TripJPA implements Serializable {
 	public TripJPA(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime,
 			String arrivalCity, String toPlace, Integer availableSeats, float price) {
 		super();
+		
 		this.description = description;
 		this.departureCity = departureCity;
 		this.fromPlace = fromPlace;
@@ -216,5 +226,17 @@ public class TripJPA implements Serializable {
 			}
 		}
 		return result;
+	}
+
+	@Transient
+	public void addPassenger(PassengerJPA passenger) {
+		passengers.add(passenger);
+		availableSeats = availableSeats - 1;
+	}
+
+	@Transient
+	public void removePassenger(PassengerJPA passenger) {
+		passengers.remove(passenger);
+		availableSeats = availableSeats + 1;
 	}
 }

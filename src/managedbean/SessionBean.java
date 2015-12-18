@@ -8,10 +8,10 @@ import jpa.UserDTO;
 
 public class SessionBean {
 
-	private static final String USER_NAME = "username";
-	private static final String USER_ID = "userId";
-	private static final String DRIVER_ROLE = "driverRole";
-	private static final String PASSENGER_ROLE = "passengerRole";
+	public static final String USER_NAME = "username";
+	public static final String USER_ID = "userId";
+	public static final String DRIVER_ROLE = "driverRole";
+	public static final String PASSENGER_ROLE = "passengerRole";
 
 	public static HttpSession getSession() {
 		return (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);

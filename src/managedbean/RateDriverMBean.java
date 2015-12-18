@@ -24,15 +24,15 @@ import jpa.UserDTO;
  */
 @ManagedBean(name = "ratedriver")
 @SessionScoped
-public class RateDriverMBean implements Serializable{
-	
+public class RateDriverMBean implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-		
+
 	@EJB
 	private CommunicationFacadeRemote rateDriverRemote;
-	
+
 	private DriverCommentJPA driverComment;
-	
+
 	private String driverId;
 	private String passengerId;
 	private String comment;
@@ -43,37 +43,36 @@ public class RateDriverMBean implements Serializable{
 	private String errorMessage;
 	private FacesMessage message;
 	private String redirectTo;
-	
-		
+
 	/**
 	 * Constructor method
 	 * @throws Exception
 	 */
-	public RateDriverMBean() throws Exception
-	{
+	public RateDriverMBean() throws Exception {
 		super();
 	}
-	
+
 	public void init() throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		rateDriverRemote = (CommunicationFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		driver = (DriverJPA) rateDriverRemote.findDriver(this.getDriverId());
-						
+
 		loggedUser = SessionBean.getLoggedUser();
-		
+
 		passenger = null;
-		if(loggedUser.isPassenger()) {
+		if (loggedUser.isPassenger()) {
 			passenger = (PassengerJPA) rateDriverRemote.findPassenger(loggedUser.getId());
 		}
-		
-		driverComment = (DriverCommentJPA) rateDriverRemote.getDriverComment(this.getDriverId(),passenger.getNif());
-		if(driverComment != null) {
+
+		driverComment = (DriverCommentJPA) rateDriverRemote.getDriverComment(this.getDriverId(), passenger.getNif());
+		if (driverComment != null) {
 			this.setComment(driverComment.getComment());
 			this.setRating(driverComment.getRating());
 		}
 	}
-	
+
 	public String getDriverId() {
 		return driverId;
 	}
@@ -106,15 +105,15 @@ public class RateDriverMBean implements Serializable{
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
-	
+
 	public String getDriver() {
 		return driver.getName() + " " + driver.getSurname();
 	}
-	
-	public String getPassenger()  {
+
+	public String getPassenger() {
 		return passenger.getName() + " " + passenger.getSurname();
 	}
-	
+
 	public String getRedirectTo() {
 		System.out.println("redirectTo" + redirectTo);
 		return redirectTo;
@@ -132,13 +131,13 @@ public class RateDriverMBean implements Serializable{
 	public String getErrorMessage() {
 		return errorMessage;
 	}
-	
-	public String setDataDriverComment() throws Exception
-	{	
+
+	public String setDataDriverComment() throws Exception {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		if (this.comment.equals("")){
+		rateDriverRemote = (CommunicationFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		if (this.comment.equals("")) {
 			// Bring the error message using the Faces Context
 			errorMessage = "Comment is missing";
 			// Add View Faces Message
@@ -146,30 +145,27 @@ public class RateDriverMBean implements Serializable{
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
 		}
-		
-				
-		if(errorMessage!=null){
+
+		if (errorMessage != null) {
 			return "errorView";
-		}
-		else {	
+		} else {
 			if (driverComment == null) {
-				rateDriverRemote.rateDriver(this.getDriverId(),passenger.getNif(), comment, rating);
+				rateDriverRemote.rateDriver(this.getDriverId(), passenger.getNif(), comment, rating);
 			} else {
-				rateDriverRemote.updateRateDriver(this.getDriverId(),passenger.getNif(), comment, rating);
+				rateDriverRemote.updateRateDriver(this.getDriverId(), passenger.getNif(), comment, rating);
 			}
-			
-						
-			return "/pages/public/driverCommentsView"; 
+
+			return "/pages/public/driverCommentsView";
 		}
 	}
-	
-	public DriverCommentJPA getDataDriverComment(String driverId, String passengerId) throws Exception
-	{	
+
+	public DriverCommentJPA getDataDriverComment(String driverId, String passengerId) throws Exception {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		rateDriverRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		rateDriverRemote = (CommunicationFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		return rateDriverRemote.getDriverComment(driverId, passengerId);
-						
+
 	}
-		
+
 }

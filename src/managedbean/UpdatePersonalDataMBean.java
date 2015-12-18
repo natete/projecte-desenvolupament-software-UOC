@@ -64,7 +64,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	 */
 	public UpdatePersonalDataMBean() throws Exception
 	{
-		this.setNif(nif);
+
 	}
 
 	public String getNif() {
@@ -136,138 +136,50 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String setDataUser() throws Exception {
+		
+		String result;
+		
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		updatePersonalDataRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 
-		if (nif.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Nif is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (name.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Name is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (surname.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Surname is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (email.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Email is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (password.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Password is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
 		if (loggedUser.getRoles().contains(Role.DRIVER)) {
 			if (updatePersonalDataRemote.existsDriver(nif, email, loggedUser) == true) {
-				// Bring the error message using the Faces Context
 				errorMessage = "Driver already exists";
-				// Add View Faces Message
-				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-				// Add the message into context for a specific component
-				FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-			}
-			if (updatePersonalDataRemote.existsPassengerEmail(nif, name, surname, email, loggedUser) == true) {
-				// Bring the error message using the Faces Context
+				result = "errorView";
+			} else if (updatePersonalDataRemote.existsPassengerEmail(nif, name, surname, email, loggedUser) == true) {
 				errorMessage = "Passenger already exists with some email or some nif and different name-surname";
-				// Add View Faces Message
-				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-				// Add the message into context for a specific component
-				FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-			}
+				result = "errorView";
+			} else {
+				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, email, password);
+			} 
 		} 
 		if (loggedUser.getRoles().contains(Role.PASSENGER)) {
 			if (updatePersonalDataRemote.existsPassenger(nif, email, loggedUser) == true) {
-				// Bring the error message using the Faces Context
 				errorMessage = "Passenger already exists";
-				// Add View Faces Message
-				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-				// Add the message into context for a specific component
-				FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-			}
-			if (updatePersonalDataRemote.existsDriverEmail(nif, name, surname, email, loggedUser) == true) {
-				// Bring the error message using the Faces Context
+				result = "errorView";
+			} else if (updatePersonalDataRemote.existsDriverEmail(nif, name, surname, email, loggedUser) == true) {
 				errorMessage = "Driver already exists with some email or some nif and different name-surname";
-				// Add View Faces Message
-				message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-				// Add the message into context for a specific component
-				FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-			}
-		} 
-		
-		Pattern patP = Pattern.compile("\\d{9}");
-		Matcher matP = patP.matcher(phone);
-		if (!(phone.equals("")) && !(matP.matches())) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Phone format not valid. Ej.: 123456789";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-
-		Pattern patE = Pattern.compile("^[\\w-]+(\\.[\\w-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-		Matcher matE = patE.matcher(email);
-		if (!(email.equals("")) && !(matE.matches())) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Email format not valid. Ej.: example@domain.com";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		
-		if (errorMessage != null) {
-			return "errorView";
-		} else {
-			if (loggedUser.getRoles().contains(Role.DRIVER)) {
-				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, email, password);
-			}
-			if (loggedUser.getRoles().contains(Role.PASSENGER)) {
+				result = "errorView";
+			} else {
 				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, email, password);
 			}
-			
-//			HttpSession session = SessionBean.getSession();
-//			session.invalidate();
-//			this.user = loginRemote.login(this.email, this.password);
-//			SessionBean.setLoggedUser(user);
-	
-			loggedUser.setId(this.nif);
-			loggedUser.setUsername(this.name + " " + this.surname);
-			SessionBean.setLoggedUser(loggedUser);
-			loginMBean.setUser(loggedUser);
-			
-			this.setNif("");
-			this.setName("");
-			this.setSurname("");
-			this.setPhone("");
-			this.setPassword("");
-			this.setEmail("");
-			
-			return "findTripsView.xhtml";
 		}
+
+		loggedUser.setId(this.nif);
+		loggedUser.setUsername(this.name + " " + this.surname);
+		SessionBean.setLoggedUser(loggedUser);
+		loginMBean.setUser(loggedUser);
+		
+		this.setNif("");
+		this.setName("");
+		this.setSurname("");
+		this.setPhone("");
+		this.setPassword("");
+		this.setEmail("");
+		
+		result = "findTripsView.xhtml";
+		return result;
 	}
 }

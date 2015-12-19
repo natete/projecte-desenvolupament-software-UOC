@@ -9,6 +9,7 @@ import jpa.DriverCommentJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
+import jpa.MessageJPA;
 
 
 /**
@@ -30,4 +31,5 @@ public interface CommunicationFacadeRemote {
 	  public TripJPA findTrip(int tripId); 
 	  public DriverJPA findDriver(String driverId); 
 	  public PassengerJPA findPassenger(String passengerId);
+	  public MessageJPA findMessage(int questionId);
 }

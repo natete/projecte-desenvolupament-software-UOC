@@ -47,7 +47,7 @@
    	<copy file="${sourcesrc}/META-INF/persistence.xml" todir="${buildjar}/META-INF"/>
    	<copy file="${sourcesrc}/log4j.properties" todir="${buildjar}"/>
    <javac srcdir="${sourcesrc}" destdir="${buildjar}"
-       	includes="ejb/*.java, jpa/*.java"
+       	includes="ejb/*.java, jpa/*.java, config/*.java"
         classpathref="jboss.classpath"   
     	includeantruntime="true"
     />
@@ -58,7 +58,7 @@
   	<copy todir="${buildwar}">
   		<fileset dir="${source}/docroot"/>
 	</copy>
- 	<javac srcdir="${sourcesrc}" destdir="${buildwar}/WEB-INF/classes" includes="managedbean/*.java"
+ 	<javac srcdir="${sourcesrc}" destdir="${buildwar}/WEB-INF/classes" includes="managedbean/*.java, validator/*.java"
         classpathref="jboss.classpath"   
     	includeantruntime="true"
 	/>

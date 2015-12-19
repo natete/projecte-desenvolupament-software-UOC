@@ -59,7 +59,7 @@
   	<copy todir="${buildwar}">
   		<fileset dir="${source}/docroot"/>
 	</copy>
- 	<javac srcdir="${sourcesrc}" destdir="${buildwar}/WEB-INF/classes" includes="managedbean/*.java"
+ 	<javac srcdir="${sourcesrc}" destdir="${buildwar}/WEB-INF/classes" includes="managedbean/*.java,validator/*.java"
         classpathref="jboss.classpath"   
     	includeantruntime="true"
  		debug="true"

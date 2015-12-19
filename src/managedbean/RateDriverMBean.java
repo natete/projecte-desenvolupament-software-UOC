@@ -1,4 +1,3 @@
-
 package managedbean;
 
 import java.io.Serializable;

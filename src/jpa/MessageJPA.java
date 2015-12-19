@@ -1,10 +1,16 @@
 package jpa;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * JPA Class MessageJPA
@@ -17,6 +23,7 @@ public class MessageJPA implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+
 	private int questionId;
 	private String subject;
 	private String body;
@@ -43,7 +50,7 @@ public class MessageJPA implements Serializable {
 
 	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, 
 			String subject, String body) {
-		this.trip= trip;
+		this.trip = trip;
 		this.questionId = questionId;
 		this.driver = driver;
 		this.passenger = passenger;

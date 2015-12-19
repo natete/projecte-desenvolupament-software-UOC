@@ -9,7 +9,7 @@
 	<ui:define name="content">
 	<f:metadata>
 		<f:viewParam name="tripId" value="#{showTripController.tripId}"/>
-		<f:event listener="#{showTripController.init()}" type="preRenderView"/>
+		<f:viewAction action="#{showTripController.init()}" />
 	</f:metadata>
 		<div class="row">
 			<div class="col-xs-12">
@@ -92,8 +92,8 @@
 							<i class="fa fa-user details-icon"></i>
 							<h:outputText value="#{showTripController.driver}"/>
 						</h4>
-						<h:outputLink value="CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
-							<f:param name="tripId" value="#{showTripController.tripId}"/>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
+							<f:param name="driverId" value="#{showTripController.driverId}"/>
 							<h:outputText value="Rate driver"/>
 						</h:outputLink>
 					</div>
@@ -103,6 +103,7 @@
 						<h:outputText value="#{showTripController.description}"/>
 					</div>
 				</div>
+				<br/>
 				<div class="row">
 					<div class="col-xs-12 text-right">
 						<ul class="list-inline">
@@ -125,11 +126,11 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 text-center">
-				<h:outputLink value="registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.passengerLogged and not showTripController.loggedUserInTrip}">
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.passengerLogged and not showTripController.loggedUserInTrip}">
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Join to trip"/>
 				</h:outputLink>
-				<h:outputLink value="removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.loggedUserInTrip}">
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.loggedUserInTrip}">
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Leave trip"/>
 				</h:outputLink>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><packages version="1.3">
   <package exploded="false" inWorkspace="true" name="CAT-PDP-GRUP6.jar" todir="/CAT-PDP-GRUP6" type="jar">
-    <fileset dir="bin" excludes="client/, man*/" flatten="false" inWorkspace="true" includes="**/*.class, **/*.properties">
+    <fileset dir="bin" excludes="client/, man*/, validator/*" flatten="false" inWorkspace="true" includes="**/*.class, **/*.properties">
       <properties/>
     </fileset>
     <folder name="META-INF">
@@ -23,6 +23,12 @@
       </fileset>
       <folder name="classes/managedbean">
         <fileset dir="bin/managedbean" flatten="false" inWorkspace="true" includes="**">
+          <properties/>
+        </fileset>
+        <properties/>
+      </folder>
+      <folder name="classes/validator">
+        <fileset dir="bin/validator" flatten="false" inWorkspace="true" includes="**">
           <properties/>
         </fileset>
         <properties/>

@@ -49,8 +49,8 @@ public class ListCarsMBean implements Serializable {
 		this.nif = nif;
 	}
 
-	public Collection<CarJPA> getCarsList() {
-		return this.carsList;
+	public Collection<CarJPA> getCarsList() throws Exception {
+		return this.carList();
 	}
 
 	public void setCarsList(Collection<CarJPA> carsList) {
@@ -68,14 +68,16 @@ public class ListCarsMBean implements Serializable {
 
 	/**
 	 * Method that gets a list of instances all CarJPA
+	 * @return 
 	 * 
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	private void carList() throws Exception {
+	private Collection<CarJPA> carList() throws Exception {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		carsRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		carsList = (Collection<CarJPA>) carsRemote.listAllCars(nif);
+		return carsList;
 	}
 }

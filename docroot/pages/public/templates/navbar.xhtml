@@ -59,8 +59,8 @@
    					</li>
        				<li>
        					<h:form rendered="#{login.isLogged()}">
-							<h:commandLink action="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml"><i class="fa fa-user"><h:outputLabel value="#{login.username} (#{login.roles})" /></i></h:commandLink>
-     						<h:commandLink value="Logout" action="#{login.logout}" />
+							<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml"><i class="fa fa-user"></i><h:outputLabel value="#{login.username} (#{login.roles})" /></a>
+       						<h:commandLink value="Logout" action="#{login.logout}" />
      					</h:form>
 					</li>
 				</ul>

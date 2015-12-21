@@ -74,4 +74,4 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
         <extension>ico</extension>
         <mime-type>image/x-icon</mime-type>
     </mime-mapping>
-</web-app>
+ </web-app>

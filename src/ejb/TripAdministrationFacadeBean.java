@@ -5,16 +5,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
@@ -24,6 +19,7 @@ import jpa.TripJPA;
  * TripAdministrationFacadeBean
  * @author GRUP6 -jordi-nacho-ximo-joan-
  */
+
 @Stateless
 public class TripAdministrationFacadeBean implements TripAdministrationFacadeRemote {
 
@@ -31,7 +27,11 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public static final String QUERY_FIND_TRIPS_BY_DRIVER = "TripJPA.findTripsByDriver";
 	public static final String QUERY_GET_TRIP_BY_ID = "TripJPA.getTripById";
 	public static final String QUERY_UPDATE_TRIP = "TripJPA.updateTrip";
+	public static final String QUERY_GET_DRIVER_BY_NIF = "findMyDriver";
+	public static final String QUERY_GET_CARS_BY_DRIVER = "CarJPA.findCarsByDriverId";
+	public static final String PARAMETER_CARS_DRIVER = "driver";
 	public static final String PARAMETER_DRIVER_NIF = "driverNif";
+	public static final String PARAMETER_DRIVER_NIF1 = "nif";
 	public static final String PARAMETER_TRIP_ID = "tripId";
 	public static final String PARAMETER_TRIP_DESCRIPTION = "description";
 	public static final String PARAMETER_TRIP_DEPARTURE_CITY = "departureCity";
@@ -42,16 +42,9 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public static final String PARAMETER_TRIP_TO_PLACE = "toPlace";
 	public static final String PARAMETER_TRIP_AVAILABLE_SEATS = "availableSeats";
 	public static final String PARAMETER_TRIP_PRICE = "price";
-	
-	/**
-	 * PERSISTENCE CONTEXT
-	 */
 	@PersistenceContext(unitName = "CarSharing")
-	private EntityManager entityManager;
-
-	/**
-	 * INTERFACE IMPLEMENTATION
-	 */
+	private EntityManager entman;
+	private String carSelected;
 
 	/**
 	 * findMyTrips
@@ -61,7 +54,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 
 		Collection<TripJPA> myTrips = null;
 		try {
-		myTrips = (Collection<TripJPA>) entityManager.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER)
+		myTrips = (Collection<TripJPA>) entman.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER)
 				.setParameter(PARAMETER_DRIVER_NIF, driverNif).getResultList();
 		} catch (PersistenceException e) {
 			System.out.println(e);
@@ -75,7 +68,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 */
 	@Override
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
-			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif) {
+			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif, String selectedCar) {
 		// TODO Auto-generated method stub
 
 		TripJPA trip = new TripJPA();
@@ -91,22 +84,23 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		
 		DriverJPA driverJPA = null;
 		try {
-			driverJPA = (DriverJPA) entityManager.createNamedQuery("findMyDriver").setParameter("nif", nif)
+			driverJPA = (DriverJPA) entman.createNamedQuery("findMyDriver").setParameter("nif", nif)
 					.getSingleResult();
 		} catch (PersistenceException e) {
 				System.out.println(e);
 			}
 		trip.setDriver(driverJPA);
-
-		Collection<CarJPA> myCars = driverJPA.getCars();
-		Iterator<CarJPA> it = myCars.iterator();
-		CarJPA myCar = null;
-		while (it.hasNext())
-			myCar = it.next();
+		
+		String[] tokens = selectedCar.split(" ");
+		String brand = tokens[0];
+		String model = tokens[1];
+		String colour = tokens[2];
+		CarJPA myCar = (CarJPA) entman.createNamedQuery("CarJPA.findCarByBrandModelColour")
+				.setParameter("brand", brand).setParameter("model", model)
+				.setParameter("colour", colour).getSingleResult();
 		trip.setCar(myCar);
-
 		try {
-			entityManager.persist(trip);
+			entman.persist(trip);
 
 		} catch (PersistenceException e) {
 			System.out.println(e);
@@ -122,7 +116,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		
 		TripJPA trip = null;
 		try {
-			trip = (TripJPA) entityManager.createNamedQuery(QUERY_GET_TRIP_BY_ID)
+			trip = (TripJPA) entman.createNamedQuery(QUERY_GET_TRIP_BY_ID)
 					.setParameter(PARAMETER_TRIP_ID, tripId).getSingleResult();
 		} catch (PersistenceException e) {
 			System.out.println(e);
@@ -135,16 +129,46 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 * updateTripInformation
 	 */
 	@Override
-	public void updateTripInformation(int tripId, String description, String departureCity, String fromPlace,
-			Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats,
-			float price) {
-		// TODO Auto-generated method stub
-		
+	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace,
+			Date departureDate, Date departureTime, String arrivalCity, String toPlace, Integer availableSeats,
+			Float price) {
+		// TODO Auto-generated method stub		
+
 		try {
-			entityManager.createNamedQuery(QUERY_UPDATE_TRIP)
-			.setParameter(PARAMETER_TRIP_ID, tripId);
+			entman.createNamedQuery(QUERY_UPDATE_TRIP)
+			.setParameter(PARAMETER_TRIP_DESCRIPTION, description)
+			.setParameter(PARAMETER_TRIP_DEPARTURE_CITY, departureCity)
+			.setParameter(PARAMETER_TRIP_FROM_PLACE, fromPlace)
+			.setParameter(PARAMETER_TRIP_DEPARTURE_DATE, departureDate)
+			.setParameter(PARAMETER_TRIP_DEPARTURE_TIME, departureTime)
+			.setParameter(PARAMETER_TRIP_ARRIVAL_CITY, arrivalCity)
+			.setParameter(PARAMETER_TRIP_TO_PLACE, toPlace)
+			.setParameter(PARAMETER_TRIP_AVAILABLE_SEATS, availableSeats)
+			.setParameter(PARAMETER_TRIP_PRICE, price)
+			.setParameter(PARAMETER_TRIP_ID, tripId)
+			.executeUpdate();
 		} catch (PersistenceException e) {
 			System.out.println(e);
 		}
+	}
+	
+	public TripJPA showTrip(Integer tripId) {
+		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
+		query.setParameter(PARAMETER_TRIP_ID, tripId);
+		return (TripJPA) query.getSingleResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<CarJPA> getMyCars(String driverId) {
+		Collection<CarJPA> myCars = null;
+		DriverJPA driverJPA = (DriverJPA) entman.createNamedQuery(QUERY_GET_DRIVER_BY_NIF)
+				.setParameter(PARAMETER_DRIVER_NIF1, driverId).getSingleResult();
+		try {
+			myCars = entman.createNamedQuery(QUERY_GET_CARS_BY_DRIVER)
+					.setParameter(PARAMETER_CARS_DRIVER, driverJPA).getResultList();
+		} catch (PersistenceException e) {
+			System.out.println(e);
+		}
+		return myCars;
 	}
 }

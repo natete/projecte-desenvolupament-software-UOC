@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,6 +19,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "car")
+@NamedQueries ({
+	@NamedQuery(name = "CarJPA.findCarsByDriverId", query = "SELECT c FROM CarJPA c WHERE c.driver = :driver"),
+	@NamedQuery(name="CarJPA.findCarByBrandModelColour", query ="SELECT c FROM CarJPA c WHERE c.brand = :brand AND c.model = :model AND c.color = :colour"),
+})
 public class CarJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;

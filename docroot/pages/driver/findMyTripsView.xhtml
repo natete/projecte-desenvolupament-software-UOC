@@ -9,6 +9,83 @@
 	<ui:define name="content">
 		<div class="col-xs-12">
 			<h1 class="page-header">
+				<i class="fa fa-car"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;My Trips
+			</h1>
+		</div>
+			<h:form>
+				<h:dataTable value="#{trips.tripListView}" var="item" class="table table-striped"  >
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="From"/>
+		   				</f:facet> 
+		     			<h:outputText value="#{item.departureCity}" />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="To" />
+		   				</f:facet> 
+		    			<h:outputText value="#{item.arrivalCity}" />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Date" />
+		   				</f:facet> 
+		    			<h:outputText  value="#{item.departureDate} " />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Time"/>
+		   				</f:facet>
+		     			<h:outputText align="right" value="#{item.departureTime}" />
+		   			</h:column>
+		   			<h:column>
+		     			<div class="btn btn-default btn-sm">
+		     				<i class="fa fa-info-circle"></i>&nbsp;
+		     				<h:outputLink value="../public/showTripView.xhtml" style="text-decoration:none;">
+		     					<f:param name="tripId" value="#{item.id}" />
+								<h:outputText value="Details" style="color:#424242" />
+							</h:outputLink>
+		     			</div>
+		     			<div class="btn btn-default btn-sm">
+		     				<i class="fa fa-users"></i>&nbsp;
+		     				<h:outputLink value="showAllPassengersView.xhtml" style="text-decoration:none;">
+		     					<f:param name="tripId" value="#{item.id}" />
+		     					<h:outputText value="Passengers" style="color:#424242" />
+		     				</h:outputLink>
+		     			</div>
+		     			<div class="btn btn-default btn-sm">
+		     				<i class="fa fa-refresh"></i>&nbsp;
+		     				<h:outputLink value="updateTripInformationView.xhtml" style="text-decoration:none;">
+		     					<f:param name="tripId" value="#{item.id}" />
+		     					<h:outputText value="Update" style="color:#424242" />
+		     				</h:outputLink>
+		     			</div>
+		   			</h:column>
+		 		</h:dataTable>
+		 		<div class="col-md-12 text-center">
+					<ul class="list-inline">
+						<li><h:commandButton class="btn btn-default btn-sm" action="#{trips.previousScreen}" value="Previous" /></li>
+						<li><h:commandButton class="btn btn-default btn-sm" action="/pages/public/findTripsView.xhtml" value="Return" /></li>
+						<li><h:commandButton class="btn btn-default btn-sm" action="#{trips.nextScreen}" value="Next" /></li>
+					</ul>
+				</div>
+	 		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
+
+<!--
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/pages/public/templates/main.xhtml">
+	<ui:define name="content">
+		<div class="col-xs-12">
+			<h1 class="page-header">
 				<i class="fa fa-car"></i> My Trips
 			</h1>
 		</div>
@@ -51,3 +128,4 @@
 </ui:composition>
 
 </html>
+-->

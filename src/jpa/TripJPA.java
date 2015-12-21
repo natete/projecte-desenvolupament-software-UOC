@@ -3,7 +3,6 @@ package jpa;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,10 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,12 +27,12 @@ import javax.validation.constraints.Size;
 			+ "WHERE t.id = :tripId"),
 	@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t "
 			+ "WHERE t.driver.nif = :driverNif"),
-	@NamedQuery(name = "TripJPA.updateTrip", query = "UPDATE carsharing.TripJPA SET "
-			+ "description = :description, departureCity = :departureCity, "
-			+ "fromPlace = :fromPlace, departureDate = :departureDate, "
-			+ "departureTime = :departureTime, arrivalCity = :arrivalCity, "
-			+ "toPlace = :toPlace, availableSeats = :availableSeats, price = :price "
-			+ "WHERE tripId = :tripId")
+	@NamedQuery(name = "TripJPA.updateTrip", query = "UPDATE TripJPA t SET "
+			+ "t.description = :description, t.departureCity = :departureCity, "
+			+ "t.fromPlace = :fromPlace, t.departureDate = :departureDate, "
+			+ "t.departureTime = :departureTime, t.arrivalCity = :arrivalCity, "
+			+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price "
+			+ "WHERE t.id = :tripId"),
 })
 public class TripJPA implements Serializable {
 
@@ -84,23 +81,13 @@ public class TripJPA implements Serializable {
 	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "passengers_trips", joinColumns = {
-			@JoinColumn(name = "trip_id", nullable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "passenger_id", nullable = false) })
+	@ManyToMany(mappedBy = "trips", fetch = FetchType.EAGER)
 	private List<PassengerJPA> passengers;
-	
-	@OneToMany(mappedBy = "trip")
-	private List<MessageJPA> messages;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "car")
 	private CarJPA car;
-	
-	
-	/**
-	 * Class constructor methods
-	 */
+
 	public TripJPA() {
 		super();
 	}
@@ -197,7 +184,7 @@ public class TripJPA implements Serializable {
 	}
 
 	@Transient
-	public boolean hasPassengenr(String passengerId) {
+	public boolean hasPassenger(String passengerId) {
 		boolean result = false;
 		if (passengers != null && !passengers.isEmpty()) {
 			for (PassengerJPA passenger : passengers) {

@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/pages/public/templates/main.xhtml">
+	<ui:define name="content">
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-question"></i> Find Trip's Passengers
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+			<h:form>
+				<div class="col-xs-3 form-group">
+					<label for="tripId" class="control-label">Trip Id</label>
+					<h:inputText value="#{findAllPassengersController.tripId}" styleClass="form-control"></h:inputText>
+				</div>
+			</h:form>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<h3>
+					<h:outputText escape="false" value="#{findAllPassengersController.searchMessage}" rendered="#{empty findAllPassengersController.passengersListView}"></h:outputText>
+				</h3>
+				<h:dataTable var="item" value="#{findAllPassengersController.passengersListView}" 
+					class="table table-striped" rendered="#{not empty findAllPassengersController.passengersListView}">
+				</h:dataTable>
+			</div>
+		</div>		
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,9 +1,8 @@
 package managedbean;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -11,60 +10,55 @@ import java.util.regex.Pattern;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import java.util.Iterator;
+import com.sun.javafx.collections.MappingChange.Map;
 import ejb.TripAdministrationFacadeRemote;
+import jpa.TripJPA;
 import jpa.UserDTO;
-import jpa.CarJPA;
 
-/**
- * AddTripMBean
- * @author GRUP6 -jordi-nacho-ximo-joan-
- */
-@ManagedBean(name="addtrip")
-@SessionScoped
-public class AddTripMBean implements Serializable {
+@ManagedBean(name = "updateTripInformationController")
+@ViewScoped
+public class UpdateTripInformationMBean implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	@EJB
-	private TripAdministrationFacadeRemote addTripRemote;
-	
+	private TripAdministrationFacadeRemote updateTripInformationRemote;
+	/*
 	private String description;
-	//@NotEmpty(message = "Departure City cannot be empty!")
 	private String departureCity;
-	//@NotEmpty(message = "Departure Place cannot be empty!")
 	private String fromPlace;
-	//@NotEmpty(message = "Departure Date cannot be empty!")
-	//@Future(message = "You must type a correct Date!")
 	private Date departureDate;
-	//@NotEmpty(message = "Departure Time cannot be empty!")
-	//@Future(message = "you must type a correct Time!")
-	//@Pattern(regexp = "[0-2][0-9]:[0-5][0-9]", message = "Hour between 00:00 and 23:59")
 	private Date departureTime;
-	//@NotEmpty(message = "Arrival City cannot be empty!")
 	private String arrivalCity;
-	//@NotEmpty(message = "Arrival Place cannot be empty!")
 	private String toPlace;
-	//@NotEmpty(message = "Available Seats cannot be empty!")
-	//@Digits(integer = 1 , fraction = 0, message = "You must provide a valid range!")
-	//@Range(min=1, max=4, message="There are "+"#{addTrip.availableSeats}"+" available seats!")
-	private int availableSeats;
-	//@NotEmpty(message = "Price cannot be empty!")
-	//@Digits(integer = 2, fraction = 0, message = "You must provide a valid age!")
-	//@Range(min=0, max=20, message="Price between 0 and 20 €")
-	private float price;
-	private Collection<CarJPA> cars;
-	private String carSelected;
-	private FacesMessage message;	
+	private Integer availableSeats;
+	private Float price;
+	*/
 	
-	public AddTripMBean() throws Exception {
+	private String tripDescription;
+	private String tripDepartureCity;
+	private String tripFromPlace;
+	private Date tripDepartureDate;
+	private Date tripDepartureTime;
+	private String tripArrivalCity;
+	private String tripToPlace;
+	private Integer tripAvailableSeats;
+	private Float tripPrice;
+	
+	private Integer tripId;
+	private FacesMessage message;
+	private TripJPA trip;
+	DateFormat dateFormat;
+	DateFormat timeFormat;
+	
+	public UpdateTripInformationMBean() {
 		
 	}
-		
+	/*
 	public String getDescription() {
 		return description;
 	}
@@ -110,29 +104,104 @@ public class AddTripMBean implements Serializable {
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
-	public void setAvailableSeats(int availableSeats) {
+	public void setAvailableSeats(Integer availableSeats) {
 		this.availableSeats = availableSeats;
 	}
 	public float getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
-		this.price = price;
+	public void setPrice(float i) {
+		this.price = i;
 	}
-	public String getCarSelected() {
-		return carSelected;
+	*/
+	public TripJPA getTrip() {
+		return trip;
 	}
-	public void setCarSelected(String carSelected) {
-		this.carSelected = carSelected;
+	public void setTrip(TripJPA trip) {
+		this.trip = trip;
 	}
-
-	public String addTrip() throws Exception {
+	public Integer getTripId() {
+		return tripId;
+	}
+	public void setTripId(Integer tripId) {
+		this.tripId = tripId;
+	}
+	public String getTripDepartureCity() {
+		return trip.getDepartureCity();
+	}
+	public void setTripDepartureCity(String tripDepartureCity) {
+		this.tripDepartureCity = tripDepartureCity;
+	}
+	public String getTripArrivalCity() {
+		return trip.getArrivalCity();
+	}
+	public void setTripArrivalCity(String tripArrivalCity) {
+		this.tripArrivalCity = tripArrivalCity;
+	}
+	public String getTripFromPlace() {
+		return trip.getFromPlace();
+	}
+	public void setTripFromPlace(String tripFromPlace) {
+		this.tripFromPlace = tripFromPlace;
+	}
+	public String getTripToPlace() {
+		return trip.getToPlace();
+	}
+	public void setTripToPlace(String tripToPlace) {
+		this.tripToPlace = tripToPlace;
+	}
+	public Date getTripDepartureDate() {
+		/*
+		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		return dateFormat.format(trip.getDepartureDate());
+		*/
+		return trip.getDepartureDate();
+	}
+	public void setTripDepartureDate(Date tripDepartureDate) {
+		this.tripDepartureDate = tripDepartureDate;
+	}
+	public Date getTripDepartureTime() {
+		/*
+		timeFormat = new SimpleDateFormat("HH:mm");
+		return timeFormat.format(trip.getDepartureTime());
+		*/
+		return trip.getDepartureTime();
+	}
+	public void setTripDepartureTime(Date tripDepartureTime) {
+		this.tripDepartureTime = tripDepartureTime;
+	}
+	public int getTripAvailableSeats() {
+		return trip.getAvailableSeats();
+	}
+	public void setTripAvailableSeats(int tripAvailableSeats) {
+		this.tripAvailableSeats = tripAvailableSeats;
+	}
+	public float getTripPrice() {
+		return trip.getPrice();
+	}
+	public void setTripPrice(float tripPrice) {
+		this.tripPrice = tripPrice;
+	}
+	public String getTripDescription() {
+		return trip.getDescription();
+	}
+	public void setTripDescription(String tripDescription) {
+		this.tripDescription = tripDescription;
+	}
+	
+	public void updateTrip() throws Exception {
 		String errorMessage = null;
-		
 		Properties properties = System.getProperties();
 		Context context = new InitialContext(properties);
-		addTripRemote = (TripAdministrationFacadeRemote) context.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
-		
+		updateTripInformationRemote = (TripAdministrationFacadeRemote) context
+				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
+						+ ".TripAdministrationFacadeRemote");
+		trip =updateTripInformationRemote.showTrip(tripId);
+	}
+	
+	public String refreshTrip() throws Exception {
+		/*
+		String errorMessage = null;
 		Pattern pattern = Pattern.compile("^[a-zA-Z]+( *[a-zA-Z])*$");
 		
 		Matcher matcher = pattern.matcher(this.departureCity);
@@ -169,7 +238,7 @@ public class AddTripMBean implements Serializable {
 		// add 1 to month because starts counting from 0;
 		thisMonth ++;
 		Integer thisYear = date.getYear();
-		// add 1900 to year beacause starts counting from 1900;
+		// add 1900 to year because starts counting from 1900;
 		thisYear +=1900;
 		
         Integer depDay = this.departureDate.getDate();
@@ -233,36 +302,36 @@ public class AddTripMBean implements Serializable {
 			return "errorView";
 			
 		} else {
-			
-			UserDTO userDTO = SessionBean.getLoggedUser();
-			String nif = userDTO.getId();
-			
-			addTripRemote.addTrip(description, departureCity, fromPlace, departureDate, departureTime, arrivalCity, toPlace, availableSeats, price, nif, carSelected);
-			
+			/*	
+			ActionEvent event = null;
+			String action = (String)event.getComponent().getAttributes().get("action");
+			Integer tripId = 113;
+			String departureCity = "soller";
+			String arrivalCity = "ariany";
+			String description = "ok";
+			String fromPlace = "ajunt...";
+			String toPlace = "ajunt...";
+			Date departureDate = null;
+			Date departureTime = null;
+			Float price = null;
+			*/
+			updateTripInformationRemote.updateTripInformation(tripId, tripDescription, 
+				tripDepartureCity, tripFromPlace, tripDepartureDate, tripDepartureTime, 
+				tripArrivalCity, tripToPlace, tripAvailableSeats, tripPrice);
+			/*
 			this.setDepartureCity("");
 			this.setFromPlace("");
-			this.setDepartureDate(null);
-			this.setDepartureTime(null);
+			this.setDepartureCity(null);
+			this.setDepartureCity(null);
 			this.setArrivalCity("");
-			this.setToPlace("");
+			this.setFromPlace("");
 			this.setAvailableSeats(0);
 			this.setPrice(0);
-			
+			*/
 			return "/pages/public/findTripsView";
-		}
+		//}
 	}
 	
-	public ArrayList<String> getCars() {
-		UserDTO userDTO = SessionBean.getLoggedUser();
-		String driverId = userDTO.getId();
-		cars = null;
-		cars = addTripRemote.getMyCars(driverId);
-		ArrayList<String> brands = new ArrayList<String>();
-		Iterator<CarJPA> it = cars.iterator();
-		while (it.hasNext()) {
-			CarJPA car = it.next();
-			brands.add(car.getBrand()+" "+car.getModel()+" "+car.getColor());
-		}
-		return brands;
-	}
+	
+	
 }

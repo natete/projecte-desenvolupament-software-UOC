@@ -41,11 +41,12 @@
 				<div class="col-md-12 text-right">
 					<ul class="list-inline">
 						<li>
-							<h:commandButton value="Cancelar" class="btn btn-default"
-								inmediate="true" action="/pages/carListView" />
+							<h:outputLink value="/CAT-PDP-GRUP6/pages/carListView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+							</h:outputLink>
 						</li>
 						<li>
-							<h:commandButton value="Guardar" class="btn btn-primary"
+							<h:commandButton value="Save" class="btn btn-primary"
 								action="#{addcar.setDataCar()}" />
 						</li>
 					</ul>

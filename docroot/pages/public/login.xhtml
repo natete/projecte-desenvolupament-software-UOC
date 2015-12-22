@@ -32,11 +32,12 @@
 			<div class="col-md-12 text-right">
 				<ul class="list-inline">
 					<li>
-						<h:commandLink value="Cancelar" styleClass="btn btn-default"
-							inmediate="true" type="button" action="/pages/public/findTripsView" />
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+							<h:outputText value="Cancel"/>
+						</h:outputLink>
 					</li>
 					<li>
-						<h:commandButton value="Aceptar" class="btn btn-primary"
+						<h:commandButton value="Ok" class="btn btn-primary"
 							action="#{login.validateData}" type="submit"/>
 					</li>
 				</ul>

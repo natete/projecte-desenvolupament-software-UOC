@@ -3,7 +3,10 @@ package managedbean;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,6 +20,7 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import com.sun.javafx.collections.MappingChange.Map;
 import ejb.TripAdministrationFacadeRemote;
+import jpa.CarJPA;
 import jpa.TripJPA;
 import jpa.UserDTO;
 
@@ -26,19 +30,7 @@ public class UpdateTripInformationMBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;	
 	@EJB
-	private TripAdministrationFacadeRemote updateTripInformationRemote;
-	/*
-	private String description;
-	private String departureCity;
-	private String fromPlace;
-	private Date departureDate;
-	private Date departureTime;
-	private String arrivalCity;
-	private String toPlace;
-	private Integer availableSeats;
-	private Float price;
-	*/
-	
+	private TripAdministrationFacadeRemote updateTripInformationRemote;	
 	private String tripDescription;
 	private String tripDepartureCity;
 	private String tripFromPlace;
@@ -48,72 +40,17 @@ public class UpdateTripInformationMBean implements Serializable {
 	private String tripToPlace;
 	private Integer tripAvailableSeats;
 	private Float tripPrice;
-	
 	private Integer tripId;
 	private FacesMessage message;
 	private TripJPA trip;
 	DateFormat dateFormat;
 	DateFormat timeFormat;
-	
+	private Collection<CarJPA> cars;
+	private String carSelected;
 	public UpdateTripInformationMBean() {
 		
 	}
-	/*
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getDepartureCity() {
-		return departureCity;
-	}
-	public void setDepartureCity(String departureCity) {
-		this.departureCity = departureCity;
-	}
-	public String getFromPlace() {
-		return fromPlace;
-	}
-	public void setFromPlace(String fromPlace) {
-		this.fromPlace = fromPlace;
-	}
-	public Date getDepartureDate() {
-		return departureDate;
-	}
-	public void setDepartureDate(Date departureDate) {
-		this.departureDate = departureDate;
-	}
-	public Date getDepartureTime() {
-		return departureTime;
-	}
-	public void setDepartureTime(Date departureTime) {
-		this.departureTime = departureTime;
-	}
-	public String getArrivalCity() {
-		return arrivalCity;
-	}
-	public void setArrivalCity(String arrivalCity) {
-		this.arrivalCity = arrivalCity;
-	}
-	public String getToPlace() {
-		return toPlace;
-	}
-	public void setToPlace(String toPlace) {
-		this.toPlace = toPlace;
-	}
-	public int getAvailableSeats() {
-		return availableSeats;
-	}
-	public void setAvailableSeats(Integer availableSeats) {
-		this.availableSeats = availableSeats;
-	}
-	public float getPrice() {
-		return price;
-	}
-	public void setPrice(float i) {
-		this.price = i;
-	}
-	*/
+	
 	public TripJPA getTrip() {
 		return trip;
 	}
@@ -151,20 +88,12 @@ public class UpdateTripInformationMBean implements Serializable {
 		this.tripToPlace = tripToPlace;
 	}
 	public Date getTripDepartureDate() {
-		/*
-		dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		return dateFormat.format(trip.getDepartureDate());
-		*/
 		return trip.getDepartureDate();
 	}
 	public void setTripDepartureDate(Date tripDepartureDate) {
 		this.tripDepartureDate = tripDepartureDate;
 	}
 	public Date getTripDepartureTime() {
-		/*
-		timeFormat = new SimpleDateFormat("HH:mm");
-		return timeFormat.format(trip.getDepartureTime());
-		*/
 		return trip.getDepartureTime();
 	}
 	public void setTripDepartureTime(Date tripDepartureTime) {
@@ -188,6 +117,12 @@ public class UpdateTripInformationMBean implements Serializable {
 	public void setTripDescription(String tripDescription) {
 		this.tripDescription = tripDescription;
 	}
+	public String getCarSelected() {
+		return carSelected;
+	}
+	public void setCarSelected(String carSelected) {
+		this.carSelected = carSelected;
+	}
 	
 	public void updateTrip() throws Exception {
 		String errorMessage = null;
@@ -199,137 +134,30 @@ public class UpdateTripInformationMBean implements Serializable {
 		trip =updateTripInformationRemote.showTrip(tripId);
 	}
 	
+	public ArrayList<String> getCars() throws Exception {
+		UserDTO userDTO = SessionBean.getLoggedUser();
+		String driverId = userDTO.getId();
+		Properties properties = System.getProperties();
+		Context context = new InitialContext(properties);
+		updateTripInformationRemote = (TripAdministrationFacadeRemote) context.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
+		cars = null;
+		cars = updateTripInformationRemote.getMyCars(driverId);
+		ArrayList<String> brands = new ArrayList<String>();
+		Iterator<CarJPA> it = cars.iterator();
+		while (it.hasNext()) {
+			CarJPA car = it.next();
+			brands.add(car.getBrand()+" "+car.getModel()+" "+car.getColor());
+		}
+		return brands;
+	}
+	
 	public String refreshTrip() throws Exception {
-		/*
-		String errorMessage = null;
-		Pattern pattern = Pattern.compile("^[a-zA-Z]+( *[a-zA-Z])*$");
 		
-		Matcher matcher = pattern.matcher(this.departureCity);
-		if (!matcher.matches()) {
-			errorMessage = "You must enter a Departure City, without extra characters";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		
-		matcher = pattern.matcher(this.fromPlace);
-		if (!matcher.matches()) {
-			errorMessage = "You must enter a Departure Place, without extra characters";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		
-		matcher = pattern.matcher(this.arrivalCity);
-		if (!matcher.matches()) {
-			errorMessage = "You must enter an Arrival City, without extra characters";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		
-		matcher = pattern.matcher(this.toPlace);
-		if (!matcher.matches()) {
-			errorMessage = "You must enter an Arrival Place, without extra characters";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-				
-		Date date = new Date();
-		Integer thisDay = date.getDate();
-		Integer thisMonth = date.getMonth();
-		// add 1 to month because starts counting from 0;
-		thisMonth ++;
-		Integer thisYear = date.getYear();
-		// add 1900 to year because starts counting from 1900;
-		thisYear +=1900;
-		
-        Integer depDay = this.departureDate.getDate();
-        Integer depMonth = this.departureDate.getMonth();
-        depMonth ++;
-        Integer depYear = this.departureDate.getYear();
-        depYear += 1900;
-        
-        if (thisYear.shortValue() == depYear.shortValue()) {
-        	if (thisMonth.shortValue() < depMonth.shortValue());
-        	if (thisMonth.shortValue() == depMonth.shortValue()) {
-        		if (thisDay.shortValue() < depDay.shortValue());
-        		if (thisDay.shortValue() == depDay.shortValue()) {
-        			errorMessage = "You must enter a Date that matches as from Tomorrow (DAY)";
-	        		message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-	        		FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-        		}
-        		if (thisDay.shortValue() > depDay.shortValue()) {
-        			errorMessage = "You must enter a Date that matches as from Tomorrow (DAY)";
-	        		message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-	        		FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-        		}
-        	}
-        	if (thisMonth.shortValue() > depMonth.shortValue()) {
-        		errorMessage = "You must enter a Date that matches as from Tomorrow (MONTH)";
-    			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-    			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-        	}
-        }
-        if (thisYear.shortValue() > depYear.shortValue()) {
-        	errorMessage = "You must enter a Date that matches as from Tomorrow (YEAR)";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-        }
-        
-        SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
-    	String depTime = sdf.format(this.departureTime.getTime());
-        pattern = Pattern.compile("([01]?[0-9]|2[0-3]):[0-5][0-9]");
-        matcher = pattern.matcher(depTime);
-        if (!matcher.matches()) {
-        	errorMessage = "You must enter a Time as like 09:15";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-        }
-        
-        date = this.departureDate;
-        Integer depHour = date.getHours();
-		if (depHour.intValue() < 0 && depHour.intValue() > 23) {
-			errorMessage = "Hour must be between 00 and 23";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		Integer depMins = date.getMinutes();
-		if (depMins.intValue() < 0 && depMins.intValue() > 59) {
-			errorMessage = "Minuts must be between 00 and 59";
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-        
-        if (errorMessage != null) {
-			return "errorView";
-			
-		} else {
-			/*	
-			ActionEvent event = null;
-			String action = (String)event.getComponent().getAttributes().get("action");
-			Integer tripId = 113;
-			String departureCity = "soller";
-			String arrivalCity = "ariany";
-			String description = "ok";
-			String fromPlace = "ajunt...";
-			String toPlace = "ajunt...";
-			Date departureDate = null;
-			Date departureTime = null;
-			Float price = null;
-			*/
 			updateTripInformationRemote.updateTripInformation(tripId, tripDescription, 
 				tripDepartureCity, tripFromPlace, tripDepartureDate, tripDepartureTime, 
-				tripArrivalCity, tripToPlace, tripAvailableSeats, tripPrice);
-			/*
-			this.setDepartureCity("");
-			this.setFromPlace("");
-			this.setDepartureCity(null);
-			this.setDepartureCity(null);
-			this.setArrivalCity("");
-			this.setFromPlace("");
-			this.setAvailableSeats(0);
-			this.setPrice(0);
-			*/
+				tripArrivalCity, tripToPlace, tripAvailableSeats, tripPrice, carSelected);
+			
 			return "/pages/public/findTripsView";
-		//}
 	}
 	
 	

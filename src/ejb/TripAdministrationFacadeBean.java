@@ -42,6 +42,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public static final String PARAMETER_TRIP_TO_PLACE = "toPlace";
 	public static final String PARAMETER_TRIP_AVAILABLE_SEATS = "availableSeats";
 	public static final String PARAMETER_TRIP_PRICE = "price";
+	public static final String PARAMETER_TRIP_CAR = "myCar";
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
 	private String carSelected;
@@ -131,8 +132,17 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	@Override
 	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace,
 			Date departureDate, Date departureTime, String arrivalCity, String toPlace, Integer availableSeats,
-			Float price) {
-		// TODO Auto-generated method stub		
+			Float price, String selectedCar) {
+		// TODO Auto-generated method stub
+		
+		String[] tokens = selectedCar.split(" ");
+		String brand = tokens[0];
+		String model = tokens[1];
+		String colour = tokens[2];
+		CarJPA myCar = (CarJPA) entman.createNamedQuery("CarJPA.findCarByBrandModelColour")
+				.setParameter("brand", brand).setParameter("model", model)
+				.setParameter("colour", colour).getSingleResult();
+		//trip.setCar(myCar);
 
 		try {
 			entman.createNamedQuery(QUERY_UPDATE_TRIP)
@@ -146,6 +156,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			.setParameter(PARAMETER_TRIP_AVAILABLE_SEATS, availableSeats)
 			.setParameter(PARAMETER_TRIP_PRICE, price)
 			.setParameter(PARAMETER_TRIP_ID, tripId)
+			.setParameter(PARAMETER_TRIP_CAR, myCar)
 			.executeUpdate();
 		} catch (PersistenceException e) {
 			System.out.println(e);

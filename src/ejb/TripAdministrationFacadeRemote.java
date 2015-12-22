@@ -19,7 +19,7 @@ public interface TripAdministrationFacadeRemote {
 	public Collection<TripJPA> findMyTrips(String driver);
 	void addTrip(String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif, String selectedCar);
 	public Collection<PassengerJPA> findAllPassengers(int tripId);
-	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, Integer availableSeats, Float price);
+	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, Integer availableSeats, Float price, String carSelected);
 	public TripJPA showTrip(Integer tripId);
 	public Collection<CarJPA> getMyCars(String driverId);
 }

@@ -31,8 +31,8 @@ import javax.validation.constraints.Size;
 			+ "t.description = :description, t.departureCity = :departureCity, "
 			+ "t.fromPlace = :fromPlace, t.departureDate = :departureDate, "
 			+ "t.departureTime = :departureTime, t.arrivalCity = :arrivalCity, "
-			+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price "
-			+ "WHERE t.id = :tripId"),
+			+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price, "
+			+ "t.car = :myCar WHERE t.id = :tripId"),
 })
 public class TripJPA implements Serializable {
 

@@ -7,21 +7,21 @@
 <ui:composition template="/pages/public/templates/main.xhtml">
 	<ui:define name="content">
 		<f:metadata>
-			<f:viewParam name="tripId" value="#{showPassengersTripController.tripId}"/>
-			<!--<f:event listener="#{showPassengersTripController.getPassengers()}" type="preRenderView" />-->
+			<f:viewParam name="tripId" value="#{findAllPassengersController.tripId}"/>
+			<!--<f:event listener="#{findAllPassengersController.getPassengers()}" type="preRenderView" />-->
 		</f:metadata>
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
 					<i class="fa fa-car"></i>&nbsp;<i class="fa fa-male"></i><i class="fa fa-male"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Passengers for Trip&nbsp;&nbsp;
-					<h:outputLabel value="##{showPassengersTripController.tripId}" />
+					<h:outputLabel value="##{findAllPassengersController.tripId}" />
 				</h1>
 			</div>
 		</div>
 		<h:form>
 		<div class="row">
 			<div class="col-xs-12">
-				<h:dataTable var="item" value="#{showPassengersTripController.allPassengers}" class="table table-striped" rendered="#{not empty showPassengersTripController.allPassengers}">
+				<h:dataTable var="item" value="#{findAllPassengersController.allPassengers}" class="table table-striped" rendered="#{not empty findAllPassengersController.allPassengers}">
 					<h:column>
 		   				<f:facet name="header">
 		   					<h:outputText value="Name"/>
@@ -57,9 +57,9 @@
 		</div>
 		<div class="col-md-12 text-center">
 			<ul class="list-inline">
-				<li><h:commandButton class="btn btn-default btn-sm" action="#{showPassengersTripController.previousScreen}" value="Previous" /></li>
+				<li><h:commandButton class="btn btn-default btn-sm" action="#{findAllPassengersController.previousScreen}" value="Previous" /></li>
 				<li><h:commandButton class="btn btn-default btn-sm" action="/pages/public/findTripsView.xhtml" value="Return" /></li>
-				<li><h:commandButton class="btn btn-default btn-sm" action="#{showPassengersTripController.nextScreen}" value="Next" /></li>
+				<li><h:commandButton class="btn btn-default btn-sm" action="#{findAllPassengersController.nextScreen}" value="Next" /></li>
 			</ul>
 		</div>
 	</h:form>

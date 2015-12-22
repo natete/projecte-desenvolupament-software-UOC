@@ -13,7 +13,7 @@
 			</h1>
 		</div>
 			<h:form>
-				<h:dataTable value="#{trips.tripListView}" var="item" class="table table-striped"  >
+				<h:dataTable value="#{findMyTripsController.tripListView}" var="item" class="table table-striped"  >
 		 			<h:column>
 		   				<f:facet name="header">
 		   					<h:outputText value="From"/>
@@ -48,7 +48,7 @@
 		     			</div>
 		     			<div class="btn btn-default btn-sm">
 		     				<i class="fa fa-users"></i>&nbsp;
-		     				<h:outputLink value="showAllPassengersView.xhtml" style="text-decoration:none;">
+		     				<h:outputLink value="findAllPassengersView.xhtml" style="text-decoration:none;">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<h:outputText value="Passengers" style="color:#424242" />
 		     				</h:outputLink>
@@ -64,9 +64,9 @@
 		 		</h:dataTable>
 		 		<div class="col-md-12 text-center">
 					<ul class="list-inline">
-						<li><h:commandButton class="btn btn-default btn-sm" action="#{trips.previousScreen}" value="Previous" /></li>
+						<li><h:commandButton class="btn btn-default btn-sm" action="#{findMyTripsController.previousScreen}" value="Previous" /></li>
 						<li><h:commandButton class="btn btn-default btn-sm" action="/pages/public/findTripsView.xhtml" value="Return" /></li>
-						<li><h:commandButton class="btn btn-default btn-sm" action="#{trips.nextScreen}" value="Next" /></li>
+						<li><h:commandButton class="btn btn-default btn-sm" action="#{findMyTripsController.nextScreen}" value="Next" /></li>
 					</ul>
 				</div>
 	 		</h:form>

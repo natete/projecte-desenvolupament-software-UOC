@@ -1,9 +1,7 @@
 package ejb;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
@@ -17,9 +15,8 @@ import jpa.TripJPA;
 
 /**
  * TripAdministrationFacadeBean
- * @author GRUP6 -jordi-nacho-ximo-joan-
+ * @author GRUP6 jordi-nacho-ximo-joan
  */
-
 @Stateless
 public class TripAdministrationFacadeBean implements TripAdministrationFacadeRemote {
 
@@ -45,12 +42,15 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public static final String PARAMETER_TRIP_CAR = "myCar";
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
-	private String carSelected;
-
+	
 	/**
-	 * findMyTrips
+	 * Returns a collection of trips from 
+	 * carsharing.trip owned by a logged 
+	 * driver.
+	 * @return Collection&lt;TripJPA&gt;.
 	 */
 	@Override
+	@SuppressWarnings("unchecked")
 	public Collection<TripJPA> findMyTrips(String driverNif) {
 
 		Collection<TripJPA> myTrips = null;
@@ -64,8 +64,12 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	}
 
 	/**
-	 * addTrip
-	 * 
+	 * Add a trip to carsharing.trps table.
+	 * The method gets the parameters from 
+	 * the managed bean, then gets the driver 
+	 * id to add it to the trip entity, and 
+	 * finally persists the trip via entity 
+	 * manager. 
 	 */
 	@Override
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
@@ -107,9 +111,14 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			System.out.println(e);
 		}
 	}
-
+	
 	/**
-	 * findAllPassengers
+	 * Sends a query to carsharing.trip upon 
+	 * tripId parameter to get the specified 
+	 * trip. Then calls getPassengers() method 
+	 * from TripJPA to get all passengers of 
+	 * that specified trip.
+	 * @return List&lt;PassengerJPA&gt;.
 	 */
 	@Override
 	public List<PassengerJPA> findAllPassengers(int tripId) {
@@ -127,7 +136,12 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	}
 
 	/**
-	 * updateTripInformation
+	 * Updates a given trip upon its id and the 
+	 * parameters gotten from the managed bean.
+	 * The method first has to split the carSelected 
+	 * string to get the brand, model and color 
+	 * parameters. Then calls a query to get the 
+	 * given car. Finally, executes the update.
 	 */
 	@Override
 	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace,

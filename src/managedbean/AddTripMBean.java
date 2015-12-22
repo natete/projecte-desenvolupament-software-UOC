@@ -47,12 +47,12 @@ public class AddTripMBean implements Serializable {
 	
 	/**
 	 * AddTripMBean Default Constructor.
-	 * @throws Exception.
 	 */
-	public AddTripMBean() throws Exception {
+	public AddTripMBean() {
 		super();
 	}
-		
+	
+	
 	/**
 	 * Returns parameter description.
 	 * @return description.

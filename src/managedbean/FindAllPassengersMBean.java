@@ -68,4 +68,16 @@ public class FindAllPassengersMBean implements Serializable {
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx .lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
 		passengersList = (Collection<PassengerJPA>)tripAdmFacadeRemote.findAllPassengers(getTripId());
 	}
+	
+	public void nextScreen() {
+		if (((screen + 1) * 10 < passengersList.size())) {
+			screen += 1;
+		}
+	}
+
+	public void previousScreen() {
+		if ((screen > 0)) {
+			screen -= 1;
+		}
+	}
 }

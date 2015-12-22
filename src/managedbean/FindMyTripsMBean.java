@@ -39,12 +39,10 @@ public class FindMyTripsMBean implements Serializable {
 	private DateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy");
 	private DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 	
-	
 	public FindMyTripsMBean() {
 		
 	}
-	
-	
+		
 	public UserDTO getLogedUser() {
 		logedUser = SessionBean.getLoggedUser();
 		return logedUser;
@@ -89,6 +87,18 @@ public class FindMyTripsMBean implements Serializable {
 		screen = 0;
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx .lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
 		tripsList = (Collection<TripJPA>)tripAdmFacadeRemote.findMyTrips(getDriverId());
+	}
+	
+	public void nextScreen() {
+		if (((screen + 1) * 10 < tripsList.size())) {
+			screen += 1;
+		}
+	}
+
+	public void previousScreen() {
+		if ((screen > 0)) {
+			screen -= 1;
+		}
 	}
 	
 	public Integer getTripId() {

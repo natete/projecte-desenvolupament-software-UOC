@@ -22,110 +22,215 @@ import jpa.CarJPA;
 
 /**
  * AddTripMBean
- * @author GRUP6 -jordi-nacho-ximo-joan-
+ * @author GRUP6 jordi-nacho-ximo-joan
  */
-@ManagedBean(name="addtrip")
+@ManagedBean(name="addTripController")
 @SessionScoped
 public class AddTripMBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
 	@EJB
 	private TripAdministrationFacadeRemote addTripRemote;
-	
 	private String description;
-	//@NotEmpty(message = "Departure City cannot be empty!")
 	private String departureCity;
-	//@NotEmpty(message = "Departure Place cannot be empty!")
 	private String fromPlace;
-	//@NotEmpty(message = "Departure Date cannot be empty!")
-	//@Future(message = "You must type a correct Date!")
 	private Date departureDate;
-	//@NotEmpty(message = "Departure Time cannot be empty!")
-	//@Future(message = "you must type a correct Time!")
-	//@Pattern(regexp = "[0-2][0-9]:[0-5][0-9]", message = "Hour between 00:00 and 23:59")
 	private Date departureTime;
-	//@NotEmpty(message = "Arrival City cannot be empty!")
 	private String arrivalCity;
-	//@NotEmpty(message = "Arrival Place cannot be empty!")
 	private String toPlace;
-	//@NotEmpty(message = "Available Seats cannot be empty!")
-	//@Digits(integer = 1 , fraction = 0, message = "You must provide a valid range!")
-	//@Range(min=1, max=4, message="There are "+"#{addTrip.availableSeats}"+" available seats!")
 	private int availableSeats;
-	//@NotEmpty(message = "Price cannot be empty!")
-	//@Digits(integer = 2, fraction = 0, message = "You must provide a valid age!")
-	//@Range(min=0, max=20, message="Price between 0 and 20 €")
 	private float price;
 	private Collection<CarJPA> cars;
 	private String carSelected;
 	private FacesMessage message;	
 	
+	
+	/**
+	 * AddTripMBean Default Constructor.
+	 * @throws Exception.
+	 */
 	public AddTripMBean() throws Exception {
-		
+		super();
 	}
 		
+	/**
+	 * Returns parameter description.
+	 * @return description.
+	 */
 	public String getDescription() {
 		return description;
 	}
+	
+	/**
+	 * Sets parameter description.
+	 * @param description.
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	/**
+	 * Returns parameter departureCity
+	 * @return departureCity.
+	 */
 	public String getDepartureCity() {
 		return departureCity;
 	}
+	
+	/**
+	 * Sets parameter departureCity.
+	 * @param departureCity.
+	 */
 	public void setDepartureCity(String departureCity) {
 		this.departureCity = departureCity;
 	}
+	
+	/**
+	 * Returns parameter fromPlace.
+	 * @return fromPlace.
+	 */
 	public String getFromPlace() {
 		return fromPlace;
 	}
+	
+	/**
+	 * Sets parameter fromPlace.
+	 * @param fromPlace.
+	 */
 	public void setFromPlace(String fromPlace) {
 		this.fromPlace = fromPlace;
 	}
+	
+	/**
+	 * Returns parameter departureDate.
+	 * @return departureDate.
+	 */
 	public Date getDepartureDate() {
 		return departureDate;
 	}
+	
+	/**
+	 * Sets parameter departureDate.
+	 * @param departureDate.
+	 */
 	public void setDepartureDate(Date departureDate) {
 		this.departureDate = departureDate;
 	}
+	
+	/**
+	 * Returns parameter deparutureTime.
+	 * @return deparutureTime.
+	 */
 	public Date getDepartureTime() {
 		return departureTime;
 	}
+	
+	/**
+	 * Sets parameter departureTime.
+	 * @param departureTime.
+	 */
 	public void setDepartureTime(Date departureTime) {
 		this.departureTime = departureTime;
 	}
+	
+	/**
+	 * Returns parameter arrivalCity.
+	 * @return arrivalCity.
+	 */
 	public String getArrivalCity() {
 		return arrivalCity;
 	}
+	
+	/**
+	 * Sets parameter arrivalCity.
+	 * @param arrivalCity.
+	 */
 	public void setArrivalCity(String arrivalCity) {
 		this.arrivalCity = arrivalCity;
 	}
+	
+	/**
+	 * Returns parameter toPlace.
+	 * @return toPlace.
+	 */
 	public String getToPlace() {
 		return toPlace;
 	}
+	
+	/**
+	 * Sets parameter toPlace.
+	 * @param toPlace.
+	 */
 	public void setToPlace(String toPlace) {
 		this.toPlace = toPlace;
 	}
+	
+	/**
+	 * Returns parameter availableSeats.
+	 * @return availableSeats.
+	 */
 	public int getAvailableSeats() {
 		return availableSeats;
 	}
+	
+	/**
+	 * Sets parameter availableSeats.
+	 * @param availableSeats.
+	 */
 	public void setAvailableSeats(int availableSeats) {
 		this.availableSeats = availableSeats;
 	}
+	
+	/**
+	 * Returns parameter price.
+	 * @return price.
+	 */
 	public float getPrice() {
 		return price;
 	}
+	
+	/**
+	 * Sets parameter price.
+	 * @param price.
+	 */
 	public void setPrice(float price) {
 		this.price = price;
 	}
+	
+	/**
+	 * Returns parameter carSelected,
+	 * a parameter representing a car in
+	 * the database, it is formatted as a
+	 * String with the brand, model and
+	 * color of the car.
+	 * @return carSelected.
+	 */
 	public String getCarSelected() {
 		return carSelected;
 	}
+	
+	/**
+	 * Sets parameter carSelected,
+	 * a parameter representing a car in
+	 * the database, it is formatted as a
+	 * String with the brand, model and
+	 * color of the car.
+	 * @param carSelected.
+	 */
 	public void setCarSelected(String carSelected) {
 		this.carSelected = carSelected;
 	}
-
+	
+	/**
+	 * Adds a trip in carsharing.trip table.
+	 * This method first validates entry fields 
+	 * from <b>addTripView.xhtm</b> and then 
+	 * calls addTrip in TripAdmnistrationFacadeRemote 
+	 * interface to add the trip. 
+	 * @return initial page if everything went
+	 * find, elsewhere it returns an errorMessage.
+	 * @throws Exception.
+	 */
 	public String addTrip() throws Exception {
 		String errorMessage = null;
 		
@@ -166,10 +271,10 @@ public class AddTripMBean implements Serializable {
 		Date date = new Date();
 		Integer thisDay = date.getDate();
 		Integer thisMonth = date.getMonth();
-		// add 1 to month because starts counting from 0;
+		// add 1 to month due to Month starts counting from 0;
 		thisMonth ++;
 		Integer thisYear = date.getYear();
-		// add 1900 to year beacause starts counting from 1900;
+		// add 1900 to year due to Year starts counting since 1900;
 		thisYear +=1900;
 		
         Integer depDay = this.departureDate.getDate();
@@ -252,6 +357,13 @@ public class AddTripMBean implements Serializable {
 		}
 	}
 	
+	/**
+	 * Returns a list of cars from carsharing.car,
+	 * representing all cars from a logged driver.
+	 * The list is formatted as a String as <b>model 
+	 * brand color</b>.
+	 * @return ArrayList<String>
+	 */
 	public ArrayList<String> getCars() {
 		UserDTO userDTO = SessionBean.getLoggedUser();
 		String driverId = userDTO.getId();

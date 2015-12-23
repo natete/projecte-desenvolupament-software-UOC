@@ -377,4 +377,5 @@ public class AddTripMBean implements Serializable {
 		}
 		return brands;
 	}
+
 }

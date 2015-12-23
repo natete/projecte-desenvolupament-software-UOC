@@ -11,6 +11,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+
+import ejb.TripAdministrationFacadeBean;
 import ejb.TripAdministrationFacadeRemote;
 import jpa.CarJPA;
 import jpa.TripJPA;

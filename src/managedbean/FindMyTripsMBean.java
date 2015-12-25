@@ -4,14 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import ejb.TripAdministrationFacadeRemote;
+import ejb.TripFacadeRemote;
 import jpa.TripJPA;
+import jpa.TripsDTO;
 import jpa.UserDTO;
 
 /**
@@ -23,7 +27,7 @@ import jpa.UserDTO;
 public class FindMyTripsMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+	private static final int PAGE_SIZE = 10;
 	@EJB
 	private TripAdministrationFacadeRemote tripAdmFacadeRemote;
 	protected Collection<TripJPA> tripsListView;
@@ -34,13 +38,20 @@ public class FindMyTripsMBean implements Serializable {
 	private Integer tripId;
 	private int screen = 0;
 	protected int numTrips = 0;
-	
+	private int currentPage;
+	private List<Integer> pages;
+	private List<TripJPA> trips;
+	private Long totalResults;
+	private final String emptyListMessage = "<i class='fa fa-times'></i> Sorry we have no trips matching your search criteria right now...";
+	private String searchMessage = "";
 	
 	/**
 	 * FindMyTripsMBean Default Constructor.
 	 */
 	public FindMyTripsMBean() {
 		super();
+		currentPage = 1;
+		pages = new ArrayList<>();
 	}
 	
 	/**
@@ -136,13 +147,16 @@ public class FindMyTripsMBean implements Serializable {
 		return tripsListView;
 	}
 	
-	/**
+	/** 
 	 * Gets all trips owned by a logged user
 	 * from carsharing.trip table. This method 
 	 * is used by getTripListView() to show on 
 	 * screen the passengers.
 	 * @show getTripListView().
 	 * @throws Exception.
+	 * @notice This method is no longer used, 
+	 * see findTrips(int page) instead.
+	 * @see findTrips(int page).
 	 */
 	private void tripList() throws Exception {
 		Properties props = System.getProperties();
@@ -170,5 +184,92 @@ public class FindMyTripsMBean implements Serializable {
 		if ((screen > 0)) {
 			screen -= 1;
 		}
+	}
+	
+	/** 
+	 * Gets all trips owned by a logged user
+	 * from carsharing.trip table. This method 
+	 * is used by getTripListView() to show on 
+	 * screen the passengers.
+	 * Against the former method, this one makes 
+	 * queries to database by paging tables 10 
+	 * 10. It get the page number from view to 
+	 * know what page query to make.
+	 * @return int.
+	 */
+	public void findTrips(int page) throws NamingException {
+		Properties props = System.getProperties();
+		Context ctx = new InitialContext(props);
+		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
+		TripsDTO tripsDto = tripAdmFacadeRemote.findMyTrips(getDriverId(), page - 1);
+		trips = tripsDto.getTrips();
+		currentPage = page;
+		if (trips == null || trips.isEmpty()) {
+			searchMessage = emptyListMessage;
+		} else if (tripsDto.getTotal() != totalResults) {
+			totalResults = tripsDto.getTotal();
+			populatePagesList(tripsDto.getTotal());
+		}
+	}
+	
+	/**
+	 * Auxiliary method to findTrips that adds pages.
+	 * @param total.
+	 */
+	private void populatePagesList(Long total) {
+		pages.clear();
+		for (int i = 0; i * PAGE_SIZE < totalResults; i++) {
+			pages.add(i + 1);
+		}
+	}
+	
+	/**
+	 * Returns a list of trips.
+	 * @return List&lt;TripJPA&gt;.
+	 */
+	public List<TripJPA> getTrips() {
+		return trips;
+	}
+	
+	/**
+	 * Sets a list of trips.
+	 * @param List&lt;trips&gt;.
+	 */
+	public void setTrips(List<TripJPA> trips) {
+		this.trips = trips;
+	}
+	
+	/**
+	 * Returns a searchMessage in 
+	 * case of error.
+	 * @return String searchMessage.
+	 */
+	public String getSearchMessage() {
+		return searchMessage;
+	}
+	
+	/**
+	 * Returns the current page.
+	 * @return currentPage.
+	 */
+	public int getCurrentPage() {
+		return currentPage;
+	}
+	
+	/**
+	 * Returns the list of pages.
+	 * @return List&lt;Integer&gt;.
+	 */
+	public List<Integer> getPages() {
+		return pages;
+	}
+	
+	/**
+	 * Returns the number of trips.
+	 * @return totalResults.
+	 */
+	public Long getTotalResults() {
+		return totalResults;
 	}
 }

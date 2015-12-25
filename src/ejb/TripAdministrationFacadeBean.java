@@ -1,17 +1,20 @@
 package ejb;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.TripJPA;
+import jpa.TripsDTO;
 
 /**
  * TripAdministrationFacadeBean
@@ -40,6 +43,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public static final String PARAMETER_TRIP_AVAILABLE_SEATS = "availableSeats";
 	public static final String PARAMETER_TRIP_PRICE = "price";
 	public static final String PARAMETER_TRIP_CAR = "myCar";
+	private static final int PAGE_SIZE = 10;
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
 	
@@ -176,11 +180,23 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			System.out.println(e);
 		}
 	}
-	
+	/*
 	public TripJPA showTrip(Integer tripId) {
 		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
 		query.setParameter(PARAMETER_TRIP_ID, tripId);
 		return (TripJPA) query.getSingleResult();
+	}
+	*/
+	public TripJPA showTrip(Integer id) {
+		TripJPA trip;
+		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
+		query.setParameter(PARAMETER_TRIP_ID, id);
+		try {
+			trip = (TripJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			trip = null;
+		}
+		return trip;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -195,5 +211,21 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			System.out.println(e);
 		}
 		return myCars;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public TripsDTO findMyTrips(String driver, int page) {
+		// TODO Auto-generated method stub
+		
+		Query query = entman.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER);
+		query.setParameter("driverNif", driver);
+		query.setFirstResult(page * PAGE_SIZE);
+		query.setMaxResults(PAGE_SIZE);
+		TripsDTO trips = new TripsDTO();
+		trips.setTrips(query.getResultList());
+		Integer total = trips.getTrips().size();
+		trips.setTotal(total.longValue());
+		return trips;
 	}
 }

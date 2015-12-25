@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Collection;
 import javax.ejb.Remote;
 import jpa.TripJPA;
+import jpa.TripsDTO;
 import jpa.CarJPA;
 import jpa.PassengerJPA;
 
@@ -22,6 +23,8 @@ public interface TripAdministrationFacadeRemote {
 	 * collection of trips owned by the driver.
 	 */
 	public Collection<TripJPA> findMyTrips(String driver);
+	
+	public TripsDTO findMyTrips(String driver, int page);
 	
 	/**
 	 * Adds a trip to the system upon the given parameters.

@@ -9,7 +9,7 @@
 	<ui:define name="content">
 		<div class="col-xs-12">
 			<h1 class="page-header">
-				<i class="fa fa-car"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;My Trips
+				<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;My Trips
 			</h1>
 		</div>
 			<h:form>
@@ -39,36 +39,53 @@
 		     			<h:outputText align="right" value="#{item.departureTime}" />
 		   			</h:column>
 		   			<h:column>
-		     			<div class="btn btn-default btn-sm">
-		     				<i class="fa fa-info-circle"></i>&nbsp;
-		     				<h:outputLink value="../public/showTripView.xhtml" style="text-decoration:none;">
+		     			<h:panelGroup class="col-md-2 col-md-offset-4">
+		     				<h:outputLink value="../public/showTripView.xhtml" class="btn btn-primary">
 		     					<f:param name="tripId" value="#{item.id}" />
-								<h:outputText value="Details" style="color:#424242" />
+		     					<i class="fa fa-info-circle"></i>&nbsp;
+								<h:outputText value="Details" />
 							</h:outputLink>
-		     			</div>
-		     			<div class="btn btn-default btn-sm">
-		     				<i class="fa fa-users"></i>&nbsp;
-		     				<h:outputLink value="findAllPassengersView.xhtml" style="text-decoration:none;">
+		     			</h:panelGroup>
+		     			<h:panelGroup class="col-md-2">
+		     				<h:outputLink value="findAllPassengersView.xhtml" class="btn btn-primary">
 		     					<f:param name="tripId" value="#{item.id}" />
-		     					<h:outputText value="Passengers" style="color:#424242" />
-		     				</h:outputLink>
-		     			</div>
-		     			<div class="btn btn-default btn-sm">
-		     				<i class="fa fa-refresh"></i>&nbsp;
-		     				<h:outputLink value="updateTripInformationView.xhtml" style="text-decoration:none;">
+		     					<i class="fa fa-male"></i>&nbsp;
+								<h:outputText value="Passengers" />
+							</h:outputLink>
+		     			</h:panelGroup>
+		     			<h:panelGroup class="col-md-2 col-md-offset-1">
+		     				<h:outputLink value="updateTripInformationView.xhtml" class="btn btn-primary">
 		     					<f:param name="tripId" value="#{item.id}" />
-		     					<h:outputText value="Update" style="color:#424242" />
-		     				</h:outputLink>
-		     			</div>
+		     					<i class="fa fa-refresh"></i>&nbsp;
+								<h:outputText value="Update" />
+							</h:outputLink>
+		     			</h:panelGroup>
 		   			</h:column>
 		 		</h:dataTable>
-		 		<div class="col-md-12 text-center">
+		 		<!--<div class="col-md-12 text-center">
 					<ul class="list-inline">
 						<li><h:commandButton class="btn btn-default btn-sm" action="#{findMyTripsController.previousScreen}" value="Previous" /></li>
 						<li><h:commandButton class="btn btn-default btn-sm" action="/pages/public/findTripsView.xhtml" value="Return" /></li>
 						<li><h:commandButton class="btn btn-default btn-sm" action="#{findMyTripsController.nextScreen}" value="Next" /></li>
 					</ul>
-				</div>
+				</div>	-->
+				<h:panelGroup class="col-xs-12 text-center">
+					<ul class="pagination pagination-lg">
+						<li class="#{findMyTripsController.currentPage eq 1 ? 'disabled' : ''}">
+							<h:commandLink action="#{findTMyTripsController.findTrips(findMyTripsController.currentPage-1)}" value="Prev" disabled="#{findMyTripsController.currentPage eq 1}" />
+						</li>
+						<ui:repeat var="page" value="#{findMyTripsController.currentPage}">
+							<li class="#{page eq findMyTripsController.currentPage ? 'active' : ''}">
+								<h:commandLink action="#{findMyTripsController.findTrips(page)}" value="#{page}">
+								<f:param name="page" value="#{page}" />
+								</h:commandLink>
+							</li>
+						</ui:repeat>
+						<li class="#{findMyTripsController.currentPage*10 gt findMyTripsController.totalResults ? 'disabled' : ''}">
+							<h:commandLink action="#{findMyTripsController.findTrips(findMyTripsController.currentPage+1)}" value="Next" disabled="#{findMyTripsController.currentPage*10 gt findMyTripsController.totalResults}" />
+						</li>
+					</ul>
+				</h:panelGroup>
 	 		</h:form>
 	</ui:define>
 </ui:composition>

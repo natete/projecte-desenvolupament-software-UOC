@@ -13,7 +13,6 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import ejb.TripAdministrationFacadeRemote;
-import ejb.TripFacadeRemote;
 import jpa.TripJPA;
 import jpa.TripsDTO;
 import jpa.UserDTO;
@@ -255,6 +254,14 @@ public class FindMyTripsMBean implements Serializable {
 	 */
 	public int getCurrentPage() {
 		return currentPage;
+	}
+	
+	/**
+	 * Sets the current page.
+	 * @param page.
+	 */
+	public void setCurrentPage(int page) {
+		this.currentPage = page;
 	}
 	
 	/**

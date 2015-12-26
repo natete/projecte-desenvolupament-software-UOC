@@ -1,11 +1,18 @@
 package ejb;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -26,6 +33,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public static final String BLANK_SPACE = " ";
 	public static final String QUERY_FIND_TRIPS_BY_DRIVER = "TripJPA.findTripsByDriver";
 	public static final String QUERY_GET_TRIP_BY_ID = "TripJPA.getTripById";
+	public static final String QUERY_FIND_TRIPS_BY_DRIVER_TABLE_PAGES = "TripJPA.findTripsByDriverDataBasePaging";
 	public static final String QUERY_UPDATE_TRIP = "TripJPA.updateTrip";
 	public static final String QUERY_GET_DRIVER_BY_NIF = "findMyDriver";
 	public static final String QUERY_GET_CARS_BY_DRIVER = "CarJPA.findCarsByDriverId";
@@ -51,7 +59,10 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 * Returns a collection of trips from 
 	 * carsharing.trip owned by a logged 
 	 * driver.
+	 * @notation This method is no longer 
+	 * in use.
 	 * @return Collection&lt;TripJPA&gt;.
+	 * @see findMyTrips(String driver, int page).
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -66,7 +77,64 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		}
 		return myTrips;
 	}
-
+	
+	/**
+	 * This method makes queries to 
+	 * trips table by paging methods.
+	 * @return TripsDTO trips.
+	 */
+	@Override
+	@SuppressWarnings("unchecked")
+	public TripsDTO findMyTrips(String driver, int page) {
+		// TODO Auto-generated method stub
+		
+		Query query = entman.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER)
+				.setParameter("driverNif", driver)
+				.setFirstResult(page * PAGE_SIZE)
+				.setMaxResults(PAGE_SIZE);
+		TripsDTO trips = new TripsDTO();
+		trips.setTrips(query.getResultList());
+		Integer total = trips.getTrips().size();
+		
+		trips.setTotal(total.longValue());
+		return trips;
+		/*
+		DriverJPA myDriver = (DriverJPA) entman.createNamedQuery(QUERY_GET_DRIVER_BY_NIF)
+				.setParameter("nif", driver)
+				.getSingleResult();
+		CriteriaBuilder cb = entman.getCriteriaBuilder();
+		CriteriaQuery<TripJPA> criteriaQuery = cb.createQuery(TripJPA.class);
+		Root<TripJPA> root = criteriaQuery.from(TripJPA.class);
+		List<Predicate> predicates = new ArrayList<>();
+		Predicate pred = cb.equal(root.get("driver"), myDriver);
+		predicates.add(pred);
+		criteriaQuery.where(cb.and(predicates.toArray(new Predicate[0])));
+		final TypedQuery<TripJPA> query = entman.createQuery(criteriaQuery);
+		query.setFirstResult(page * PAGE_SIZE);
+		query.setMaxResults(PAGE_SIZE);
+		TripsDTO trips = new TripsDTO();
+		trips.setTrips(query.getResultList());
+		CriteriaQuery<Long> countCriteria = cb.createQuery(Long.class);
+		Root<TripJPA> countRoot = countCriteria.from(TripJPA.class);
+		countCriteria.select(cb.count(countRoot));
+		countCriteria.where(cb.and(predicates.toArray(new Predicate[0])));
+		trips.setTotal(entman.createQuery(countCriteria).getSingleResult());
+		return trips;
+		*/
+	}
+	
+	
+	public static int getLastPage(int totalElements, int pageSize) {
+        int base = totalElements / pageSize;
+        int mod = totalElements % pageSize;
+        return base + (mod > 0?1:0);
+    }
+	
+	public static int getStartItemByPage(int currentPage, int pageSize) {
+        return Math.max((pageSize * (currentPage - 1)) + 1, 1);
+    }
+	
+	
 	/**
 	 * Add a trip to carsharing.trps table.
 	 * The method gets the parameters from 
@@ -158,10 +226,10 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		String model = tokens[1];
 		String colour = tokens[2];
 		CarJPA myCar = (CarJPA) entman.createNamedQuery("CarJPA.findCarByBrandModelColour")
-				.setParameter("brand", brand).setParameter("model", model)
-				.setParameter("colour", colour).getSingleResult();
-		//trip.setCar(myCar);
-
+				.setParameter("brand", brand)
+				.setParameter("model", model)
+				.setParameter("colour", colour)
+				.getSingleResult();
 		try {
 			entman.createNamedQuery(QUERY_UPDATE_TRIP)
 			.setParameter(PARAMETER_TRIP_DESCRIPTION, description)
@@ -180,13 +248,8 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			System.out.println(e);
 		}
 	}
-	/*
-	public TripJPA showTrip(Integer tripId) {
-		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
-		query.setParameter(PARAMETER_TRIP_ID, tripId);
-		return (TripJPA) query.getSingleResult();
-	}
-	*/
+	
+	
 	public TripJPA showTrip(Integer id) {
 		TripJPA trip;
 		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
@@ -211,21 +274,5 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 			System.out.println(e);
 		}
 		return myCars;
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public TripsDTO findMyTrips(String driver, int page) {
-		// TODO Auto-generated method stub
-		
-		Query query = entman.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER);
-		query.setParameter("driverNif", driver);
-		query.setFirstResult(page * PAGE_SIZE);
-		query.setMaxResults(PAGE_SIZE);
-		TripsDTO trips = new TripsDTO();
-		trips.setTrips(query.getResultList());
-		Integer total = trips.getTrips().size();
-		trips.setTotal(total.longValue());
-		return trips;
 	}
 }

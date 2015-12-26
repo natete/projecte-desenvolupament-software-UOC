@@ -72,12 +72,11 @@
 				<h:panelGroup class="col-xs-12 text-center">
 					<ul class="pagination pagination-lg">
 						<li class="#{findMyTripsController.currentPage eq 1 ? 'disabled' : ''}">
-							<h:commandLink action="#{findTMyTripsController.findTrips(findMyTripsController.currentPage-1)}" value="Prev" disabled="#{findMyTripsController.currentPage eq 1}" />
+							<h:commandLink action="#{findMyTripsController.findTrips(findMyTripsController.currentPage-1)}" value="Prev" disabled="#{findMyTripsController.currentPage eq 1}" />
 						</li>
-						<ui:repeat var="page" value="#{findMyTripsController.currentPage}">
+						<ui:repeat var="page" value="#{findMyTripsController.pages}">
 							<li class="#{page eq findMyTripsController.currentPage ? 'active' : ''}">
 								<h:commandLink action="#{findMyTripsController.findTrips(page)}" value="#{page}">
-								<f:param name="page" value="#{page}" />
 								</h:commandLink>
 							</li>
 						</ui:repeat>

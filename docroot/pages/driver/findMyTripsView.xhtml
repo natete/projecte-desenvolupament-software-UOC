@@ -13,7 +13,8 @@
 			</h1>
 		</div>
 			<h:form>
-				<h:dataTable value="#{findMyTripsController.tripListView}" var="item" class="table table-striped"  >
+				<!--<h:dataTable value="#{findMyTripsController.tripListView}" var="item" class="table table-striped"  >-->
+				<h:dataTable value="#{findMyTripsController.trips}" var="item" class="table table-striped"  >
 		 			<h:column>
 		   				<f:facet name="header">
 		   					<h:outputText value="From"/>
@@ -40,21 +41,21 @@
 		   			</h:column>
 		   			<h:column>
 		     			<h:panelGroup class="col-md-2 col-md-offset-4">
-		     				<h:outputLink value="../public/showTripView.xhtml" class="btn btn-primary">
+		     				<h:outputLink value="../public/showTripView.xhtml" class="btn btn-bbg2">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<i class="fa fa-info-circle"></i>&nbsp;
 								<h:outputText value="Details" />
 							</h:outputLink>
 		     			</h:panelGroup>
 		     			<h:panelGroup class="col-md-2">
-		     				<h:outputLink value="findAllPassengersView.xhtml" class="btn btn-primary">
+		     				<h:outputLink value="findAllPassengersView.xhtml" class="btn btn-bbg2">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<i class="fa fa-male"></i>&nbsp;
 								<h:outputText value="Passengers" />
 							</h:outputLink>
 		     			</h:panelGroup>
 		     			<h:panelGroup class="col-md-2 col-md-offset-1">
-		     				<h:outputLink value="updateTripInformationView.xhtml" class="btn btn-primary">
+		     				<h:outputLink value="updateTripInformationView.xhtml" class="btn btn-bbg1">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<i class="fa fa-refresh"></i>&nbsp;
 								<h:outputText value="Update" />

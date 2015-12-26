@@ -49,7 +49,6 @@ public class AddCarMBean implements Serializable {
 
 	public void setCarRegistrationId(String carRegistrationId) {
 		this.carRegistrationId = carRegistrationId;
-
 	}
 
 	public String getBrand() {
@@ -58,7 +57,6 @@ public class AddCarMBean implements Serializable {
 
 	public void setBrand(String brand) {
 		this.brand = brand;
-
 	}
 
 	public String getModel() {
@@ -82,43 +80,24 @@ public class AddCarMBean implements Serializable {
 	}
 
 	public String setDataCar() throws Exception {
+		
+		String result;	
+		
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		addCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		if (this.carRegistrationId.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Car Registration Id is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.brand.equals("")) {
-			// Bring the error message using the Faces Context
-			errorMessage = "Brand is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
 		if (addCarRemote.existsCar(carRegistrationId) == true) {
-			// Bring the error message using the Faces Context
 			errorMessage = "Car registration Id already exists";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-
-		if (errorMessage != null) {
-			return "errorView";
+			result = "errorView";
 		} else {
 			addCarRemote.addCar(carRegistrationId, brand, model, color, userLogged);
 			this.setCarRegistrationId("");
 			this.setBrand("");
 			this.setModel("");
 			this.setColor("");
-			return "carListView";
+			
+			result = "carListView";
 		}
+		return result;
 	}
 }

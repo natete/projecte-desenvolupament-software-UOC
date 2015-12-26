@@ -47,7 +47,11 @@
    	<copy file="${sourcesrc}/META-INF/persistence.xml" todir="${buildjar}/META-INF"/>
    	<copy file="${sourcesrc}/log4j.properties" todir="${buildjar}"/>
    <javac srcdir="${sourcesrc}" destdir="${buildjar}"
+<<<<<<< HEAD
        	includes="ejb/*.java, jpa/*.java, config/*.java"
+=======
+       	includes="ejb/*.java, jpa/*.java,config/*.java"
+>>>>>>> refs/remotes/origin/master
         classpathref="jboss.classpath"   
     	includeantruntime="true"
    		debug="true"

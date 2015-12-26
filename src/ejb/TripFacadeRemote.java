@@ -21,6 +21,7 @@ public interface TripFacadeRemote {
 	 * @param departureCity the departure city of the trip
 	 * @param departureDate the departure date of the trip
 	 * @param arrivalCity the arrival city of the trip
+	 * @param page
 	 * @return a list of trips or an empty list
 	 */
 	TripsDTO findTrips(String departureCity, Date departureDate, String arrivalCity, int page);
@@ -45,4 +46,19 @@ public interface TripFacadeRemote {
 	 * @param tripId the id of the trip where the user has to be removed
 	 */
 	void removeFromTrip(String userId, Integer tripId);
+
+	/**
+	 * Find the trips that match the given conditions
+	 * @param departureCity the departure city of the trip
+	 * @param arrivalCity the arrival city of the trip
+	 * @param initialDate the initial departure date of the trip to look for
+	 * @param finalDate the final departure date of the trip to look for
+	 * @param minPrice the minimum price
+	 * @param maxPrice the maximum price
+	 * @param hasSeats restrict to trips with available seats  
+	 * @param page
+	 * @return @param page the page of the search
+	 */
+	TripsDTO advancedSearch(String departureCity, String arrivalCity, Date initialDate, Date finalDate, float minPrice,
+			float maxPrice, boolean hasSeats, int i);
 }

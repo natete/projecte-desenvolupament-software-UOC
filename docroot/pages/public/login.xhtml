@@ -17,11 +17,14 @@
 		<h:form styleClass="col-md-6 col-md-offset-3" >
 			<div class="form-group col-md-12">
 				<label for="email">E-Mail: (*) </label>
-				<h:inputText id="email" value="#{login.email}" class="form-control" />
+				<h:inputText id="email" value="#{login.email}" class="form-control" required="true" requiredMessage="This field is mandatory">
+					<f:validator validatorId="validator.EmailValidator" />
+				</h:inputText>
+				<h:message for="email" styleClass="text-danger"/>
 			</div>
 			<div class="form-group col-md-12">
 				<label for="password">Contrasenya: (*) </label>
-				<h:inputSecret value="#{login.password}" class="form-control" />
+				<h:inputSecret value="#{login.password}" class="form-control" required="true" requiredMessage="This field is mandatory" />
 			</div>
 			<div class="col-md-12 text-left">
 				<label>(*) Camp obligatori</label>
@@ -29,11 +32,12 @@
 			<div class="col-md-12 text-right">
 				<ul class="list-inline">
 					<li>
-						<h:commandLink value="Cancelar" styleClass="btn btn-default"
-							inmediate="true" action="findTripsView" />
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+							<h:outputText value="Cancel"/>
+						</h:outputLink>
 					</li>
 					<li>
-						<h:commandButton value="Aceptar" class="btn btn-primary"
+						<h:commandButton value="Ok" class="btn btn-primary"
 							action="#{login.validateData}" type="submit"/>
 					</li>
 				</ul>

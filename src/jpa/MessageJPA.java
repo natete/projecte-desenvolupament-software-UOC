@@ -1,6 +1,7 @@
 package jpa;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -18,15 +20,27 @@ import javax.persistence.Table;
 public class MessageJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 
 	private int questionId;
-	private int replyQuestionId;
 	private String subject;
 	private String body;
+	@ManyToOne
+	@JoinColumn(name = "tripId")
 	private TripJPA trip;
+	@ManyToOne
+	@JoinColumn(name = "driverId")
 	private DriverJPA driver;
+	@ManyToOne
+	@JoinColumn(name = "passengerId")
 	private PassengerJPA passenger;
-
+	@ManyToOne
+	private MessageJPA question;
+	@OneToMany(mappedBy="question")
+	private List<MessageJPA> answers;
+		
 	/**
 	 * Class constructor methods
 	 */
@@ -34,13 +48,12 @@ public class MessageJPA implements Serializable {
 		super();
 	}
 
-	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, int replyQuestionId,
+	public MessageJPA(TripJPA trip, int questionId, DriverJPA driver, PassengerJPA passenger, 
 			String subject, String body) {
 		this.trip = trip;
 		this.questionId = questionId;
 		this.driver = driver;
 		this.passenger = passenger;
-		this.replyQuestionId = replyQuestionId;
 		this.subject = subject;
 		this.body = body;
 
@@ -49,8 +62,7 @@ public class MessageJPA implements Serializable {
 	/**
 	 * Methods get/set the fields of database
 	 */
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	
 	public int getQuestionId() {
 		return questionId;
 	}
@@ -58,15 +70,7 @@ public class MessageJPA implements Serializable {
 	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
-
-	public int getReplyQuestionId() {
-		return replyQuestionId;
-	}
-
-	public void setReplyQuestionId(int replyQuestionId) {
-		this.replyQuestionId = replyQuestionId;
-	}
-
+	
 	public String getSubject() {
 		return subject;
 	}
@@ -82,12 +86,23 @@ public class MessageJPA implements Serializable {
 	public void setBody(String body) {
 		this.body = body;
 	}
+	
+	public MessageJPA getQuestion() {
+		return question;
+	}
+	
+	public void setQuestion(MessageJPA question) {
+		this.question = question;
+	}
+	
+	public List<MessageJPA> getAnswers() {
+		return answers;
+	}
 
-	/**
-	 * Methods get/set persistent relationships
-	 */
-	@ManyToOne
-	@JoinColumn(name = "tripId")
+	public void setAnswers(List<MessageJPA> answers) {
+		this.answers = answers;
+	}
+			
 	public TripJPA getTrip() {
 		return trip;
 	}
@@ -96,8 +111,7 @@ public class MessageJPA implements Serializable {
 		this.trip = trip;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "driverId")
+	
 	public DriverJPA getDriver() {
 		return driver;
 	}
@@ -106,8 +120,7 @@ public class MessageJPA implements Serializable {
 		this.driver = driver;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "passengerId")
+	
 	public PassengerJPA getPassenger() {
 		return passenger;
 	}
@@ -115,4 +128,7 @@ public class MessageJPA implements Serializable {
 	public void setPassenger(PassengerJPA passenger) {
 		this.passenger = passenger;
 	}
+	
+	
+	
 }

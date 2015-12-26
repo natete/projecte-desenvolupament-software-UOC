@@ -21,14 +21,6 @@
 				<div class="col-md-12 text-left">
 					<ul class="list-inline">
 						<li>
-							<h:commandButton class="btn btn-primary" rendered="#{not empty cars.carsListView}"
-								action="#{cars.previousScreen()}" value="Previous" />
-						</li>
-						<li>
-							<h:commandButton class="btn btn-primary" rendered="#{not empty cars.carsListView}"
-								action="#{cars.nextScreen()}" value="Next" />
-						</li>
-						<li>
 							<h:commandButton value="Add Car" class="btn btn-primary"
 								action="addCarView" />
 						</li>
@@ -36,10 +28,10 @@
 				</div>
 				<div class="col-xs-12">
 					<h3>
-						<h:outputText escape="false" value="No se han encontrado coches para #{login.username}" rendered="#{empty cars.carsListView}"></h:outputText>
+						<h:outputText escape="false" value="No se han encontrado coches para #{login.username}" rendered="#{empty cars.carsList}"></h:outputText>
 					</h3>
 					
-					<h:dataTable value="#{cars.carsListView}" var="item" class="table table-striped" rendered="#{not empty cars.carsListView}">
+					<h:dataTable value="#{cars.carsList}" var="item" class="table table-striped" rendered="#{not empty cars.carsList}">
 			 			<h:column>
 							<!-- Column header -->
 			   				<f:facet name="header">

@@ -19,28 +19,43 @@
 				<h1 class="col-md-12">Afegir nou driver</h1>
 				<div class="form-group col-md-6">
 					<label for="nif">NIF: (*) </label>
-					<h:inputText value="#{registerdriver.nif}" class="form-control" />
+					<h:inputText id="nif" value="#{registerdriver.nif}" class="form-control" required="true" requiredMessage="This field is mandatory">
+						<f:validator validatorId="validator.NifValidator" />
+					</h:inputText>
+					<h:message for="nif" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="name">Nom: (*)</label>
-					<h:inputText value="#{registerdriver.name}" class="form-control" />
+					<h:inputText id="name" value="#{registerdriver.name}" class="form-control" required="true" requiredMessage="This field is mandatory">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:message for="name" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="surname">Cognom: (*)</label>
-					<h:inputText value="#{registerdriver.surname}" class="form-control" />
+					<h:inputText id="surname" value="#{registerdriver.surname}" class="form-control" required="true" requiredMessage="This field is mandatory">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:message for="surname" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="phone">Telèfon: </label>
-					<h:inputText value="#{registerdriver.phone}" class="form-control" />
-					
+					<h:inputText id="phone" value="#{registerdriver.phone}" class="form-control" >
+						<f:validator validatorId="validator.PhoneValidator" />
+					</h:inputText>
+					<h:message for="phone" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="email">E-Mail: (*) </label>
-					<h:inputText id="email" value="#{registerdriver.email}" class="form-control" />
+					<h:inputText id="email" value="#{registerdriver.email}" class="form-control" required="true" requiredMessage="This field is mandatory">
+						<f:validator validatorId="validator.EmailValidator" />
+					</h:inputText>
+					<h:message for="email" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="password">Password: (*) </label>
-					<h:inputText value="#{registerdriver.password}" class="form-control" />
+					<h:inputText id="password" value="#{registerdriver.password}" class="form-control" required="true" requiredMessage="This field is mandatory"/>
+					<h:message for="password" styleClass="text-danger"/>
 				</div>
 				<div class="col-md-12 text-left">
 					<label>(*) Camp obligatori</label>
@@ -48,11 +63,12 @@
 				<div class="col-md-12 text-right">
 					<ul class="list-inline">
 						<li>
-							<h:commandButton value="Cancelar" class="btn btn-default"
-								inmediate="true" action="findTripsView.xhtml" />
+							<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+							</h:outputLink>
 						</li>
 						<li>
-							<h:commandButton value="Guardar" class="btn btn-primary"
+							<h:commandButton value="Save" class="btn btn-primary"
 								action="#{registerdriver.setDataDriver}" />
 						</li>
 					</ul>

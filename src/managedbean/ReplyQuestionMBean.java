@@ -14,32 +14,34 @@ import javax.faces.application.FacesMessage;
 
 import ejb.CommunicationFacadeRemote;
 
-import jpa.PassengerJPA;
+import jpa.MessageJPA;
+import jpa.DriverJPA;
 import jpa.TripJPA;
 import jpa.UserDTO;
 
 /**
- * Managed Bean RateDriver
+ * Managed Bean ReplyQuestion
  */
-@ManagedBean(name = "askquestion")
+@ManagedBean(name = "replyquestion")
 @SessionScoped
-public class AskQuestionMBean implements Serializable{
+public class ReplyQuestionMBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 		
 	@EJB
-	private CommunicationFacadeRemote askQuestionRemote;
+	private CommunicationFacadeRemote replyQuestionRemote;
 			
+	private int questionId;
 	private int tripId;
-	private String passengerId;
 	private String subject;
 	private String body;
+	private String answer;
 	private TripJPA trip;
-	private PassengerJPA passenger;
+	private MessageJPA question;
+	private DriverJPA driver;
 	private UserDTO loggedUser;
 	private String errorMessage;
 	private FacesMessage message;
-	private String redirectTo;
 	
 	
 		
@@ -47,7 +49,7 @@ public class AskQuestionMBean implements Serializable{
 	 * Constructor method
 	 * @throws Exception
 	 */
-	public AskQuestionMBean() throws Exception
+	public ReplyQuestionMBean() throws Exception
 	{
 		super();
 	}
@@ -55,17 +57,29 @@ public class AskQuestionMBean implements Serializable{
 	public void init() throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		askQuestionRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		trip = (TripJPA) askQuestionRemote.findTrip(this.getTripId());
+		replyQuestionRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		
 					
 		loggedUser = SessionBean.getLoggedUser();
 		
 		System.out.println("loggedUser: " + loggedUser);
 		
-		passenger = null;
-		if(loggedUser != null && loggedUser.isPassenger()) {
-			passenger = (PassengerJPA) askQuestionRemote.findPassenger(loggedUser.getId());
+		driver = null;
+		if(loggedUser != null && loggedUser.isDriver()) {
+			driver = (DriverJPA) replyQuestionRemote.findDriver(loggedUser.getId());
 		}
+		
+		question = (MessageJPA) replyQuestionRemote.findMessage(questionId);
+		trip = question.getTrip();
+	}
+	
+		
+	public int getQuestionId() {
+		return this.questionId;
+	}
+
+	public void setQuestionId(int questionId) {
+		this.questionId = questionId;
 	}
 	
 	public int getTripId() {
@@ -75,9 +89,8 @@ public class AskQuestionMBean implements Serializable{
 	public void setTripId(int tripId) {
 		this.tripId = tripId;
 	}
-	
 	public TripJPA getTrip() {
-		return this.trip;
+		return this.question.getTrip();
 	}
 
 	public void setTrip(TripJPA trip) {
@@ -85,20 +98,12 @@ public class AskQuestionMBean implements Serializable{
 	}
 	
 	public String getDriver() {
-		return this.getTrip().getDriver().getName() + " " + this.getTrip().getDriver().getSurname();
+		return this.question.getTrip().getDriver().getName() + " " + this.question.getTrip().getDriver().getSurname();
 	}
 
-	public String getPassengerId() {
-		return passengerId;
-	}
-
-	public void setPassengerId(String passengerId) {
-		this.passengerId = passengerId;
-	}
-
-	
+		
 	public String getSubject() {
-		return subject;
+		return question.getSubject();
 	}
 
 
@@ -107,22 +112,22 @@ public class AskQuestionMBean implements Serializable{
 	}
 
 	public String getBody() {
-		return body;
+		return question.getBody();
 	}
-
 
 	public void setBody(String body) {
 		this.body = body;
 	}
-
-	public String getRedirectTo() {
-		return redirectTo;
-	}
-
-	public void setRedirectTo(String redirectTo) {
-		this.redirectTo = redirectTo;
-	}
 	
+	public String getAnswer() {
+		return answer;
+	}
+
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
 	public String getErrorMessage() {
 		return errorMessage;
 	}
@@ -131,19 +136,10 @@ public class AskQuestionMBean implements Serializable{
 	{	
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		askQuestionRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		if (this.subject.equals("")){
+		replyQuestionRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		if (this.answer.equals("")){
 		    // Bring the error message using the Faces Context
-			errorMessage = "Subject is missing";
-			// Add View Faces Message
-			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-			            errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:errorView", message);
-		}
-		if (this.body.equals("")){
-		    // Bring the error message using the Faces Context
-			errorMessage = "Body is missing";
+			errorMessage = "Answer is missing";
 			// Add View Faces Message
 			message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
 			            errorMessage, errorMessage);
@@ -155,15 +151,9 @@ public class AskQuestionMBean implements Serializable{
 			return "errorView";
 		}
 		else {	
-			if (passenger != null) {
-				askQuestionRemote.askQuestion(trip.getId(), passenger.getNif(), subject, body);
-			}else{
-				askQuestionRemote.askQuestion(trip.getId(), null, subject, body);
-			}
-			this.setSubject("");
-			this.setBody("");
+			replyQuestionRemote.replyQuestion(this.trip.getId(), question.getQuestionId(), driver.getNif(), question.getSubject(), answer);
+			this.setAnswer("");
 			return "/pages/public/tripCommentsView"; 
 		}
 	}
 }
-

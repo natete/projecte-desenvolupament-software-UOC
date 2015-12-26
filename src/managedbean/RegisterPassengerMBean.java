@@ -32,12 +32,9 @@ public class RegisterPassengerMBean implements Serializable {
 	private String email;
 
 	private String errorMessage;
-	// private FacesMessage message;
 
 	/**
 	 * Constructor method
-	 * 
-	 * @throws Exception
 	 */
 	public RegisterPassengerMBean() {
 
@@ -104,10 +101,10 @@ public class RegisterPassengerMBean implements Serializable {
 		registerPassengerRemote = (UserFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 
-		if (registerPassengerRemote.existsPassenger(nif, email) == true) {
+		if (registerPassengerRemote.existsPassenger(nif, email, null) == true) {
 			errorMessage = "Passenger already exists";
 			result = "errorView";
-		} else if (registerPassengerRemote.existsDriverEmail(nif, name, surname, email) == true) {
+		} else if (registerPassengerRemote.existsDriverEmail(nif, name, surname, email, null) == true) {
 			errorMessage = "Driver already exists with some email or some nif and different name-surname";
 
 			result = "errorView";
@@ -122,7 +119,6 @@ public class RegisterPassengerMBean implements Serializable {
 
 			result = "findTripsView";
 		}
-
 		return result;
 	}
 }

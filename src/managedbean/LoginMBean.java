@@ -71,6 +71,11 @@ public class LoginMBean implements Serializable {
 		this.user.setId(id);
 	}
 
+	public void setUser(UserDTO user) {
+		this.user = user;
+		
+	}
+
 	public String getRoles() {
 		StringBuilder result = new StringBuilder();
 		for (UserDTO.Role role : this.user.getRoles()) {

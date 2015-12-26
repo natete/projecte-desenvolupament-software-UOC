@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+	
+<ui:composition template="/pages/public/templates/main.xhtml">
+<ui:define name="content">  
+	<f:metadata>
+		<f:viewParam name="tripId" value="#{replyquestion.tripId}"/>
+		<f:viewParam name="questionId" value="#{replyquestion.questionId}"/>
+		<f:event listener="#{replyquestion.init()}" type="preRenderView"/>
+	</f:metadata>
+
+  <h:body>
+		<br/>
+ 		<h:form>
+ 			<div align="center">
+ 				<table border="1" width="50%" id="table1">
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Trip:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:outputText value="#{replyquestion.trip.description}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Driver:</font></b></i></td>
+						<td>
+							<p align="left"/><h:outputText value="#{replyquestion.driver}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Subject:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/><h:outputText value="#{replyquestion.subject}" />
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Question:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/> <h:outputText value="#{replyquestion.body}" /> 
+						</td>
+					</tr>
+					<tr>
+						<td width="155">
+							<p align="left"/><i><b><font size="4" face="Century">Answer:</font></b></i>
+						</td>
+						<td>
+							<p align="left"/> <h:inputText value="#{replyquestion.answer}" /> 
+						</td>
+					</tr>
+				</table> 	
+			</div> 
+			<p align="center">
+				<h:commandButton value="Save"  action="#{replyquestion.setDataTripComment}" class="btn btn-primary" />
+				
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/public/tripCommentsView.xhtml" class="btn btn-default">
+				    <f:param name="tripId" value="#{replyquestion.tripId}" />
+					<h:outputText value="Return"/>
+				</h:outputLink>
+			</p>
+ 		</h:form>
+	</h:body>
+  </ui:define>
+  </ui:composition>
+</html>

@@ -19,11 +19,13 @@
 				<h1 class="col-md-12">Afegir nou cotxe</h1>
 				<div class="form-group col-md-6">
 					<label for="carRegistrationId">Car Registration ID: (*) </label>
-					<h:inputText value="#{addcar.carRegistrationId}" class="form-control" />
+					<h:inputText id="carRegistrationId" value="#{addcar.carRegistrationId}" class="form-control" required="true" requiredMessage="This field is mandatory" />
+					<h:message for="carRegistrationId" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="brand">Brand: (*)</label>
-					<h:inputText value="#{addcar.brand}" class="form-control" />
+					<h:inputText id="brand" value="#{addcar.brand}" class="form-control" required="true" requiredMessage="This field is mandatory" />
+					<h:message for="brand" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
 					<label for="model">Model:</label>
@@ -32,7 +34,6 @@
 				<div class="form-group col-md-6">
 					<label for="color">Color: </label>
 					<h:inputText value="#{addcar.color}" class="form-control" />
-					
 				</div>
 				<div class="col-md-12 text-left">
 					<label>(*) Camp obligatori</label>
@@ -40,11 +41,12 @@
 				<div class="col-md-12 text-right">
 					<ul class="list-inline">
 						<li>
-							<h:commandButton value="Cancelar" class="btn btn-default"
-								inmediate="true" action="carListView" />
+							<h:outputLink value="/CAT-PDP-GRUP6/pages/carListView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+							</h:outputLink>
 						</li>
 						<li>
-							<h:commandButton value="Guardar" class="btn btn-primary"
+							<h:commandButton value="Save" class="btn btn-primary"
 								action="#{addcar.setDataCar()}" />
 						</li>
 					</ul>

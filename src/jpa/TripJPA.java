@@ -215,7 +215,7 @@ public class TripJPA implements Serializable {
 	}
 
 	@Transient
-	public boolean hasPassengenr(String passengerId) {
+	public boolean hasPassenger(String passengerId) {
 		boolean result = false;
 		if (passengers != null && !passengers.isEmpty()) {
 			for (PassengerJPA passenger : passengers) {

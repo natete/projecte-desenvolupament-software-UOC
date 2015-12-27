@@ -132,7 +132,7 @@ public class ShowTripMBean implements Serializable {
 	}
 
 	public boolean isLoggedUserInTrip() {
-		return isPassengerLogged() && trip.hasPassengenr(loggedUser.getId());
+		return isPassengerLogged() && trip.hasPassenger(loggedUser.getId());
 	}
 
 	public boolean isTripDriver() {

@@ -188,7 +188,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 	 * @return boolean
 	 */
 	public boolean isLoggedUserInTrip() {
-		return isPassengerLogged() && trip.hasPassengenr(loggedUser.getId());
+		return isPassengerLogged() && trip.hasPassenger(loggedUser.getId());
 	}
 
 	/**

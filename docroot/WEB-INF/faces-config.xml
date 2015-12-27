@@ -258,4 +258,37 @@
 		</navigation-case>
 	</navigation-rule>
 
+	<navigation-rule>
+		<from-view-id>/pages/driver/findMyTripsView.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.logout}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/driver/addTripView.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.logout}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/driver/updateTripInformationView.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.logout}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/pages/driver/findAllPassengersView.xhtml</from-view-id>
+		<navigation-case>
+			<from-action>#{login.logout}</from-action>
+			<from-outcome>login</from-outcome>
+			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
 </faces-config>

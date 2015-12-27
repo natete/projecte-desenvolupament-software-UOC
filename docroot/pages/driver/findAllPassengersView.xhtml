@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<ui:composition template="/pages/public/templates/main.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="tripId" value="#{findAllPassengersController.tripId}"/>
+			<!--<f:event listener="#{findAllPassengersController.getPassengers()}" type="preRenderView" />-->
+		</f:metadata>
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-car"></i>&nbsp;<i class="fa fa-male"></i><i class="fa fa-male"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;Passengers for Trip&nbsp;&nbsp;
+					<h:outputLabel value="##{findAllPassengersController.tripId}" />
+				</h1>
+			</div>
+		</div>
+		<h:form>
+		<div class="row">
+			<div class="col-xs-12">
+				<h:dataTable var="item" value="#{findAllPassengersController.allPassengers}" class="table table-striped" rendered="#{not empty findAllPassengersController.allPassengers}">
+					<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Name"/>
+		   				</f:facet> 
+		     			<h:outputText value="#{item.name}" />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Surname"/>
+		   				</f:facet> 
+		     			<h:outputText value="#{item.surname}" />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Nif" />
+		   				</f:facet> 
+		     			<h:outputText value="#{item.nif}" />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Phone"/>
+		   				</f:facet> 
+		     			<h:outputText value="#{item.phone}" />
+		 			</h:column>
+		 			<h:column>
+		   				<f:facet name="header">
+		   					<h:outputText value="Email"/>
+		   				</f:facet> 
+		     			<h:outputText value="#{item.email}" />
+		 			</h:column>
+				</h:dataTable>
+			</div>
+		</div>
+		<div class="col-md-12 text-center">
+			<ul class="list-inline">
+				<li><h:commandButton class="btn btn-default btn-sm" action="#{findAllPassengersController.previousScreen}" value="Previous" /></li>
+				<li><h:commandButton class="btn btn-default btn-sm" action="/pages/public/findTripsView.xhtml" value="Return" /></li>
+				<li><h:commandButton class="btn btn-default btn-sm" action="#{findAllPassengersController.nextScreen}" value="Next" /></li>
+			</ul>
+		</div>
+	</h:form>
+	</ui:define>
+</ui:composition>
+</html>

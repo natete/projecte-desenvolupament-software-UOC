@@ -25,11 +25,23 @@
 							data-toggle="dropdown" role="button" aria-haspopup="true"
 							aria-expanded="false">Personal <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-						<li><a href="/CAT-PDP-GRUP6/pages/carListView.xhtml">
-							<f:param name="userId" value="#{login.id}"/>
-							<i class="fa fa-car"></i> My cars</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#"><i class="fa fa-globe"></i> My trips</a></li>
+								<li>
+									<a href="/CAT-PDP-GRUP6/pages/carListView.xhtml">
+									<f:param name="userId" value="#{login.id}"/>
+									<i class="fa fa-car"></i>&nbsp;&nbsp;My cars</a>
+								</li>
+								<li role="separator" class="divider"></li>
+								<li>
+									<a href="/CAT-PDP-GRUP6/pages/driver/findMyTripsView.xhtml">
+									<f:param name="userId" value="#{login.id}"/>
+									<i class="fa fa-globe"></i>&nbsp;&nbsp;My trips</a>
+								</li>
+								<li role="separator" class="divider"></li>
+								<li>
+									<a href="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml">
+									<f:param name="userId" value="#{login.id}"/>
+									<i class="fa fa-globe"></i>&nbsp;&nbsp;Add trip</a>
+								</li>
 							</ul>
 						</li>
 					</ui:fragment>
@@ -59,7 +71,8 @@
    					</li>
        				<li>
        					<h:form rendered="#{login.isLogged()}">
-							<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml"><i class="fa fa-user"></i><h:outputLabel value="#{login.username} (#{login.roles})" /></a>
+							<!--<a href="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml"><i class="fa fa-user"></i><h:outputLabel value="#{login.username} (#{login.roles})" /></a>-->
+							<a href="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml"><i class="fa fa-user"></i><h:outputLabel value="#{login.username} (#{login.roles})" /></a>
        						<h:commandLink value="Logout" action="#{login.logout}" />
      					</h:form>
 					</li>

@@ -21,7 +21,7 @@ import javax.persistence.Transient;
 @NamedQueries({
 	@NamedQuery(name = "findDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.email = "
 			+ ":email" + " AND " + "d.password = :password"),
-	@NamedQuery(name = "findMyDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.nif = :nif")  
+	@NamedQuery(name = "findMyDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.nif = :nif")
 })
 public class DriverJPA implements Serializable {
 

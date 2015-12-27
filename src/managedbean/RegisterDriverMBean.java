@@ -100,10 +100,10 @@ public class RegisterDriverMBean implements Serializable {
 		registerDriverRemote = (UserFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		
-		if (registerDriverRemote.existsPassenger(nif, email, null) == true) {
+		if (registerDriverRemote.existsDriver(nif, email, null) == true) {
 			errorMessage = "Driver already exists";
 			result = "errorView";
-		} else if (registerDriverRemote.existsDriverEmail(nif, name, surname, email, null) == true) {
+		} else if (registerDriverRemote.existsPassengerEmail(nif, name, surname, email, null) == true) {
 			errorMessage = "Passenger already exists with some email or some nif and different name-surname";
 
 			result = "errorView";

@@ -90,7 +90,7 @@ public class AddCarMBean implements Serializable {
 			errorMessage = "Car registration Id already exists";
 			result = "errorView";
 		} else {
-			addCarRemote.addCar(carRegistrationId, brand, model, color, userLogged.getId());
+			addCarRemote.addCar(userLogged.getId(), carRegistrationId, brand, model, color);
 			this.setCarRegistrationId("");
 			this.setBrand("");
 			this.setModel("");

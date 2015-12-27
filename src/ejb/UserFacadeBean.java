@@ -1,6 +1,6 @@
 package ejb;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -67,8 +67,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public Collection<CarJPA> listAllCars(String nif) throws PersistenceException {
-		Collection<CarJPA> cars = entman.createQuery(QUERY_FIND_CARS_BY_DRIVER_ID).setParameter(PARAMETER_NIF, nif)
+	public List<CarJPA> listAllCars(String nif) throws PersistenceException {
+		List<CarJPA> cars = entman.createNamedQuery(QUERY_FIND_CARS_BY_DRIVER_ID).setParameter(PARAMETER_NIF, nif)
 				.getResultList();
 
 		return cars;
@@ -78,8 +78,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 * Method that verify the existences of trips for car
 	 */
 	public boolean carHasTrips(String carRegistrationId) throws PersistenceException {
-		CarJPA car = (CarJPA) entman.createQuery(QUERY_FIND_CAR_BY_ID).setParameter(PARAMETER_CAR_ID, carRegistrationId)
-				.getSingleResult();
+		CarJPA car = (CarJPA) entman.createNamedQuery(QUERY_FIND_CAR_BY_ID)
+				.setParameter(PARAMETER_CAR_ID, carRegistrationId).getSingleResult();
 
 		return !car.getTrips().isEmpty();
 	}
@@ -90,7 +90,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	public void deleteCar(String carRegistrationId) throws PersistenceException {
 
 		try {
-			CarJPA car = (CarJPA) entman.createQuery(QUERY_FIND_CAR_BY_ID)
+			CarJPA car = (CarJPA) entman.createNamedQuery(QUERY_FIND_CAR_BY_ID)
 					.setParameter(PARAMETER_CAR_ID, carRegistrationId).getSingleResult();
 			entman.remove(car);
 		} catch (PersistenceException e) {

@@ -1,6 +1,6 @@
 package ejb;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Remote;
 
@@ -22,7 +22,7 @@ public interface UserFacadeRemote {
 	 */
 	void addCar(String nif, String carRegistrationId, String brand, String model, String color);
 
-	Collection<CarJPA> listAllCars(String nif);
+	List<CarJPA> listAllCars(String nif);
 
 	boolean carHasTrips(String carRegistrationId);
 

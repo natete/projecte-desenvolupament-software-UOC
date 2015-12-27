@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
@@ -28,11 +29,23 @@ public class CarJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
 	private String carRegistrationId;
+
+	@Column(name = "brand")
 	private String brand;
+
+	@Column(name = "model")
 	private String model;
+
+	@Column(name = "color")
 	private String color;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car")
 	private Collection<TripJPA> trips;
+
+	@ManyToOne
+	@JoinColumn(name = "driver")
 	private DriverJPA driver;
 
 	/**
@@ -53,7 +66,6 @@ public class CarJPA implements Serializable {
 	 * Methods get/set the fields of database
 	 */
 
-	@Id
 	public String getCarRegistrationId() {
 		return carRegistrationId;
 	}
@@ -86,8 +98,6 @@ public class CarJPA implements Serializable {
 		this.color = color;
 	}
 
-	// persistent relationships
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car")
 	public Collection<TripJPA> getTrips() {
 		return trips;
 	}
@@ -96,8 +106,6 @@ public class CarJPA implements Serializable {
 		this.trips = trips;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "driver")
 	public DriverJPA getDriver() {
 		return driver;
 	}

@@ -33,12 +33,6 @@ import javax.validation.constraints.Size;
 			+ "t.departureTime = :departureTime, t.arrivalCity = :arrivalCity, "
 			+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price, "
 			+ "t.car = :myCar WHERE t.id = :tripId"),
-	/*
-	@NamedQuery(name = "TripJPA.findTripsByDriverDataBasePaging", 
-			query = "SELECT * FROM (SELECT t FROM TripJPA t "
-					+ "WHERE t.driver.nif = :driverNif) "
-					+ "LIMIT :firstElement, 10"),
-*/
 	@NamedQuery(name = "TripJPA.findTripsByDriverDataBasePaging", 
 	query = "SELECT t FROM TripJPA t"),
 })

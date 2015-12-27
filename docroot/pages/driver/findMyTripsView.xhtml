@@ -31,13 +31,17 @@
 		   				<f:facet name="header">
 		   					<h:outputText value="Date" />
 		   				</f:facet> 
-		    			<h:outputText  value="#{item.departureDate} " />
+		    			<h:outputText value="#{item.departureDate} ">
+		    				<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+		    			</h:outputText>
 		 			</h:column>
 		 			<h:column>
 		   				<f:facet name="header">
 		   					<h:outputText value="Time"/>
 		   				</f:facet>
-		     			<h:outputText align="right" value="#{item.departureTime}" />
+		     			<h:outputText align="right" value="#{item.departureTime}">
+		     				<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
+		     			</h:outputText>
 		   			</h:column>
 		   			<h:column>
 		     			<h:panelGroup class="col-md-2 col-md-offset-4">

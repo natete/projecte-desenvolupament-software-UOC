@@ -30,7 +30,7 @@ public class AddTripMBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	@EJB
-	private TripAdministrationFacadeRemote addTripRemote;
+	private TripAdministrationFacadeRemote tripAdmRemote;
 	private String description;
 	private String departureCity;
 	private String fromPlace;
@@ -236,8 +236,8 @@ public class AddTripMBean implements Serializable {
 		
 		Properties properties = System.getProperties();
 		Context context = new InitialContext(properties);
-		addTripRemote = (TripAdministrationFacadeRemote) context.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
-		
+		tripAdmRemote = (TripAdministrationFacadeRemote) context.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
+		/*
 		Pattern pattern = Pattern.compile("^[a-zA-Z]+( *[a-zA-Z])*$");
 		
 		Matcher matcher = pattern.matcher(this.departureCity);
@@ -338,11 +338,11 @@ public class AddTripMBean implements Serializable {
 			return "errorView";
 			
 		} else {
-			
+		*/	
 			UserDTO userDTO = SessionBean.getLoggedUser();
 			String nif = userDTO.getId();
 			
-			addTripRemote.addTrip(description, departureCity, fromPlace, departureDate, departureTime, arrivalCity, toPlace, availableSeats, price, nif, carSelected);
+			tripAdmRemote.addTrip(description, departureCity, fromPlace, departureDate, departureTime, arrivalCity, toPlace, availableSeats, price, nif, carSelected);
 			
 			this.setDepartureCity("");
 			this.setFromPlace("");
@@ -354,7 +354,7 @@ public class AddTripMBean implements Serializable {
 			this.setPrice(0);
 			
 			return "/pages/public/findTripsView";
-		}
+		//}
 	}
 	
 	/**
@@ -368,7 +368,7 @@ public class AddTripMBean implements Serializable {
 		UserDTO userDTO = SessionBean.getLoggedUser();
 		String driverId = userDTO.getId();
 		cars = null;
-		cars = addTripRemote.getMyCars(driverId);
+		cars = tripAdmRemote.getMyCars(driverId);
 		ArrayList<String> brands = new ArrayList<String>();
 		Iterator<CarJPA> it = cars.iterator();
 		while (it.hasNext()) {
@@ -377,5 +377,4 @@ public class AddTripMBean implements Serializable {
 		}
 		return brands;
 	}
-
 }

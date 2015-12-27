@@ -3,24 +3,17 @@ package managedbean;
 
 import java.io.Serializable;
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.servlet.http.HttpSession;
 
 import ejb.UserFacadeRemote;
-
 import jpa.UserDTO;
-import jpa.UserDTO.Role;
 
 /**
  * Managed Bean UpdatePersonalDataMBean
@@ -33,10 +26,9 @@ public class UpdatePersonalDataMBean implements Serializable {
 
 	@EJB
 	private UserFacadeRemote updatePersonalDataRemote;
-	
-	private UserDTO loggedUser = SessionBean.getLoggedUser(); 
-	
-	
+
+	private UserDTO loggedUser = SessionBean.getLoggedUser();
+
 	private String nif = loggedUser.getId();
 	private String name;
 	private String surname;
@@ -48,12 +40,13 @@ public class UpdatePersonalDataMBean implements Serializable {
 	private FacesMessage message;
 	private UserFacadeRemote loginRemote;
 	private UserDTO user;
-	
+
 	@ManagedProperty(value = "#{login}")
 	private LoginMBean loginMBean;
-	
+
 	/**
-	 * @param loginMBean the loginMBean to set
+	 * @param loginMBean
+	 *            the loginMBean to set
 	 */
 	public void setLoginMBean(LoginMBean loginMBean) {
 		this.loginMBean = loginMBean;
@@ -62,8 +55,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	/**
 	 * Constructor method
 	 */
-	public UpdatePersonalDataMBean() throws Exception
-	{
+	public UpdatePersonalDataMBean() throws Exception {
 
 	}
 
@@ -76,7 +68,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String getName() {
-		if (loggedUser.getRoles().contains(Role.DRIVER)) {
+		if (loggedUser.isDriver()) {
 			return updatePersonalDataRemote.findDriver(nif).getName();
 		} else {
 			return updatePersonalDataRemote.findPassenger(nif).getName();
@@ -88,7 +80,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String getSurname() {
-		if (loggedUser.getRoles().contains(Role.DRIVER)) {
+		if (loggedUser.isDriver()) {
 			return updatePersonalDataRemote.findDriver(nif).getSurname();
 		} else {
 			return updatePersonalDataRemote.findPassenger(nif).getSurname();
@@ -100,7 +92,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String getPhone() {
-		if (loggedUser.getRoles().contains(Role.DRIVER)) {
+		if (loggedUser.isDriver()) {
 			return updatePersonalDataRemote.findDriver(nif).getPhone();
 		} else {
 			return updatePersonalDataRemote.findPassenger(nif).getPhone();
@@ -112,7 +104,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String getPassword() {
-		if (loggedUser.getRoles().contains(Role.DRIVER)) {
+		if (loggedUser.isDriver()) {
 			return updatePersonalDataRemote.findDriver(nif).getPassword();
 		} else {
 			return updatePersonalDataRemote.findPassenger(nif).getPassword();
@@ -124,7 +116,7 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String getEmail() {
-		if (loggedUser.getRoles().contains(Role.DRIVER)) {
+		if (loggedUser.isDriver()) {
 			return updatePersonalDataRemote.findDriver(nif).getEmail();
 		} else {
 			return updatePersonalDataRemote.findPassenger(nif).getEmail();
@@ -136,50 +128,99 @@ public class UpdatePersonalDataMBean implements Serializable {
 	}
 
 	public String setDataUser() throws Exception {
-		
-		String result;
-		
+
+		String result = null;
+
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		updatePersonalDataRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
+		updatePersonalDataRemote = (UserFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 		loginRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 
-		if (loggedUser.getRoles().contains(Role.DRIVER)) {
+		if (loggedUser.isDriver() && !(loggedUser.isPassenger())) {
+			if (updatePersonalDataRemote.existsDriver(nif, email, loggedUser) == true) {
+				errorMessage = "Driver already exists";
+				result = "errorView";
+			} else if (updatePersonalDataRemote.existsPassengerEmail(nif, name, surname, email, null) == true) {
+				errorMessage = "Passenger already exists with some email or some nif and different name-surname";
+				result = "errorView";
+			} else {
+				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, email, password);
+				loggedUser.setId(this.nif);
+				loggedUser.setUsername(this.name + " " + this.surname);
+				SessionBean.setLoggedUser(loggedUser);
+				loginMBean.setUser(loggedUser);
+
+				this.setNif("");
+				this.setName("");
+				this.setSurname("");
+				this.setPhone("");
+				this.setPassword("");
+				this.setEmail("");
+
+				result = "findTripsView.xhtml";
+
+			}
+		}
+		if (loggedUser.isPassenger() && !(loggedUser.isDriver())) {
+			if (updatePersonalDataRemote.existsPassenger(nif, email, loggedUser) == true) {
+				errorMessage = "Passenger already exists";
+				result = "errorView";
+			} else if (updatePersonalDataRemote.existsDriverEmail(nif, name, surname, email, null) == true) {
+				errorMessage = "Driver already exists with some email or some nif and different name-surname";
+				result = "errorView";
+			} else {
+				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, email, password);
+				loggedUser.setId(this.nif);
+				loggedUser.setUsername(this.name + " " + this.surname);
+				SessionBean.setLoggedUser(loggedUser);
+				loginMBean.setUser(loggedUser);
+
+				this.setNif("");
+				this.setName("");
+				this.setSurname("");
+				this.setPhone("");
+				this.setPassword("");
+				this.setEmail("");
+
+				result = "findTripsView.xhtml";
+
+			}
+		}
+
+		if (loggedUser.isDriver() && loggedUser.isPassenger()) {
 			if (updatePersonalDataRemote.existsDriver(nif, email, loggedUser) == true) {
 				errorMessage = "Driver already exists";
 				result = "errorView";
 			} else if (updatePersonalDataRemote.existsPassengerEmail(nif, name, surname, email, loggedUser) == true) {
 				errorMessage = "Passenger already exists with some email or some nif and different name-surname";
 				result = "errorView";
-			} else {
-				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, email, password);
-			} 
-		} 
-		if (loggedUser.getRoles().contains(Role.PASSENGER)) {
-			if (updatePersonalDataRemote.existsPassenger(nif, email, loggedUser) == true) {
+			} else if (updatePersonalDataRemote.existsPassenger(nif, email, loggedUser) == true) {
 				errorMessage = "Passenger already exists";
 				result = "errorView";
 			} else if (updatePersonalDataRemote.existsDriverEmail(nif, name, surname, email, loggedUser) == true) {
 				errorMessage = "Driver already exists with some email or some nif and different name-surname";
 				result = "errorView";
 			} else {
+				updatePersonalDataRemote.updateDriver(nif, name, surname, phone, email, password);
 				updatePersonalDataRemote.updatePassenger(nif, name, surname, phone, email, password);
+				loggedUser.setId(this.nif);
+				loggedUser.setUsername(this.name + " " + this.surname);
+				SessionBean.setLoggedUser(loggedUser);
+				loginMBean.setUser(loggedUser);
+
+				this.setNif("");
+				this.setName("");
+				this.setSurname("");
+				this.setPhone("");
+				this.setPassword("");
+				this.setEmail("");
+
+				result = "findTripsView.xhtml";
+
 			}
 		}
-
-		loggedUser.setId(this.nif);
-		loggedUser.setUsername(this.name + " " + this.surname);
-		SessionBean.setLoggedUser(loggedUser);
-		loginMBean.setUser(loggedUser);
-		
-		this.setNif("");
-		this.setName("");
-		this.setSurname("");
-		this.setPhone("");
-		this.setPassword("");
-		this.setEmail("");
-		
-		result = "findTripsView.xhtml";
 		return result;
+
 	}
 }

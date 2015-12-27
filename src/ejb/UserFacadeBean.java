@@ -7,11 +7,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.UserDTO;
+import jpa.UserJPA;
 
 /**
  * EJB Session Bean Class
@@ -23,19 +25,34 @@ public class UserFacadeBean implements UserFacadeRemote {
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
 
+	private static final String QUERY_FIND_USER_BY_NIF = "UserJPA.getByNif";
+	private static final String QUERY_FIND_USER_OTHER_USER = "UserJPA.existOtherUser";
+	private static final String QUERY_FIND_DRIVER_BY_NIF = "DriverJPA.getByNif";
+	private static final String QUERY_FIND_PASSENGER_BY_NIF = "PassengerJPA.getByNif";
+	private static final String QUERY_INSERT_PASSENGER = "INSERT INTO carsharing.passenger(userid) VALUES (?)";
+	private static final String QUERY_INSERT_DRIVER = "INSERT INTO carsharing.driver(userid) VALUES (?)";
+	private static final String QUERY_FIND_CARS_BY_DRIVER_ID = "CarJPA.findCarsByDriverId";
+	private static final String QUERY_FIND_CAR_BY_ID = "CarJPA.findCarById";
+	private static final String QUERY_DRIVER_LOGIN = "DriverJPA.driverLogin";
+	private static final String QUERY_PASSENGER_LOGIN = "PassengerJPA.passengerLogin";
+
+	private static final String PARAMETER_NIF = "nif";
+	private static final String PARAMETER_EMAIL = "email";
+	private static final String PARAMETER_CAR_ID = "carRegistrationId";
+	private static final String PARAMETER_PASSWORD = "password";
+
 	/**
 	 * Method that adds a car
 	 */
-	public void addCar(String carRegistrationId, String brand, String model, String color, UserDTO driver) throws PersistenceException {
+	public void addCar(String nif, String carRegistrationId, String brand, String model, String color)
+			throws PersistenceException {
 
 		CarJPA car = new CarJPA();
 		car.setCarRegistrationId(carRegistrationId);
 		car.setBrand(brand);
 		car.setModel(model);
 		car.setColor(color);
-		String nif = driver.getId();
-		DriverJPA driverJPA = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1")
-				.setParameter(1, nif).getSingleResult();
+		DriverJPA driverJPA = findDriver(nif);
 		car.setDriver(driverJPA);
 		try {
 			entman.persist(car);
@@ -48,9 +65,10 @@ public class UserFacadeBean implements UserFacadeRemote {
 	/**
 	 * Method that returns Collection of all cars
 	 */
-	public java.util.Collection<?> listAllCars(String nif) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<CarJPA> cars = entman.createQuery("FROM CarJPA b WHERE b.driver.nif = :nif").setParameter("nif", nif)
+	@Override
+	@SuppressWarnings("unchecked")
+	public Collection<CarJPA> listAllCars(String nif) throws PersistenceException {
+		Collection<CarJPA> cars = entman.createQuery(QUERY_FIND_CARS_BY_DRIVER_ID).setParameter(PARAMETER_NIF, nif)
 				.getResultList();
 
 		return cars;
@@ -59,25 +77,22 @@ public class UserFacadeBean implements UserFacadeRemote {
 	/**
 	 * Method that verify the existences of trips for car
 	 */
-	public boolean existsTripsByCar(String carRegistrationId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		CarJPA car = (CarJPA) entman.createQuery("FROM CarJPA b WHERE b.carRegistrationId = ?1")
-				.setParameter(1, carRegistrationId).getSingleResult();
-		if (car.getTrips().isEmpty())
-			return false;
-		else
-			return true;
+	public boolean carHasTrips(String carRegistrationId) throws PersistenceException {
+		CarJPA car = (CarJPA) entman.createQuery(QUERY_FIND_CAR_BY_ID).setParameter(PARAMETER_CAR_ID, carRegistrationId)
+				.getSingleResult();
+
+		return !car.getTrips().isEmpty();
 	}
 
 	/**
 	 * Method that delete a instance of the class car
 	 */
 	public void deleteCar(String carRegistrationId) throws PersistenceException {
-		
-		try {
-			entman.createQuery("DELETE FROM CarJPA b WHERE b.carRegistrationId = ?1").setParameter(1, carRegistrationId)
-				.executeUpdate();
 
+		try {
+			CarJPA car = (CarJPA) entman.createQuery(QUERY_FIND_CAR_BY_ID)
+					.setParameter(PARAMETER_CAR_ID, carRegistrationId).getSingleResult();
+			entman.remove(car);
 		} catch (PersistenceException e) {
 			System.out.println(e);
 		}
@@ -88,19 +103,25 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 */
 	public void registerDriver(String nif, String name, String surname, String phone, String password, String email)
 			throws PersistenceException {
+		UserJPA user = findUser(nif);
+		if (user == null) {
+			DriverJPA driver = new DriverJPA();
+			driver.setNif(nif);
+			driver.setName(name);
+			driver.setSurname(surname);
+			driver.setPhone(phone);
+			driver.setPassword(password);
+			driver.setEmail(email);
+			try {
+				entman.persist(driver);
 
-		DriverJPA driver = new DriverJPA();
-		driver.setNif(nif);
-		driver.setName(name);
-		driver.setSurname(surname);
-		driver.setPhone(phone);
-		driver.setPassword(password);
-		driver.setEmail(email);
-		try {
-			entman.persist(driver);
-
-		} catch (PersistenceException e) {
-			System.out.println(e);
+			} catch (PersistenceException e) {
+				System.out.println(e);
+			}
+		} else {
+			Query query = entman.createNativeQuery(QUERY_INSERT_DRIVER);
+			query.setParameter(1, nif);
+			query.executeUpdate();
 		}
 	}
 
@@ -109,47 +130,28 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 */
 	public void registerPassenger(String nif, String name, String surname, String phone, String password, String email)
 			throws PersistenceException {
+		UserJPA user = findUser(nif);
+		if (user == null) {
+			PassengerJPA passenger = new PassengerJPA();
+			passenger.setNif(nif);
+			passenger.setName(name);
+			passenger.setSurname(surname);
+			passenger.setPhone(phone);
+			passenger.setPassword(password);
+			passenger.setEmail(email);
+			try {
+				entman.persist(passenger);
 
-		PassengerJPA passenger = new PassengerJPA();
-		passenger.setNif(nif);
-		passenger.setName(name);
-		passenger.setSurname(surname);
-		passenger.setPhone(phone);
-		passenger.setPassword(password);
-		passenger.setEmail(email);
-		try {
-			entman.persist(passenger);
-
-		} catch (PersistenceException e) {
-			System.out.println(e);
+			} catch (PersistenceException e) {
+				System.out.println(e);
+			}
+		} else {
+			Query query = entman.createNativeQuery(QUERY_INSERT_PASSENGER);
+			query.setParameter(1, nif);
+			query.executeUpdate();
 		}
 	}
 
-	private DriverJPA driverLogin (String email, String password) {
-		
-		try {
-			DriverJPA driver = (DriverJPA) entman.createNamedQuery("findDriver").setParameter("email", email)
-				.setParameter("password", password).getSingleResult();
-			return driver;
-		} catch (NoResultException e){
-			DriverJPA driver = null;
-			return driver;
-		}
-			
-	}
-
-	private PassengerJPA passengerLogin (String email, String password) {
-		
-		try {
-			PassengerJPA passenger = (PassengerJPA) entman.createNamedQuery("findPassenger").setParameter("email", email)
-				.setParameter("password", password).getSingleResult();
-			return passenger;
-		} catch (NoResultException e){
-			PassengerJPA passenger = null;
-			return passenger;
-		}
-	}
-	
 	/**
 	 * Method that find the user to login
 	 */
@@ -157,13 +159,11 @@ public class UserFacadeBean implements UserFacadeRemote {
 
 		UserDTO user = null;
 
-		@SuppressWarnings("unchecked")
-		
-		DriverJPA driver = driverLogin(email, password);
 		PassengerJPA passenger = passengerLogin(email, password);
-		
+		DriverJPA driver = driverLogin(email, password);
+
 		if (driver != null) {
-			user = new UserDTO(driver.getName() + " " + driver.getSurname(), driver.getNif());
+			user = new UserDTO(driver.getName() + " " + driver.getSurname(), driver.getNif(), driver.getEmail());
 			user.addRole(UserDTO.Role.DRIVER);
 			if (driver != null && passenger != null) {
 				user.addRole(UserDTO.Role.PASSENGER);
@@ -171,52 +171,123 @@ public class UserFacadeBean implements UserFacadeRemote {
 		}
 
 		if (driver == null && passenger != null) {
-			user = new UserDTO(passenger.getName() + " " + passenger.getSurname(), passenger.getNif());
+			user = new UserDTO(passenger.getName() + " " + passenger.getSurname(), passenger.getNif(),
+					passenger.getEmail());
 			user.addRole(UserDTO.Role.PASSENGER);
 		}
 
-		
 		return user;
+	}
+
+	private DriverJPA driverLogin(String email, String password) {
+
+		try {
+			entman.clear();
+			Query query = entman.createNamedQuery(QUERY_DRIVER_LOGIN);
+			query.setParameter(PARAMETER_EMAIL, email);
+			query.setParameter(PARAMETER_PASSWORD, password);
+			DriverJPA driver = (DriverJPA) query.getSingleResult();
+			return driver;
+		} catch (NoResultException e) {
+			return null;
+		}
+
+	}
+
+	private PassengerJPA passengerLogin(String email, String password) {
+
+		try {
+			entman.clear();
+			Query query = entman.createNamedQuery(QUERY_PASSENGER_LOGIN);
+			query.setParameter(PARAMETER_EMAIL, email);
+			query.setParameter(PARAMETER_PASSWORD, password);
+			PassengerJPA passenger = (PassengerJPA) query.getSingleResult();
+			return passenger;
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public UserJPA findUser(String nif) {
+
+		Query query = entman.createNamedQuery(QUERY_FIND_USER_BY_NIF);
+		query.setParameter(PARAMETER_NIF, nif);
+		try {
+			return (UserJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	public boolean existUser(UserJPA user) {
+		Query query = entman.createNamedQuery(QUERY_FIND_USER_OTHER_USER);
+		query.setParameter(PARAMETER_NIF, user.getNif());
+		query.setParameter(PARAMETER_EMAIL, user.getEmail());
+
+		try {
+			query.getSingleResult();
+			return true;
+		} catch (NoResultException e) {
+			return false;
+		}
+	}
+
+	public void updatePersonalData(String nif, String name, String surname, String phone, String email,
+			String password) {
+		Query query = entman.createNamedQuery(QUERY_FIND_USER_BY_NIF);
+		query.setParameter(PARAMETER_NIF, nif);
+
+		UserJPA user = (UserJPA) query.getSingleResult();
+
+		user.setName(name);
+		user.setSurname(surname);
+		user.setPhone(phone);
+		user.setEmail(email);
+		user.setPassword(password);
+		entman.merge(user);
 	}
 
 	/**
 	 * Method that verify the existences of as car
 	 */
 	public boolean existsCar(String carRegistrationId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<CarJPA> cars = entman.createQuery("FROM CarJPA b WHERE b.carRegistrationId = ?1")
-				.setParameter(1, carRegistrationId).getResultList();
-		if (cars.isEmpty())
-			return false;
-		else
+		try {
+			Query query = entman.createNamedQuery(QUERY_FIND_CAR_BY_ID);
+			query.setParameter(PARAMETER_CAR_ID, carRegistrationId);
+			query.getSingleResult();
 			return true;
+		} catch (NoResultException e) {
+			return false;
+		}
 	}
 
 	/**
 	 * Method that verify the existences of as driver
 	 */
-	public boolean existsDriver(String nif, String email, UserDTO userLogged) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
-			.getResultList();
-		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email)
-			.getResultList();
+	public boolean existDriver(String nif) throws PersistenceException {
+		Query query = entman.createNamedQuery(QUERY_FIND_DRIVER_BY_NIF);
+		query.setParameter(PARAMETER_NIF, nif);
 
-		if (userLogged == null) {
-			if (!(driversNif.isEmpty()) || !(driversEmail.isEmpty()))
-				return true;
-			else
-				return false;
-		} else {
-			if (!(nif.equals(findDriver(nif).getNif())) || !(email.equals(findDriver(nif).getEmail()))) {
-				if ((!(driversNif.isEmpty()) && !(nif.equals(findDriver(nif).getNif()))) || 
-						(!(driversEmail.isEmpty())) && !(email.equals(findDriver(nif).getEmail())))
-					return true;
-				else
-					return false;
-			} else {
-				return false;
-			}
+		try {
+			query.getSingleResult();
+			return true;
+		} catch (NoResultException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Method that verify the existences of as driver
+	 */
+	public boolean existPassenger(String nif) throws PersistenceException {
+		Query query = entman.createNamedQuery(QUERY_FIND_PASSENGER_BY_NIF);
+		query.setParameter(PARAMETER_NIF, nif);
+
+		try {
+			query.getSingleResult();
+			return true;
+		} catch (NoResultException e) {
+			return false;
 		}
 	}
 
@@ -224,12 +295,12 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 * Method that find a driver
 	 */
 	public DriverJPA findDriver(String nif) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		DriverJPA driver = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
-			.getSingleResult();
-		if (driver != null) {
-			return driver;
-		} else {
+		Query query = entman.createNamedQuery(QUERY_FIND_DRIVER_BY_NIF);
+		query.setParameter(PARAMETER_NIF, nif);
+
+		try {
+			return (DriverJPA) query.getSingleResult();
+		} catch (NoResultException e) {
 			return null;
 		}
 	}
@@ -238,27 +309,15 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 * Method that verify the existences of as passenger
 	 */
 	public boolean existsPassenger(String nif, String email, UserDTO userLogged) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif)
-				.getResultList();
-		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2")
-				.setParameter(2, email).getResultList();
+		Query query = entman.createNamedQuery(QUERY_FIND_PASSENGER_BY_NIF);
 
-		if (userLogged == null) {
-			if (!(passengersNif.isEmpty()) || !(passengersEmail.isEmpty()))
-				return true;
-			else
-				return false;
-		} else {
-			if (!(nif.equals(findPassenger(nif).getNif())) || !(email.equals(findPassenger(nif).getEmail()))) {
-				if ((!(passengersNif.isEmpty()) && !(nif.equals(findPassenger(nif).getNif()))) || 
-						(!(passengersEmail.isEmpty())) && !(email.equals(findPassenger(nif).getEmail())))
-					return true;
-				else
-					return false;
-			} else {
-				return false;
-			}
+		query.setParameter(PARAMETER_NIF, nif);
+
+		try {
+			query.getSingleResult();
+			return true;
+		} catch (NoResultException e) {
+			return false;
 		}
 	}
 
@@ -266,167 +325,13 @@ public class UserFacadeBean implements UserFacadeRemote {
 	 * Method that find a passenger
 	 */
 	public PassengerJPA findPassenger(String nif) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		PassengerJPA passenger = (PassengerJPA) entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif)
-			.getSingleResult();
-		if (passenger != null) {
-			return passenger;
-		} else {
+		Query query = entman.createNamedQuery(QUERY_FIND_PASSENGER_BY_NIF);
+		query.setParameter(PARAMETER_NIF, nif);
+
+		try {
+			return (PassengerJPA) query.getSingleResult();
+		} catch (NoResultException e) {
 			return null;
 		}
 	}
-
-	/**
-	 * Method that update a driver
-	 */
-	public void updateDriver(String nif, String name, String surname, String phone, String email, String password)
-			throws PersistenceException {
-
-		try {
-			DriverJPA driver = entman.find(DriverJPA.class, nif);
-			//entman.getTransaction().begin();
-			driver.setName(name);
-			driver.setSurname(surname);
-			driver.setPhone(phone);
-			driver.setEmail(email);
-			driver.setPassword(password);
-			//entman.getTransaction().commit();
-			entman.persist(driver);
-		} catch (PersistenceException e) {
-			System.out.println(e);
-		}
-	}
-
-	/**
-	 * Method that adds a passenger
-	 */
-	public void updatePassenger(String nif, String name, String surname, String phone, String email, String password)
-			throws PersistenceException {
-
-		try {
-			PassengerJPA passenger = entman.find(PassengerJPA.class, nif);
-			//entman.getTransaction().begin();
-			passenger.setName(name);
-			passenger.setSurname(surname);
-			passenger.setPhone(phone);
-			passenger.setEmail(email);
-			passenger.setPassword(password);
-			//entman.getTransaction().commit();
-			entman.persist(passenger);
-		} catch (PersistenceException e) {
-			System.out.println(e);
-		}
-	}
-
-	/**
-	 * Method that verify the existences of as Driver with some email
-	 */
-	public boolean existsDriverEmail(String nif, String name, String surname, String email, UserDTO userLogged) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<DriverJPA> driversNif = entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, nif)
-				.getResultList();
-		Collection<DriverJPA> driversEmail = entman.createQuery("FROM DriverJPA b WHERE b.email = ?2").setParameter(2, email)
-				.getResultList();
-
-		if (userLogged == null) {
-			if (!(driversEmail.isEmpty()) && driversNif.isEmpty()) {
-				return true;
-			} else {
-				if (!(driversNif.isEmpty())) {
-					DriverJPA driverNifArray[] = new DriverJPA[driversNif.size()];
-					driverNifArray = driversNif.toArray(driverNifArray);
-	
-					for (DriverJPA driverNif : driverNifArray) {
-						if (!(driverNif.getName().equals(name)) || !(driverNif.getSurname().equals(surname))) {
-							return true;
-						} else {
-							return false;
-						}
-					} 
-				} else {
-					return false;
-				}
-			}
-		} else {
-			if (!(nif.equals(findDriver(nif).getNif())) || !(email.equals(findDriver(nif).getEmail()))) {
-				if (!(driversEmail.isEmpty()) && driversNif.isEmpty()) {
-					return true;
-				} else {
-					if (!(driversNif.isEmpty() && (!(name.equals(findDriver(nif).getName())) || !(surname.equals(findDriver(nif).getSurname()))))) {
-						DriverJPA driverNifArray[] = new DriverJPA[driversNif.size()];
-						driverNifArray = driversNif.toArray(driverNifArray);
-		
-						for (DriverJPA driverNif : driverNifArray) {
-							if (!(driverNif.getName().equals(name)) || !(driverNif.getSurname().equals(surname))) {
-								return true;
-							} else {
-								return false;
-							}
-						}
-					} else {
-						return false;
-					}
-				}
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Method that verify the existences of as passenger with some email
-	 */
-	public boolean existsPassengerEmail(String nif, String name, String surname, String email, UserDTO userLogged) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<PassengerJPA> passengersNif = entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1").setParameter(1, nif)
-				.getResultList();
-		Collection<PassengerJPA> passengersEmail = entman.createQuery("FROM PassengerJPA b WHERE b.email = ?2").setParameter(2, email)
-				.getResultList();
-
-		if (userLogged == null) {
-			if (!(passengersEmail.isEmpty()) && passengersNif.isEmpty()) {
-				return true;
-			} else {
-				if (!(passengersNif.isEmpty())) {
-					PassengerJPA passengerNifArray[] = new PassengerJPA[passengersNif.size()];
-					passengerNifArray = passengersNif.toArray(passengerNifArray);
-	
-					for (PassengerJPA passengerNif : passengerNifArray) {
-						if (!(passengerNif.getName().equals(name)) || !(passengerNif.getSurname().equals(surname))) {
-							return true;
-						} else {
-							return false;
-						}
-					} 
-				} else {
-					return false;
-				}
-			}
-		} else {
-			if (!(nif.equals(findPassenger(nif).getNif())) || !(email.equals(findPassenger(nif).getEmail()))) {
-				if (!(passengersEmail.isEmpty()) && passengersNif.isEmpty()) {
-					return true;
-				} else {
-					if (!(passengersNif.isEmpty() && (!(name.equals(findPassenger(nif).getName())) || !(surname.equals(findPassenger(nif).getSurname()))))) {
-						PassengerJPA passengerNifArray[] = new PassengerJPA[passengersNif.size()];
-						passengerNifArray = passengersNif.toArray(passengerNifArray);
-		
-						for (PassengerJPA passengerNif : passengerNifArray) {
-							if (!(passengerNif.getName().equals(name)) || !(passengerNif.getSurname().equals(surname))) {
-								return true;
-							} else {
-								return false;
-							}
-						}
-					} else {
-						return false;
-					}
-				}
-			} else {
-				return false;
-			}
-		}
-		return false;
-	}	
 }

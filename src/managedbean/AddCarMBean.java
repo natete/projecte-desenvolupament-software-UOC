@@ -1,14 +1,14 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.faces.context.FacesContext;
-import javax.faces.application.FacesMessage;
 
 import ejb.UserFacadeRemote;
 import jpa.UserDTO;
@@ -80,9 +80,9 @@ public class AddCarMBean implements Serializable {
 	}
 
 	public String setDataCar() throws Exception {
-		
-		String result;	
-		
+
+		String result;
+
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		addCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
@@ -90,12 +90,12 @@ public class AddCarMBean implements Serializable {
 			errorMessage = "Car registration Id already exists";
 			result = "errorView";
 		} else {
-			addCarRemote.addCar(carRegistrationId, brand, model, color, userLogged);
+			addCarRemote.addCar(carRegistrationId, brand, model, color, userLogged.getId());
 			this.setCarRegistrationId("");
 			this.setBrand("");
 			this.setModel("");
 			this.setColor("");
-			
+
 			result = "carListView";
 		}
 		return result;

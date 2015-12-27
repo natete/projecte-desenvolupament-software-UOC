@@ -49,7 +49,7 @@ public class DeleteCarMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		deleteCarRemote = (UserFacadeRemote) ctx
 			.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		if (deleteCarRemote.existsTripsByCar(carRegistrationId)) {
+		if (deleteCarRemote.carHasTrips(carRegistrationId)) {
 			errorMessage = "This car has associated trips";
 			result = "errorView";
 		} else {

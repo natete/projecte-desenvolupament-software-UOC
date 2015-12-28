@@ -126,23 +126,26 @@ public class UpdatePersonalDataMBean implements Serializable {
 				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 
 		if (loggedUser.getId().equals(user.getNif()) && loggedUser.getEmail().equals(user.getEmail())) {
-			userFacadeRemote.updatePersonalData(user.getNif(), user.getName(), user.getSurname(), user.getPhone(),
-					user.getEmail(), user.getPassword());
+			updatePersonalData();
 
 		} else {
 			if (userFacadeRemote.existUser(user)) {
-				errorMessage = "User already exists with this email and different name and surname";
+				errorMessage = "This email is being used by another user";
 				result = "errorUpdating";
 			} else {
-				userFacadeRemote.updatePersonalData(user.getNif(), user.getName(), user.getSurname(), user.getPhone(),
-						user.getEmail(), user.getPassword());
-				loggedUser.setId(getNif());
-				loggedUser.setUsername(getName() + " " + getSurname());
-				SessionBean.setLoggedUser(loggedUser);
-				loginMBean.setUser(loggedUser);
+				updatePersonalData();
 			}
 		}
 
 		return result;
+	}
+
+	private void updatePersonalData() {
+		userFacadeRemote.updatePersonalData(user.getNif(), user.getName(), user.getSurname(), user.getPhone(),
+				user.getEmail(), user.getPassword());
+		loggedUser.setId(getNif());
+		loggedUser.setUsername(getName() + " " + getSurname());
+		SessionBean.setLoggedUser(loggedUser);
+		loginMBean.setUser(loggedUser);
 	}
 }

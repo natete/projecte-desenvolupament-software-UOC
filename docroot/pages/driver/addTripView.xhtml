@@ -80,14 +80,14 @@
 			</div>
 			<div class="form-group col-md-6">
 				<label for="availableSeats">Available Seats (*)</label>
-				<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" requiredMessage="This field is mandatory">
-					<f:validator validatorId="validator.SeatsValidator" />
+				<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4">
+					<f:validateLongRange minimum="1" maximum="4" />
 				</h:inputText>
 				<h:message for="availableSeats" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="price">Price (*)</label>
-				<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="price must be between 0.50 and 100.00">
+				<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00">
 					<f:validateDoubleRange minimum="0.50" maximum="100.00" />
 				</h:inputText>
 				<h:message for="price" styleClass="text-danger" />

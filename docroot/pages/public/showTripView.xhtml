@@ -57,7 +57,6 @@
 						<h:outputText value="#{showTripController.rating}" styleClass="driver-header" escape="false"/>
 						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml">
 							<f:param name="tripId" value="#{showTripController.tripId}"/>
-							<f:param name="driverId" value="#{showTripController.driverId}"/>
 							<h:outputText value="View comments"/>
 						</h:outputLink>
 					</div>
@@ -93,8 +92,8 @@
 							<h:outputText value="#{showTripController.driver}"/>
 						</h4>
 						<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
-							<f:param name="driverId" value="#{showTripController.driverId}"/>
-							<h:outputText value="Rate driver"/>
+							<f:param name="tripId" value="#{showTripController.tripId}"/>
+						<h:outputText value="Rate driver"/>
 						</h:outputLink>
 					</div>
 				</div>

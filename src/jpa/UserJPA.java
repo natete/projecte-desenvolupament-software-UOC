@@ -12,8 +12,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.sun.istack.internal.NotNull;
-
 @Entity
 @Table(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -24,27 +22,22 @@ public abstract class UserJPA implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@NotNull
-	@Column(name = "nif", unique = true)
+	@Column(name = "nif", unique = true, nullable = false)
 	private String nif;
 
-	@NotNull
-	@Column(name = "name")
+	@Column(name = "name", nullable = false)
 	private String name;
 
-	@NotNull
-	@Column(name = "surname")
+	@Column(name = "surname", nullable = false)
 	private String surname;
 
 	@Column(name = "phone")
 	private String phone;
 
-	@NotNull
-	@Column(name = "password")
+	@Column(name = "password", nullable = false)
 	private String password;
 
-	@NotNull
-	@Column(name = "email", unique = true)
+	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 
 	public String getNif() {

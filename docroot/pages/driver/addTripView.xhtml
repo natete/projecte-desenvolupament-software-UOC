@@ -14,62 +14,88 @@
 				</h1>
 			</div>
 		</div>
+		<h:form rendered="#{empty addTripController.myCars}">
+			<h3>
+				<i class='fa fa-times'></i>&nbsp;
+				<h:outputText value="No cars available. Please, first register a car."></h:outputText>
+			</h3>
+			<div class="col-md-12 text-left">
+				<ul class="list-inline">
+					<li>
+						<h:commandButton value="Add Car" class="btn btn-primary" action="/pages/addCarView.xhtml" />
+					</li>
+					<li>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+		<!--<h:outputText escape="false" value="#{addTripController.searchMessage}" rendered="#{empty addTripController.myCars}"></h:outputText>-->
+		</h:form>
 		<div class="row">
-		<h:form class="col-md-10 col-md-offset-1">
+		<h:form class="col-md-10 col-md-offset-1" rendered="#{!empty addTripController.myCars}">
 			<div class="form-group col-md-6">
 				<label for="departureCity">Departure City (*)</label>
-				<h:inputText value="#{addTripController.departureCity}" a:placeholder="departure city" class="form-control" required="true" requiredMessage="This field is mandatory">
+				<h:inputText id="departureCity" value="#{addTripController.departureCity}" a:placeholder="departure city" class="form-control" required="true" requiredMessage="This field is mandatory">
 					<f:validator validatorId="validator.NameValidator" />
 				</h:inputText>
 				<h:message for="departureCity" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="arrivalCity">Arrival City (*)</label>
-				<h:inputText value="#{addTripController.arrivalCity}" a:placeholder="arrival city" class="form-control" required="true" requiredMessage="This field is mandatory">
+				<h:inputText id="arrivalCity" value="#{addTripController.arrivalCity}" a:placeholder="arrival city" class="form-control" required="true" requiredMessage="This field is mandatory">
 					<f:validator validatorId="validator.NameValidator" />
 				</h:inputText>
 				<h:message for="arrivalCity" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="fromPlace">From Place (*)</label>
-				<h:inputText value="#{addTripController.fromPlace}" a:placeholder="pickup point" class="form-control" required="true" requiredMessage="This field is mandatory">
+				<h:inputText id="fromPlace" value="#{addTripController.fromPlace}" a:placeholder="pickup point" class="form-control" required="true" requiredMessage="This field is mandatory">
 					<f:validator validatorId="validator.NameValidator" />
 				</h:inputText>
 				<h:message for="fromPlace" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="toPlace">To Place (*)</label>
-				<h:inputText value="#{addTripController.toPlace}" a:placeholder="dropoff point" class="form-control" required="true" requiredMessage="This field is mandatory">
+				<h:inputText id="toPlace" value="#{addTripController.toPlace}" a:placeholder="dropoff point" class="form-control" required="true" requiredMessage="This field is mandatory">
 					<f:validator validatorId="validator.NameValidator" />
 				</h:inputText>
 				<h:message for="toPlace" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
 				<label for="departureDate">Departure Date (*)</label>
-				<h:inputText value="#{addTripController.departureDate}" a:placeholder="dd/mm/yyyy" class="form-control" >
+				<h:inputText id="departureDate" value="#{addTripController.departureDate}" a:placeholder="dd/mm/yyyy" class="form-control" required="true" converterMessage="Bad format date (dd/mm/yyyy)">
 					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
 					<f:validator validatorId="validator.DateValidator" />
 				</h:inputText>
 				<h:message for="departureDate" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
-				<label for="departureTime">Departure Time</label>
-				<h:inputText value="#{addTripController.departureTime}" class="form-control" >
-					<f:convertDateTime type="time" pattern="HH:mm" a:placeholder="hh:mm" timeZone="Europe/Madrid" />
+				<label for="departureTime">Departure Time (*)</label>
+				<h:inputText id="departureTime" value="#{addTripController.departureTime}" a:placeholder="hh:mm" class="form-control" required="true" converterMessage="Bad format time (hh:mm)">
+					<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
 				</h:inputText>
+				<h:message for="departureTime" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
-				<label for="availableSeats">Available Seats</label>
-				<h:inputText value="#{addTripController.availableSeats}" a:placeholder="" class="form-control" />
+				<label for="availableSeats">Available Seats (*)</label>
+				<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" requiredMessage="This field is mandatory">
+					<f:validator validatorId="validator.SeatsValidator" />
+				</h:inputText>
+				<h:message for="availableSeats" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-6">
-				<label for="price">Price</label>
-				<h:inputText value="#{addTripController.price}" a:placeholder="" class="form-control" />
+				<label for="price">Price (*)</label>
+				<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="price must be between 0.50 and 100.00">
+					<f:validateDoubleRange minimum="0.50" maximum="100.00" />
+				</h:inputText>
+				<h:message for="price" styleClass="text-danger" />
 			</div>
 			<div class="form-group col-md-2">
-				<label class="car-group">Car&nbsp;</label>
+				<label class="car-group">Car (*)</label>
 				<div class="selectOneMenu">
-					<h:selectOneMenu class="form-control" value="#{addTripController.carSelected}">
+					<h:selectOneMenu class="form-control" value="#{addTripController.carSelected}" required="true">
 						<f:selectItems value="#{addTripController.cars}" />
 					</h:selectOneMenu>
 				</div>
@@ -77,6 +103,9 @@
 			<div class="form-group col-md-12">
 				<label for="description">Description</label>
 				<h:inputTextarea value="#{addTripController.description}" a:placeholder="journey summary" class="form-control" />
+			</div>
+			<div class="col-md-12 text-left">
+				<label>(*) Mandatory field</label>
 			</div>
 			<div class="cancel-safe-group">
 				<div class="col-md-12 text-right">

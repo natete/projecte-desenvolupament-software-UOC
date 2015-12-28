@@ -29,6 +29,9 @@ public class ShowDriverCommentsMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Object HTML_FULL_STAR = "<i class=\"fa fa-star\"></i>";
+	private static final Object HTML_EMPTY_STAR = "<i class=\"fa fa-star-o\"></i>";
+
 	@EJB
 	private CommunicationFacadeRemote driverCommentsRemote;
 
@@ -47,7 +50,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 	private int tripId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
-	private String noCommentsMsg = "There are no comments about this driver";
+	private String noCommentsMsg = "<i class=\"fa fa-times\"></i> There are no comments about this driver";
 
 	/**
 	 * Constructor method
@@ -60,6 +63,7 @@ public class ShowDriverCommentsMBean implements Serializable {
 
 	/**
 	 * Method to make the init operations
+	 * 
 	 * @throws NamingException
 	 */
 	public void init() throws NamingException {
@@ -73,8 +77,8 @@ public class ShowDriverCommentsMBean implements Serializable {
 	}
 
 	/**
-	 * Method that returns an instance Collection of 10 or less DriverCommentJPA according
-	 * screen where the user is.
+	 * Method that returns an instance Collection of 10 or less DriverCommentJPA
+	 * according screen where the user is.
 	 * 
 	 * @return Collection DriverCommentJPA
 	 */
@@ -121,46 +125,50 @@ public class ShowDriverCommentsMBean implements Serializable {
 		}
 	}
 
-    /**
-     * Method to get the PassengerId
-     * @return passengerId
-     */
+	/**
+	 * Method to get the PassengerId
+	 * 
+	 * @return passengerId
+	 */
 	public String getPassengerId() {
 		return this.passengerId;
 	}
 
 	/**
-     * Method to set the PassengerId
-     */
+	 * Method to set the PassengerId
+	 */
 	public void setPassengerId(String passengerId) {
 		this.passengerId = passengerId;
 	}
 
-	 /**
-     * Method to get the TripId
-     * @return tripId
-     */
+	/**
+	 * Method to get the TripId
+	 * 
+	 * @return tripId
+	 */
 	public int getTripId() {
 		return this.tripId;
 	}
 
 	/**
-     * Method to set the TripId
-     */
+	 * Method to set the TripId
+	 */
 	public void setTripId(int tripId) {
 		this.tripId = tripId;
 	}
 
 	/**
-     * Method to get Driver name + Driver surname
-     * @return driver name + driver surname
-     */
+	 * Method to get Driver name + Driver surname
+	 * 
+	 * @return driver name + driver surname
+	 */
 	public String getDriver() {
-		return driver.getName() + " " + driver.getSurname();
+		return driver.getFullName();
 	}
 
 	/**
 	 * Method to get the Message There are no comments
+	 * 
 	 * @return noCommentsMsg
 	 */
 	public String getNoCommentsMsg() {
@@ -168,7 +176,8 @@ public class ShowDriverCommentsMBean implements Serializable {
 	}
 
 	/**
-	 * Method that returns a Collection of DriverCommentJPA 
+	 * Method that returns a Collection of DriverCommentJPA
+	 * 
 	 * @return Collection DriverCommentJPA
 	 */
 	public Collection<DriverCommentJPA> getDriverCommentsList() {
@@ -177,14 +186,16 @@ public class ShowDriverCommentsMBean implements Serializable {
 
 	/**
 	 * Method than returns if Passenger is logged
+	 * 
 	 * @return boolean
 	 */
 	public boolean isPassengerLogged() {
 		return loggedUser != null && loggedUser.isPassenger();
 	}
-	
+
 	/**
 	 * Method than returns if Passenger is enrolled in the trip
+	 * 
 	 * @return boolean
 	 */
 	public boolean isLoggedUserInTrip() {
@@ -209,6 +220,20 @@ public class ShowDriverCommentsMBean implements Serializable {
 	 */
 	public String rateDriver() {
 		return "rateDriverView";
+	}
+
+	public String getRating(int rating) {
+		StringBuilder result = new StringBuilder();
+
+		for (int i = 0; i < 10; i++) {
+			if (i < rating) {
+				result.append(HTML_FULL_STAR);
+			} else {
+				result.append(HTML_EMPTY_STAR);
+			}
+		}
+
+		return result.toString();
 	}
 
 	/**

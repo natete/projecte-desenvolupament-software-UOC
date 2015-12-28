@@ -1,45 +1,49 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import ejb.CommunicationFacadeRemote;
 import jpa.MessageJPA;
 import jpa.TripJPA;
 import jpa.UserDTO;
-import ejb.CommunicationFacadeRemote;
 
 /**
  * Managed Bean ShowTripCommentsMBean
  */
 @ManagedBean(name = "tripcomments")
-@SessionScoped
+@ViewScoped
 public class ShowTripCommentsMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final int PAGE_SIZE = 5;
+
 	@EJB
 	private CommunicationFacadeRemote tripCommentsRemote;
 
-	// stores the nif passenger
-	private String passengerId;
 	// stores all the instances of MessageJPA
 	private Collection<MessageJPA> tripCommentsList;
 	// stores the screen number where the user is
 	private int screen = 0;
-	// stores ten or fewer MessageJPA instances that the user can see on a screen
-	protected Collection<MessageJPA> tripCommentsView;
-	// stores the total number of instances of MessageJPA
-	protected int numberMessages = 0;
-	protected int tripId;
-	protected TripJPA trip;
+	// stores ten or fewer MessageJPA instances that the user can see on a
+	// screen
+	private Collection<MessageJPA> tripCommentsView;
+	private int tripId;
+	private TripJPA trip;
 	private UserDTO loggedUser;
-	
+	private boolean isDriverLogged;
+
 	/**
 	 * Constructor method
 	 * 
@@ -47,53 +51,54 @@ public class ShowTripCommentsMBean implements Serializable {
 	 */
 	public ShowTripCommentsMBean() throws Exception {
 		super();
+		tripCommentsView = new ArrayList<>();
+		screen = 0;
 	}
 
 	public void init() throws NamingException {
+		loggedUser = SessionBean.getLoggedUser();
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		System.out.println("tripId " + tripId);
-		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
-		
-		loggedUser = SessionBean.getLoggedUser();
+		tripCommentsRemote = (CommunicationFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
+		if (tripCommentsList == null) {
+			tripCommentsList = (Collection<MessageJPA>) tripCommentsRemote.showTripComments(this.getTripId());
+		}
+		if (trip == null) {
+			trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
+			isDriverLogged = loggedUser != null && loggedUser.getId().equals(trip.getDriver().getNif());
+		}
+		populateTripCommentsList();
 	}
-	
+
 	/**
-	 * Method that returns an instance Collection of 10 or less MessageJPA according
-	 * screen where the user is.
+	 * Method that returns an instance Collection of PAGE_SIZE or less
+	 * MessageJPA according screen where the user is.
 	 * 
 	 * @return Collection MessageJPA
 	 */
 	public Collection<MessageJPA> getTripcommentsListView() throws Exception {
+		return tripCommentsView;
+	}
+
+	private void populateTripCommentsList() {
 		int n = 0;
-		tripCommentsView = new ArrayList<MessageJPA>();
-		this.tripCommentsList();
+		tripCommentsView.clear();
 		for (Iterator<MessageJPA> iter2 = tripCommentsList.iterator(); iter2.hasNext();) {
 			MessageJPA driverComment = (MessageJPA) iter2.next();
-			if (n >= screen * 10 && n < (screen * 10 + 10)) {
+			if (n >= screen * PAGE_SIZE && n < (screen * PAGE_SIZE + PAGE_SIZE)) {
 				this.tripCommentsView.add(driverComment);
 			}
 			n += 1;
 		}
-		this.numberMessages = n;
-		return tripCommentsView;
-	}
-
-	/**
-	 * Returns the total number of instances of MessageJPA
-	 * 
-	 * @return Car number
-	 */
-	public int getNumberMessages() {
-		return this.numberMessages;
 	}
 
 	/**
 	 * allows forward or backward in user screens
 	 */
 	public void nextScreen() {
-		if (((screen + 1) * 10 < tripCommentsList.size())) {
+		if (((screen + 1) * PAGE_SIZE < tripCommentsList.size())) {
 			screen += 1;
 		}
 	}
@@ -103,7 +108,7 @@ public class ShowTripCommentsMBean implements Serializable {
 			screen -= 1;
 		}
 	}
-	
+
 	public TripJPA getTrip() {
 		return this.trip;
 	}
@@ -111,7 +116,7 @@ public class ShowTripCommentsMBean implements Serializable {
 	public void setTrip(TripJPA trip) {
 		this.trip = trip;
 	}
-	
+
 	public int getTripId() {
 		return this.tripId;
 	}
@@ -121,30 +126,11 @@ public class ShowTripCommentsMBean implements Serializable {
 	}
 
 	public String getDriver() {
-		return trip.getDriver().getName() + " " + trip.getDriver().getSurname();
-	}
-	
-	public String getPassengerId() {
-		return this.passengerId;
+		return trip.getDriver().getFullName();
 	}
 
-	public void setPassengerId(String passengerId) {
-		this.passengerId = passengerId;
-	}
-	
 	public boolean isDriverLogged() {
-		return loggedUser != null && loggedUser.isDriver();
-	}
-
-	/**
-	 * Method used for Facelet to call tripCommentsView Facelet
-	 * 
-	 * @return Facelet name
-	 * @throws Exception
-	 */
-	public String showTripComments() throws Exception {
-		tripCommentsList();
-		return "tripCommentsView";
+		return isDriverLogged;
 	}
 
 	/**
@@ -156,17 +142,11 @@ public class ShowTripCommentsMBean implements Serializable {
 		return "askQuestionView";
 	}
 
-	/**
-	 * Method that gets a list of instances all MessageJPA
-	 * 
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	private void tripCommentsList() throws Exception {
-		Properties props = System.getProperties();
-		Context ctx = new InitialContext(props);
-		screen = 0;
-		tripCommentsRemote = (CommunicationFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		tripCommentsList = (Collection<MessageJPA>) tripCommentsRemote.showTripComments(this.getTripId());
+	public boolean getIsFirstScreen() {
+		return screen == 0;
+	}
+
+	public boolean getIsLastScreen() {
+		return ((int) (tripCommentsList.size() / PAGE_SIZE)) == screen;
 	}
 }

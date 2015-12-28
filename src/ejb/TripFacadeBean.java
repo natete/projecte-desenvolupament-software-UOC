@@ -21,6 +21,7 @@ import jpa.TripsDTO;
 
 /**
  * Implementation of {@link TripFacadeRemote} that performs trip related actions
+ * 
  * @author Ignacio González Bullón - nachoglezbul@uoc.edu
  *
  */
@@ -137,7 +138,7 @@ public class TripFacadeBean implements TripFacadeRemote {
 					"Sorry, the selected trip has not available seats. Please, try it later or find another trip");
 		} else {
 			trip.addPassenger(passenger);
-			entman.persist(trip);
+			entman.merge(trip);
 		}
 	}
 
@@ -164,7 +165,8 @@ public class TripFacadeBean implements TripFacadeRemote {
 	}
 
 	/**
-	 * @see TripFacadeRemote#advancedSearch(String, String, Date, Date, float, float, boolean, int)
+	 * @see TripFacadeRemote#advancedSearch(String, String, Date, Date, float,
+	 *      float, boolean, int)
 	 */
 	@Override
 	public TripsDTO advancedSearch(String departureCity, String arrivalCity, Date initialDate, Date finalDate,

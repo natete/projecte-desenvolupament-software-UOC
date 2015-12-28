@@ -19,10 +19,9 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "driver")
 @NamedQueries({
-	@NamedQuery(name = "findDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.email = "
-			+ ":email" + " AND " + "d.password = :password"),
-	@NamedQuery(name = "findMyDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.nif = :nif")
-})
+		@NamedQuery(name = "findDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.email = " + ":email"
+				+ " AND " + "d.password = :password"),
+		@NamedQuery(name = "findMyDriver", query = "SELECT d " + "FROM DriverJPA d " + "WHERE d.nif = :nif") })
 public class DriverJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -45,8 +44,7 @@ public class DriverJPA implements Serializable {
 		super();
 	}
 
-	public DriverJPA(String nif, String name, String surname, String phone, String password,
-			String email) {
+	public DriverJPA(String nif, String name, String surname, String phone, String password, String email) {
 		this.nif = nif;
 		this.name = name;
 		this.surname = surname;
@@ -159,5 +157,10 @@ public class DriverJPA implements Serializable {
 			result = result / driverComments.size();
 		}
 		return result;
+	}
+
+	@Transient
+	public String getFullName() {
+		return name + " " + surname;
 	}
 }

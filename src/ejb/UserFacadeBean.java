@@ -28,7 +28,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	private static final String QUERY_FIND_USER_BY_NIF = "UserJPA.getByNif";
 	private static final String QUERY_FIND_USER_OTHER_USER = "UserJPA.existOtherUser";
 	private static final String QUERY_FIND_DRIVER_BY_NIF = "DriverJPA.getByNif";
-	private static final String QUERY_FIND_PASSENGER_BY_NIF = "PassengerJPA.getByNif";
+	private static final String QUERY_FIND_PASSENGER_BY_NIF = "PassengerJPA.getPassengerById";
 	private static final String QUERY_INSERT_PASSENGER = "INSERT INTO carsharing.passenger(userid) VALUES (?)";
 	private static final String QUERY_INSERT_DRIVER = "INSERT INTO carsharing.driver(userid) VALUES (?)";
 	private static final String QUERY_FIND_CARS_BY_DRIVER_ID = "CarJPA.findCarsByDriverId";

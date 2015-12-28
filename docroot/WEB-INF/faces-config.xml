@@ -170,6 +170,16 @@
 				</view-param>
 			</redirect>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>driverComments</from-outcome>
+			<to-view-id>/pages/public/driverCommentsView</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{ratedriver.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
 	</navigation-rule>
 			
 	<navigation-rule>
@@ -188,7 +198,42 @@
 				</view-param>
 			</redirect>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>return</from-outcome>
+			<to-view-id>#{askquestion.redirectTo}</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{askquestion.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>tripCommentsView</from-outcome>
+			<to-view-id>/pages/public/tripCommentsView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{askquestion.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
 	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/pages/driver/replyQuestionView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>tripCommentsView</from-outcome>
+			<to-view-id>/pages/public/tripCommentsView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{replyquestion.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/public/registerPassengerView.xhtml</from-view-id>
 		<navigation-case>
@@ -205,7 +250,22 @@
 				</view-param>
 			</redirect>
 		</navigation-case>
+		<navigation-case>
+			<from-outcome>errorUpdating</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{updatepersonaldata.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/public/registerDriverView.xhtml</from-view-id>
 		<navigation-case>
@@ -223,6 +283,7 @@
 			</redirect>
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/addCarView.xhtml</from-view-id>
 		<navigation-case>

@@ -5,8 +5,6 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -22,15 +20,12 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "userId")
 @NamedQueries({
 		@NamedQuery(name = "PassengerJPA.passengerLogin", query = "SELECT p FROM PassengerJPA p WHERE p.email = :email AND p.password = :password"),
-		@NamedQuery(name = "PassengerJPA.getByNif", query = "SELECT p FROM PassengerJPA p WHERE p.nif = :nif") })
+		@NamedQuery(name = "PassengerJPA.getPassengerById", query = "SELECT p FROM PassengerJPA p WHERE p.nif = :nif") })
 public class PassengerJPA extends UserJPA {
 
 	private static final long serialVersionUID = 1L;
 
-	@ManyToMany
-	@JoinTable(name = "passengers_trips", joinColumns = {
-			@JoinColumn(name = "passenger_id", nullable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "trip_id", nullable = false) })
+	@ManyToMany(mappedBy = "passengers")
 	private Collection<TripJPA> trips;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "passenger")
@@ -49,7 +44,6 @@ public class PassengerJPA extends UserJPA {
 	/**
 	 * Methods get/set the fields of database
 	 */
-
 	public Collection<TripJPA> getTrips() {
 		return trips;
 	}

@@ -11,47 +11,47 @@
 		<f:viewParam name="tripId" value="#{showTripController.tripId}"/>
 		<f:viewAction action="#{showTripController.init()}" />
 	</f:metadata>
-		<div class="row">
-			<div class="col-xs-12">
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h1 class="page-header">
 					<i class="fa fa-info-circle"></i> Trip details
 				</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-8">
-				<div class="row">
-					<div class="col-xs-2">
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-8">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
 						<h:outputLabel value="Pickup point"/>
-					</div>
-					<div class="col-xs-10">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
 						<i class="fa fa-play text-success details-icon"></i>
 						<h:outputText value="#{showTripController.pickupPoint}"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-2">
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
 						<h:outputLabel value="Dropoff point"/>
-					</div>
-					<div class="col-xs-10">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
 						<i class="fa fa-stop text-danger details-icon"></i>
 						<h:outputText value="#{showTripController.dropoffPoint}"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-2">
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
 						<h:outputLabel value="Date"/>
-					</div>
-					<div class="col-xs-10">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
 						<i class="fa fa-calendar text-info details-icon"></i>
 						<h:outputText value="#{showTripController.date}"/>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-2">
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
 						<h:outputLabel value="Driver"/>
-					</div>
-					<div class="col-xs-10">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
 						<i class="fa fa-user text-info details-icon"></i>
 						<h:outputText value="#{showTripController.driver}" styleClass="driver-header"/>
 						<h:outputText value="#{showTripController.rating}" styleClass="driver-header" escape="false"/>
@@ -59,34 +59,34 @@
 							<f:param name="tripId" value="#{showTripController.tripId}"/>
 							<h:outputText value="View comments"/>
 						</h:outputLink>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-2">
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
 						<h:outputLabel value="Car"/>
-					</div>
-					<div class="col-xs-10">
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
 						<i class="fa fa-car text-info details-icon"></i>
 						<h:outputText value="#{showTripController.car}"/>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-2">
-				<div class="well well-success text-center">
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="col-xs-2">
+				<h:panelGroup layout="block" styleClass="well well-success text-center">
 					<h2><h:outputText value="#{showTripController.price} €"/></h2>
-				</div>
-			</div>
-			<div class="col-xs-2">
-				<div class="well well-info text-center">
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="col-xs-2">
+				<h:panelGroup layout="block" styleClass="well well-info text-center">
 					<h2><h:outputText value="#{showTripController.availableSeats} seats"/></h2>
-				</div>
-			</div>
-		</div>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
 		<br/>
-		<div class="row">
-			<div class="col-xs-8 col-xs-offset-2 well">
-				<div class="row">
-					<div class="col-xs-12">
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-8 col-xs-offset-2 well">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-12">
 						<h4 class="driver-header">
 							<i class="fa fa-user details-icon"></i>
 							<h:outputText value="#{showTripController.driver}"/>
@@ -95,16 +95,16 @@
 							<f:param name="tripId" value="#{showTripController.tripId}"/>
 						<h:outputText value="Rate driver"/>
 						</h:outputLink>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-10 col-xs-offset-1 text-justify">
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1 text-justify">
 						<h:outputText value="#{showTripController.description}"/>
-					</div>
-				</div>
+					</h:panelGroup>
+				</h:panelGroup>
 				<br/>
-				<div class="row">
-					<div class="col-xs-12 text-right">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-12 text-right">
 						<ul class="list-inline">
 							<li>
 								<h:outputLink value="tripCommentsView.xhtml" styleClass="btn btn-warning">
@@ -115,16 +115,17 @@
 							<li>
 								<h:outputLink value="askQuestionView.xhtml" styleClass="btn btn-primary" rendered="#{not showTripController.driverLogged}">
 									<f:param name="tripId" value="#{showTripController.tripId}"/>
+									<f:param name="fromPage" value="/pages/public/showTripView.xhtml" />
 									<h:outputText value="Ask a question"/>
 								</h:outputLink>
 							</li>
 						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12 text-center">
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
 				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.passengerLogged and not showTripController.loggedUserInTrip}">
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Join to trip"/>
@@ -133,12 +134,19 @@
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Leave trip"/>
 				</h:outputLink>
-				<h:outputLink value="addTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.tripDriver}">
+				<h:panelGroup layout="block" rendered="#{not showTripController.passengerLogged and not showTripController.tripDriver}">
+					<h4 class="text-muted">
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/login.xhtml">Login</h:outputLink> 
+					 	 or <h:outputLink value="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">Register</h:outputLink>
+						 as a passenger to join this trip!
+					</h4>
+				</h:panelGroup>
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/updateTripInformationView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.tripDriver}">
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Edit trip"/>
 				</h:outputLink>
-			</div>
-		</div>
+			</h:panelGroup>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>
 </html>

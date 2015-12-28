@@ -3,12 +3,13 @@ package ejb;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import javax.persistence.Query;
 
 import jpa.DriverCommentJPA;
 import jpa.DriverJPA;
@@ -22,6 +23,17 @@ import jpa.TripJPA;
 @Stateless
 public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
+	private static final String QUERY_FIND_QUESTIONS = "MessageJPA.getQuestions";
+	private static final String QUERY_GET_DRIVER_COMMENTS = "DriverCommentJPA.getDriverComments";
+	private static final String QUERY_GET_DRIVER_COMMENT_BY_PASSENGER = "DriverCommentJPA.getDriverCommentByPassenger";
+	private static final String QUERY_GET_TRIP_BY_ID = "TripJPA.getTripById";
+	private static final String QUERY_GET_MESSAGE_BY_ID = "MessageJPA.getMessageById";
+
+	private static final String PARAMETER_TRIP_ID = "tripId";
+	private static final String PARAMETER_DRIVER_ID = "driverId";
+	private static final String PARAMETER_PASSENGER_ID = "passengerId";
+	private static final String PARAMETER_QUESTION_ID = "questionId";
+
 	// Persistence Unit Context
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
@@ -29,36 +41,24 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that returns Collection of comments of one trip
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection<MessageJPA> showTripComments(int tripId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<MessageJPA> questions = entman
-				.createQuery("FROM MessageJPA b WHERE b.trip.id = :tripId AND b.question = null")
-				.setParameter("tripId", tripId).getResultList();
 
-		Collection<MessageJPA> tripComments = new ArrayList<MessageJPA>();
+		Query query = entman.createNamedQuery(QUERY_FIND_QUESTIONS);
+		query.setParameter(PARAMETER_TRIP_ID, tripId);
 
-		for (Iterator<MessageJPA> iter1 = questions.iterator(); iter1.hasNext();) {
-			MessageJPA q = (MessageJPA) iter1.next();
-			tripComments.add(q);
-			for (Iterator<MessageJPA> iter2 = q.getAnswers().iterator(); iter2.hasNext();) {
-				MessageJPA a = (MessageJPA) iter2.next();
-				tripComments.add(a);
-			}
-		}
-
-		return tripComments;
+		return query.getResultList();
 	}
 
 	/**
 	 * Method that returns Collection of comments of one driver
 	 */
+	@SuppressWarnings("unchecked")
 	public Collection<DriverCommentJPA> showDriverComments(String driverId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		Collection<DriverCommentJPA> driverComments = entman
-				.createQuery("FROM DriverCommentJPA b  WHERE b.driver.nif = :driverId")
-				.setParameter("driverId", driverId).getResultList();
+		Query query = entman.createNamedQuery(QUERY_GET_DRIVER_COMMENTS);
+		query.setParameter(PARAMETER_DRIVER_ID, driverId).getResultList();
 
-		return driverComments;
+		return query.getResultList();
 	}
 
 	/**
@@ -114,22 +114,22 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	/**
 	 * Method that rate a driver
 	 */
-	public void rateDriver(String driverId, String passengerId, String comment, int rating)
-			throws PersistenceException {
-		DriverCommentJPA driverComment = new DriverCommentJPA();
-		DriverJPA d = this.findDriver(driverId);
-		PassengerJPA p = this.findPassenger(passengerId);
-		driverComment.setDriver(d);
-		driverComment.setPassenger(p);
-		driverComment.setComment(comment);
-		driverComment.setRating(rating);
-		try {
+	public void rateDriver(String driverId, String passengerId, String comment, int rating) {
+
+		DriverCommentJPA driverComment = getDriverComment(driverId, passengerId);
+
+		if (driverComment == null) {
+			driverComment = new DriverCommentJPA(comment, rating);
+			DriverJPA d = this.findDriver(driverId);
+			PassengerJPA p = this.findPassenger(passengerId);
+			driverComment.setDriver(d);
+			driverComment.setPassenger(p);
 			entman.persist(driverComment);
-
-		} catch (PersistenceException e) {
-			System.out.println(e);
+		} else {
+			driverComment.setComment(comment);
+			driverComment.setRating(rating);
+			entman.merge(driverComment);
 		}
-
 	}
 
 	/**
@@ -138,30 +138,14 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	public DriverCommentJPA getDriverComment(String driverId, String passengerId) throws PersistenceException {
 
 		try {
-			DriverCommentJPA driverComment = (DriverCommentJPA) entman
-					.createQuery(
-							"FROM DriverCommentJPA b WHERE b.driver.nif = :driverId AND b.passenger.nif = :passengerId")
-					.setParameter("driverId", driverId).setParameter("passengerId", passengerId).getSingleResult();
-			return driverComment;
+			Query query = entman.createNamedQuery(QUERY_GET_DRIVER_COMMENT_BY_PASSENGER);
+			query.setParameter(PARAMETER_DRIVER_ID, driverId);
+			query.setParameter(PARAMETER_PASSENGER_ID, passengerId);
+
+			return (DriverCommentJPA) query.getSingleResult();
 		} catch (PersistenceException e) {
 			System.out.println(e);
 			return null;
-		}
-
-	}
-
-	/**
-	 * Method that rate a driver
-	 */
-	public void updateRateDriver(String driverId, String passengerId, String comment, int rating)
-			throws PersistenceException {
-		try {
-			entman.createQuery(
-					"UPDATE DriverCommentJPA b SET b.comment = :comment, b.rating = :rating WHERE b.driver.nif = :driverId AND b.passenger.nif = :passengerId")
-					.setParameter("driverId", driverId).setParameter("passengerId", passengerId)
-					.setParameter("comment", comment).setParameter("rating", rating).executeUpdate();
-		} catch (PersistenceException e) {
-			System.out.println(e);
 		}
 	}
 
@@ -169,16 +153,22 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 * Method that find a trip
 	 */
 	public TripJPA findTrip(int tripId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		TripJPA trip = (TripJPA) entman.createQuery("FROM TripJPA b WHERE b.id = ?1").setParameter(1, tripId)
-				.getSingleResult();
-		return trip;
+
+		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
+		query.setParameter(PARAMETER_TRIP_ID, tripId);
+
+		try {
+			return (TripJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	/**
 	 * Method that find a driver
 	 */
 	public DriverJPA findDriver(String driverId) throws PersistenceException {
+
 		@SuppressWarnings("unchecked")
 		DriverJPA driver = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, driverId)
 				.getSingleResult();
@@ -199,9 +189,13 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 * Method that find a message
 	 */
 	public MessageJPA findMessage(int questionId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
-		MessageJPA message = (MessageJPA) entman.createQuery("FROM MessageJPA b WHERE b.questionId = ?1")
-				.setParameter(1, questionId).getSingleResult();
-		return message;
+		Query query = entman.createNamedQuery(QUERY_GET_MESSAGE_BY_ID);
+		query.setParameter(PARAMETER_QUESTION_ID, questionId);
+
+		try {
+			return (MessageJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }

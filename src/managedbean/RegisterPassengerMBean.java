@@ -110,11 +110,11 @@ public class RegisterPassengerMBean implements Serializable {
 			UserJPA user = userFacadeRemote.findUser(nif);
 
 			if (user == null) {
-				userFacadeRemote.registerDriver(nif, name, surname, phone, password, email);
+				userFacadeRemote.registerPassenger(nif, name, surname, phone, password, email);
 				result = HOME_VIEW;
 			} else {
 				if (userFacadeRemote.existPassenger(nif)) {
-					errorMessage = "Driver already exists";
+					errorMessage = "Passenger already exists";
 					result = ERROR_VIEW;
 				} else if (userIsRegistered(user)) {
 					userFacadeRemote.registerPassenger(nif, name, surname, phone, password, email);

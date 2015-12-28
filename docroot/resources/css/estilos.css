@@ -1,20 +1,20 @@
 @import url(https://fonts.googleapis.com/css?family=Indie+Flower);
 
 .navbar-brand {
-	font-family: 'Indie Flower', 'Helvetica Neue',Helvetica,Arial,sans-serif, cursive;
+	font-family: 'Indie Flower', 'Helvetica Neue', Helvetica, Arial,
+		sans-serif, cursive;
 	font-size: 30px;
 }
 
 .navbar-nav.nav {
 	font-size: 18px;
-} 
+}
 
 .nav.navbar-nav form {
-    text-shadow: 0 1px 0 rgba(0,0,0,0.1);
-    color: #fff;
-    padding-top: 15px;
-    line-height: 20px;
-    
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+	color: #fff;
+	padding-top: 15px;
+	line-height: 20px;
 }
 
 .nav.navbar-nav form i {
@@ -28,7 +28,7 @@
 
 .nav.navbar-nav form a {
 	padding: 15px;
-	color: #fff;	
+	color: #fff;
 }
 
 .nav.navbar-nav form a:HOVER {
@@ -52,7 +52,7 @@
 	background-color: #d9edf7;
 }
 
-.well > h2 {
+.well>h2 {
 	margin-top: 10px;
 }
 
@@ -94,6 +94,21 @@
 
 .checkbox label {
 	font-weight: bold;
+}
+
+.user-icon-area {
+	vertical-align: top;
+}
+.user-icon {
+	background: rgba(173, 216, 230, 0.36);
+	font-size: 50px;
+	margin: 10px 5px;
+	padding: 0 10px;
+	float: left;
+}
+
+.trip-comment-area {
+	margin-left: 80px;
 }
 
 /* .selectOneMenu { */

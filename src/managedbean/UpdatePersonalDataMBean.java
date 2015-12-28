@@ -110,9 +110,13 @@ public class UpdatePersonalDataMBean implements Serializable {
 		user.setEmail(email);
 	}
 
+	public String getErrorMessage() {
+		return this.errorMessage;
+	}
+
 	public String setDataUser() throws Exception {
 
-		String result;
+		String result = "findTripsView.xhtml";
 
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
@@ -127,20 +131,18 @@ public class UpdatePersonalDataMBean implements Serializable {
 
 		} else {
 			if (userFacadeRemote.existUser(user)) {
-				errorMessage = "Passenger already exists with some email or some nif and different name-surname";
-				result = "errorView";
+				errorMessage = "User already exists with this email and different name and surname";
+				result = "errorUpdating";
 			} else {
 				userFacadeRemote.updatePersonalData(user.getNif(), user.getName(), user.getSurname(), user.getPhone(),
 						user.getEmail(), user.getPassword());
+				loggedUser.setId(getNif());
+				loggedUser.setUsername(getName() + " " + getSurname());
+				SessionBean.setLoggedUser(loggedUser);
+				loginMBean.setUser(loggedUser);
 			}
 		}
 
-		loggedUser.setId(getNif());
-		loggedUser.setUsername(getName() + " " + getSurname());
-		SessionBean.setLoggedUser(loggedUser);
-		loginMBean.setUser(loggedUser);
-
-		result = "findTripsView.xhtml";
 		return result;
 	}
 }

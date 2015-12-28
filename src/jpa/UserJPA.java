@@ -10,7 +10,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import javax.persistence.Transient;
 
 import com.sun.istack.internal.NotNull;
 
@@ -37,7 +37,6 @@ public abstract class UserJPA implements Serializable {
 	private String surname;
 
 	@Column(name = "phone")
-	@Size(min = 9, max = 9)
 	private String phone;
 
 	@NotNull
@@ -94,5 +93,10 @@ public abstract class UserJPA implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Transient
+	public String getFullName() {
+		return name + " " + surname;
 	}
 }

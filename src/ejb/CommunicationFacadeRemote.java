@@ -19,25 +19,23 @@ public interface CommunicationFacadeRemote {
 	 * Remotely invoked method.
 	 */
 
-	public Collection<MessageJPA> showTripComments(int tripId);
+	Collection<MessageJPA> showTripComments(int tripId);
 
-	public Collection<DriverCommentJPA> showDriverComments(String driver);
+	Collection<DriverCommentJPA> showDriverComments(String driver);
 
-	public void askQuestion(int tripId, String passenger, String subject, String body);
+	void askQuestion(int tripId, String passenger, String subject, String body);
 
-	public void replyQuestion(int tripId, int questionId, String driver, String subject, String body);
+	void replyQuestion(int tripId, int questionId, String driver, String subject, String body);
 
-	public void rateDriver(String driver, String passenger, String comment, int rating);
+	void rateDriver(String driver, String passenger, String comment, int rating);
 
-	public DriverCommentJPA getDriverComment(String driver, String Passenger);
+	DriverCommentJPA getDriverComment(String driver, String Passenger);
 
-	public void updateRateDriver(String driverId, String passengerId, String comment, int rating);
+	TripJPA findTrip(int tripId);
 
-	public TripJPA findTrip(int tripId);
+	DriverJPA findDriver(String driverId);
 
-	public DriverJPA findDriver(String driverId);
+	PassengerJPA findPassenger(String passengerId);
 
-	public PassengerJPA findPassenger(String passengerId);
-
-	public MessageJPA findMessage(int questionId);
+	MessageJPA findMessage(int questionId);
 }

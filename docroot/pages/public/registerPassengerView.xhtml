@@ -7,30 +7,30 @@
 	
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
-		<div class="row">
-			<div class="col-xs-12">
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h1 class="page-header">
 					<h:outputText value="Modifica les teves dades" rendered="#{login.isLogged()}"/>
 					<h:outputText value="Registra't com a passatger" rendered="#{not login.isLogged()}"/>
 				</h1>
-			</div>
-		</div>
-		<div class="row">
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row">
 			<h:form class="col-md-10 col-md-offset-1">
 				<h1 class="col-md-12"><h:outputText value="Afegir nou passenger" rendered="#{not login.isLogged()}"/></h1>
 				<h1 class="col-md-12"><h:outputText value="Modificar #{login.roles}" rendered="#{login.isLogged()}"/></h1>
-				<div class="form-group col-md-6">
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>NIF: (*) </label>
 					<h:inputText id="nif" value="#{registerpassenger.nif}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.NifValidator" />
 					</h:inputText>
-					<h:inputText id="nif2" value="#{updatepersonaldata.nif}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{login.isLogged()}">
+					<h:inputText id="nif2" value="#{updatepersonaldata.nif}" disabled="true" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{login.isLogged()}">
 						<f:validator validatorId="validator.NifValidator" />
 					</h:inputText>
 					<h:message for="nif" styleClass="text-danger"/>
 					<h:message for="nif2" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>Nom: (*)</label>
 					<h:inputText id="name" value="#{registerpassenger.name}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.NameValidator"/>
@@ -40,8 +40,8 @@
 					</h:inputText>
 					<h:message for="name" styleClass="text-danger"/>
 					<h:message for="name2" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>Cognom: (*)</label>
 					<h:inputText id="surname" value="#{registerpassenger.surname}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.NameValidator"/>
@@ -51,8 +51,8 @@
 					</h:inputText>
 					<h:message for="surname" styleClass="text-danger"/>
 					<h:message for="surname2" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>Telèfon: </label>
 					<h:inputText id="phone" value="#{registerpassenger.phone}" class="form-control" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.PhoneValidator"/>
@@ -62,8 +62,8 @@
 					</h:inputText>
 					<h:message for="phone" styleClass="text-danger"/>
 					<h:message for="phone2" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>E-Mail: (*) </label>
 					<h:inputText id="email" value="#{registerpassenger.email}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.EmailValidator"/>
@@ -73,18 +73,18 @@
 					</h:inputText>
 					<h:message for="email" styleClass="text-danger"/>
 					<h:message for="email2" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>Password: (*) </label>
 					<h:inputText id="password" value="#{registerpassenger.password}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}"/>
 					<h:inputText id="password2" value="#{updatepersonaldata.password}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{login.isLogged()}"/>
 					<h:message for="password" styleClass="text-danger"/>
 					<h:message for="password2" styleClass="text-danger"/>
-				</div>
-				<div class="col-md-12 text-left">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="col-md-12 text-left">
 					<label>(*) Camp obligatori</label>
-				</div>
-				<div class="col-md-12 text-right">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="col-md-12 text-right">
 					<ul class="list-inline">
 						<li>
 							<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
@@ -98,9 +98,9 @@
 								action="#{updatepersonaldata.setDataUser}" rendered="#{login.isLogged()}" />
 						</li>
 					</ul>
-				</div>
+				</h:panelGroup>
 			</h:form>
-		</div>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>
 </html>

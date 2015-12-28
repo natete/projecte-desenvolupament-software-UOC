@@ -26,6 +26,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	private EntityManager entman;
 
 	private static final String QUERY_FIND_USER_BY_NIF = "UserJPA.getByNif";
+	private static final String QUERY_FIND_USER_BY_EMAIL = "UserJPA.getByEmail";
 	private static final String QUERY_FIND_USER_OTHER_USER = "UserJPA.existOtherUser";
 	private static final String QUERY_FIND_DRIVER_BY_NIF = "DriverJPA.getByNif";
 	private static final String QUERY_FIND_PASSENGER_BY_NIF = "PassengerJPA.getPassengerById";
@@ -332,6 +333,17 @@ public class UserFacadeBean implements UserFacadeRemote {
 			return (PassengerJPA) query.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
+		}
+	}
+
+	public boolean isEmailUsed(String email) {
+		Query query = entman.createNamedQuery(QUERY_FIND_USER_BY_EMAIL);
+		query.setParameter(PARAMETER_EMAIL, email);
+		try {
+			query.getSingleResult();
+			return true;
+		} catch (NoResultException e) {
+			return false;
 		}
 	}
 }

@@ -109,8 +109,13 @@ public class RegisterDriverMBean implements Serializable {
 			UserJPA user = userFacadeRemote.findUser(nif);
 
 			if (user == null) {
-				userFacadeRemote.registerDriver(nif, name, surname, phone, password, email);
-				result = HOME_VIEW;
+				if (userFacadeRemote.isEmailUsed(email)) {
+					errorMessage = "This email is being used by another user";
+					result = ERROR_VIEW;
+				} else {
+					userFacadeRemote.registerDriver(nif, name, surname, phone, password, email);
+					result = HOME_VIEW;
+				}
 			} else {
 				if (userFacadeRemote.existDriver(nif)) {
 					errorMessage = "Driver already exists";
@@ -131,7 +136,7 @@ public class RegisterDriverMBean implements Serializable {
 
 	}
 
-	private boolean userIsRegistered(UserJPA user) {
+	public boolean userIsRegistered(UserJPA user) {
 		boolean result = user.getNif().equals(nif) && user.getEmail().equals(email) && user.getName().equals(name)
 				&& user.getSurname().equals(surname) && user.getPassword().equals(password);
 

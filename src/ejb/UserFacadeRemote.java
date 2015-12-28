@@ -49,4 +49,6 @@ public interface UserFacadeRemote {
 	DriverJPA findDriver(String nif);
 
 	PassengerJPA findPassenger(String nif);
+
+	boolean isEmailUsed(String email);
 }

@@ -110,8 +110,13 @@ public class RegisterPassengerMBean implements Serializable {
 			UserJPA user = userFacadeRemote.findUser(nif);
 
 			if (user == null) {
-				userFacadeRemote.registerPassenger(nif, name, surname, phone, password, email);
-				result = HOME_VIEW;
+				if (userFacadeRemote.isEmailUsed(email)) {
+					errorMessage = "This email is being used by another user";
+					result = ERROR_VIEW;
+				} else {
+					userFacadeRemote.registerPassenger(nif, name, surname, phone, password, email);
+					result = HOME_VIEW;
+				}
 			} else {
 				if (userFacadeRemote.existPassenger(nif)) {
 					errorMessage = "Passenger already exists";

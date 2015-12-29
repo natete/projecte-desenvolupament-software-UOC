@@ -285,7 +285,7 @@
 	</navigation-rule>
 	
 	<navigation-rule>
-		<from-view-id>/pages/addCarView.xhtml</from-view-id>
+		<from-view-id>/pages/driver/addCarView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>errorView</from-outcome>
 			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
@@ -296,13 +296,13 @@
 				</view-param>
 				<view-param>
 					<name>fromPage</name>
-					<value>/CAT-PDP-GRUP6/pages/addCarView.xhtml</value>
+					<value>/CAT-PDP-GRUP6/pages/driver/addCarView.xhtml</value>
 				</view-param>
 			</redirect>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<from-view-id>/pages/carListView.xhtml</from-view-id>
+		<from-view-id>/pages/driver/carListView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>errorView</from-outcome>
 			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
@@ -313,7 +313,7 @@
 				</view-param>
 				<view-param>
 					<name>fromPage</name>
-					<value>/CAT-PDP-GRUP6/pages/carListView.xhtml</value>
+					<value>/CAT-PDP-GRUP6/pages/driver/carListView.xhtml</value>
 				</view-param>
 			</redirect>
 		</navigation-case>

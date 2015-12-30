@@ -10,15 +10,15 @@
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h1 class="page-header">
-					<h:outputText value="Modifica les teves dades" rendered="#{login.isLogged()}"/>
-					<h:outputText value="Registra't com a passatger" rendered="#{not login.isLogged()}"/>
+					<h:outputText value="Update your personal data" rendered="#{login.isLogged()}"/>
+					<h:outputText value="Register as passenger" rendered="#{not login.isLogged()}"/>
 				</h1>
 			</h:panelGroup>
 		</h:panelGroup>
 		<h:panelGroup layout="block" styleClass="row">
 			<h:form class="col-md-10 col-md-offset-1">
-				<h1 class="col-md-12"><h:outputText value="Afegir nou passenger" rendered="#{not login.isLogged()}"/></h1>
-				<h1 class="col-md-12"><h:outputText value="Modificar #{login.roles}" rendered="#{login.isLogged()}"/></h1>
+				<h1 class="col-md-12"><h:outputText value="Add a new passenger" rendered="#{not login.isLogged()}"/></h1>
+				<h1 class="col-md-12"><h:outputText value="Update #{login.roles}" rendered="#{login.isLogged()}"/></h1>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>NIF: (*) </label>
 					<h:inputText id="nif" value="#{registerpassenger.nif}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
@@ -31,7 +31,7 @@
 					<h:message for="nif2" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
-					<label>Nom: (*)</label>
+					<label>Name: (*)</label>
 					<h:inputText id="name" value="#{registerpassenger.name}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.NameValidator"/>
 					</h:inputText>
@@ -42,7 +42,7 @@
 					<h:message for="name2" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
-					<label>Cognom: (*)</label>
+					<label>Surname: (*)</label>
 					<h:inputText id="surname" value="#{registerpassenger.surname}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.NameValidator"/>
 					</h:inputText>
@@ -53,7 +53,7 @@
 					<h:message for="surname2" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
-					<label>Telèfon: </label>
+					<label>Phone: </label>
 					<h:inputText id="phone" value="#{registerpassenger.phone}" class="form-control" rendered="#{not login.isLogged()}">
 						<f:validator validatorId="validator.PhoneValidator"/>
 					</h:inputText>
@@ -76,13 +76,13 @@
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label>Password: (*) </label>
-					<h:inputText id="password" value="#{registerpassenger.password}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}"/>
+					<h:inputSecret id="password" value="#{registerpassenger.password}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not login.isLogged()}"/>
 					<h:inputText id="password2" value="#{updatepersonaldata.password}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{login.isLogged()}"/>
 					<h:message for="password" styleClass="text-danger"/>
 					<h:message for="password2" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="col-md-12 text-left">
-					<label>(*) Camp obligatori</label>
+					<label>(*) Field mandatory</label>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="col-md-12 text-right">
 					<ul class="list-inline">

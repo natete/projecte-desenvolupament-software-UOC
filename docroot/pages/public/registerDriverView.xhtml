@@ -10,13 +10,13 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
-					Registra't com a conductor
+					Register as driver
 				</h1>
 			</div>
 		</div>
 		<div class="row">
 			<h:form class="col-md-10 col-md-offset-1">
-				<h1 class="col-md-12">Afegir nou driver</h1>
+				<h1 class="col-md-12">Add a new driver</h1>
 				<div class="form-group col-md-6">
 					<label for="nif">NIF: (*) </label>
 					<h:inputText id="nif" value="#{registerdriver.nif}" class="form-control" required="true" requiredMessage="This field is mandatory">
@@ -25,21 +25,21 @@
 					<h:message for="nif" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="name">Nom: (*)</label>
+					<label for="name">Name: (*)</label>
 					<h:inputText id="name" value="#{registerdriver.name}" class="form-control" required="true" requiredMessage="This field is mandatory">
 						<f:validator validatorId="validator.NameValidator" />
 					</h:inputText>
 					<h:message for="name" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="surname">Cognom: (*)</label>
+					<label for="surname">Surname: (*)</label>
 					<h:inputText id="surname" value="#{registerdriver.surname}" class="form-control" required="true" requiredMessage="This field is mandatory">
 						<f:validator validatorId="validator.NameValidator" />
 					</h:inputText>
 					<h:message for="surname" styleClass="text-danger"/>
 				</div>
 				<div class="form-group col-md-6">
-					<label for="phone">Telèfon: </label>
+					<label for="phone">Phone: </label>
 					<h:inputText id="phone" value="#{registerdriver.phone}" class="form-control" >
 						<f:validator validatorId="validator.PhoneValidator" />
 					</h:inputText>
@@ -54,11 +54,11 @@
 				</div>
 				<div class="form-group col-md-6">
 					<label for="password">Password: (*) </label>
-					<h:inputText id="password" value="#{registerdriver.password}" class="form-control" required="true" requiredMessage="This field is mandatory"/>
+					<h:inputSecret id="password" value="#{registerdriver.password}" class="form-control" required="true" requiredMessage="This field is mandatory"/>
 					<h:message for="password" styleClass="text-danger"/>
 				</div>
 				<div class="col-md-12 text-left">
-					<label>(*) Camp obligatori</label>
+					<label>(*) Field mandatory</label>
 				</div>
 				<div class="col-md-12 text-right">
 					<ul class="list-inline">
@@ -73,8 +73,6 @@
 						</li>
 					</ul>
 				</div>
-	
-	
 			</h:form>
 		</div>
 	</ui:define>

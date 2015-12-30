@@ -13,7 +13,7 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<h1 class="page-header">
-						<i><h:outputLabel class="fa fa-user" value=" Coches de #{login.username}" /></i>
+						<i><h:outputLabel class="fa fa-user" value=" My cars" /></i>
 					</h1>
 				</div>
 			</div>
@@ -28,7 +28,7 @@
 				</div>
 				<div class="col-xs-12">
 					<h3>
-						<h:outputText escape="false" value="No se han encontrado coches para #{login.username}" rendered="#{empty cars.carsList}"></h:outputText>
+						<h:outputText escape="false" value="This driver does not have cars" rendered="#{empty cars.carsList}"></h:outputText>
 					</h3>
 					
 					<h:dataTable value="#{cars.carsList}" var="item" class="table table-striped" rendered="#{not empty cars.carsList}">

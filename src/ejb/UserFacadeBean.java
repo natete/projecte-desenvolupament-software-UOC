@@ -16,7 +16,10 @@ import jpa.UserDTO;
 import jpa.UserJPA;
 
 /**
- * EJB Session Bean Class
+ * Implementation of {@link UserFacadeRemote} that performs user related actions
+ * 
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @Stateless
 public class UserFacadeBean implements UserFacadeRemote {
@@ -43,7 +46,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 	private static final String PARAMETER_PASSWORD = "password";
 
 	/**
-	 * Method that adds a car
+	 * @see UserFacadeRemote#addcar(String, String, String, String, String,
+	 *      String)
 	 */
 	public void addCar(String nif, String carRegistrationId, String brand, String model, String color)
 			throws PersistenceException {
@@ -64,7 +68,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that returns Collection of all cars
+	 * @see UserFacadeRemote#listAllCars(String)
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -76,7 +80,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that verify the existences of trips for car
+	 * @see UserFacadeRemote#carHasTrips(String)
 	 */
 	public boolean carHasTrips(String carRegistrationId) throws PersistenceException {
 		CarJPA car = (CarJPA) entman.createNamedQuery(QUERY_FIND_CAR_BY_ID)
@@ -86,7 +90,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that delete a instance of the class car
+	 * @see UserFacadeRemote#deleteCar(String)
 	 */
 	public void deleteCar(String carRegistrationId) throws PersistenceException {
 
@@ -100,7 +104,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that adds a driver
+	 * @see UserFacadeRemote#registerDriver(String, String, String, String,
+	 *      String, String)
 	 */
 	public void registerDriver(String nif, String name, String surname, String phone, String password, String email)
 			throws PersistenceException {
@@ -127,7 +132,8 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that adds a passenger
+	 * @see UserFacadeRemote#reigsterPassenger(String, String, String, String,
+	 *      String, String)
 	 */
 	public void registerPassenger(String nif, String name, String surname, String phone, String password, String email)
 			throws PersistenceException {
@@ -154,7 +160,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that find the user to login
+	 * @see UserFacadeRemote#login(String, String)
 	 */
 	public UserDTO login(String email, String password) throws PersistenceException {
 
@@ -181,7 +187,6 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	private DriverJPA driverLogin(String email, String password) {
-
 		try {
 			entman.clear();
 			Query query = entman.createNamedQuery(QUERY_DRIVER_LOGIN);
@@ -209,6 +214,9 @@ public class UserFacadeBean implements UserFacadeRemote {
 		}
 	}
 
+	/**
+	 * @see UserFacadeRemote#findUser(String)
+	 */
 	public UserJPA findUser(String nif) {
 
 		Query query = entman.createNamedQuery(QUERY_FIND_USER_BY_NIF);
@@ -220,6 +228,9 @@ public class UserFacadeBean implements UserFacadeRemote {
 		}
 	}
 
+	/**
+	 * @see UserFacadeRemote#existUser(UserJPA)
+	 */
 	public boolean existUser(UserJPA user) {
 		Query query = entman.createNamedQuery(QUERY_FIND_USER_OTHER_USER);
 		query.setParameter(PARAMETER_NIF, user.getNif());
@@ -233,6 +244,10 @@ public class UserFacadeBean implements UserFacadeRemote {
 		}
 	}
 
+	/**
+	 * @see UserFacadeRemote#updatePersonalData(String, String, String, String,
+	 *      String, String)
+	 */
 	public void updatePersonalData(String nif, String name, String surname, String phone, String email,
 			String password) {
 		Query query = entman.createNamedQuery(QUERY_FIND_USER_BY_NIF);
@@ -249,9 +264,9 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that verify the existences of as car
+	 * @see UserFacadeRemote#existCar(String)
 	 */
-	public boolean existsCar(String carRegistrationId) throws PersistenceException {
+	public boolean existCar(String carRegistrationId) throws PersistenceException {
 		try {
 			Query query = entman.createNamedQuery(QUERY_FIND_CAR_BY_ID);
 			query.setParameter(PARAMETER_CAR_ID, carRegistrationId);
@@ -263,7 +278,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that verify the existences of as driver
+	 * @see UserFacadeRemote#existDriver(String)
 	 */
 	public boolean existDriver(String nif) throws PersistenceException {
 		Query query = entman.createNamedQuery(QUERY_FIND_DRIVER_BY_NIF);
@@ -278,7 +293,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that verify the existences of as driver
+	 * @see UserFacadeRemote#existPassenger(String)
 	 */
 	public boolean existPassenger(String nif) throws PersistenceException {
 		Query query = entman.createNamedQuery(QUERY_FIND_PASSENGER_BY_NIF);
@@ -293,7 +308,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that find a driver
+	 * @see UserFacadeRemote#findDriver(String)
 	 */
 	public DriverJPA findDriver(String nif) throws PersistenceException {
 		Query query = entman.createNamedQuery(QUERY_FIND_DRIVER_BY_NIF);
@@ -307,23 +322,7 @@ public class UserFacadeBean implements UserFacadeRemote {
 	}
 
 	/**
-	 * Method that verify the existences of as passenger
-	 */
-	public boolean existsPassenger(String nif, String email, UserDTO userLogged) throws PersistenceException {
-		Query query = entman.createNamedQuery(QUERY_FIND_PASSENGER_BY_NIF);
-
-		query.setParameter(PARAMETER_NIF, nif);
-
-		try {
-			query.getSingleResult();
-			return true;
-		} catch (NoResultException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Method that find a passenger
+	 * @see UserFacadeRemote#findPassenger(String)
 	 */
 	public PassengerJPA findPassenger(String nif) throws PersistenceException {
 		Query query = entman.createNamedQuery(QUERY_FIND_PASSENGER_BY_NIF);
@@ -336,6 +335,9 @@ public class UserFacadeBean implements UserFacadeRemote {
 		}
 	}
 
+	/**
+	 * @see UserFacadeRemote#isEmailUsed(String)
+	 */
 	public boolean isEmailUsed(String email) {
 		Query query = entman.createNamedQuery(QUERY_FIND_USER_BY_EMAIL);
 		query.setParameter(PARAMETER_EMAIL, email);

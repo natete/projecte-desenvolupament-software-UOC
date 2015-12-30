@@ -86,7 +86,7 @@ public class AddCarMBean implements Serializable {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		addCarRemote = (UserFacadeRemote) ctx.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		if (addCarRemote.existsCar(carRegistrationId) == true) {
+		if (addCarRemote.existCar(carRegistrationId) == true) {
 			errorMessage = "Car registration Id already exists";
 			result = "errorView";
 		} else {

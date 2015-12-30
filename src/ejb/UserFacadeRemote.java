@@ -7,21 +7,33 @@ import javax.ejb.Remote;
 import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
+import jpa.TripJPA;
 import jpa.UserDTO;
 import jpa.UserJPA;
 
 /**
- * Session EJB Remote Interfaces
+ * Interface to provide the methods to manage the users
+ * 
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @Remote
 public interface UserFacadeRemote {
+
 	/**
-	 * Remotely invoked method.
-	 * 
-	 * @param userLogged
+	 * Add a car in a driver
+	 * @param carRegistrationId id of the car
+	 * @param brand brand of the car
+	 * @param model model of the car
+	 * @param color color of the car
 	 */
 	void addCar(String nif, String carRegistrationId, String brand, String model, String color);
 
+	/**
+	 * List all car of a driver
+	 * @param nif nif of the driver
+	 * @return List<{{@link TripJPA}> list of the cars
+	 */
 	List<CarJPA> listAllCars(String nif);
 
 	boolean carHasTrips(String carRegistrationId);

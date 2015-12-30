@@ -74,7 +74,7 @@
 	padding-top: 9px;
 }
 
-.pagination>.active>a {
+.pagination>.active>a, .pagination>.active>span, .pagination>.active>a:hover, .pagination>.active>span:hover {
 	background-color: #54B4EB;
 	color: white;
 }
@@ -94,6 +94,22 @@
 
 .checkbox label {
 	font-weight: bold;
+}
+
+.user-icon-area {
+	vertical-align: top;
+}
+
+.user-icon {
+	background: rgba(173, 216, 230, 0.36);
+	font-size: 50px;
+	margin: 10px 5px;
+	padding: 0 10px;
+	float: left;
+}
+
+.trip-comment-area {
+	margin-left: 80px;
 }
 
 .selectOneMenu {

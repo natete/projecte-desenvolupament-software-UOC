@@ -12,8 +12,26 @@
 				<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;My Trips
 			</h1>
 		</div>
-			<h:form>
-				<!--<h:dataTable value="#{findMyTripsController.tripListView}" var="item" class="table table-striped"  >-->
+		<h:form rendered="#{empty findMyTripsController.trips}">
+			<h3>
+				<i class='fa fa-times'></i>&nbsp;
+				<h:outputText value="You have no trips assigned. Please, assign for a trip."></h:outputText>
+			</h3>
+			<div class="col-md-12 text-left">
+				<ul class="list-inline">
+					<li>
+						<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />
+					</li>
+					<li>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+		</h:form>
+			<h:form rendered="#{!empty findMyTripsController.trips}">
+				<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />
 				<h:dataTable value="#{findMyTripsController.trips}" var="item" class="table table-striped"  >
 		 			<h:column>
 		   				<f:facet name="header">
@@ -32,7 +50,7 @@
 		   					<h:outputText value="Date" />
 		   				</f:facet> 
 		    			<h:outputText value="#{item.departureDate} ">
-		    				<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+		    				<f:convertDateTime type="date" pattern="dd/MM/yyyy" locale="es_ES" timeZone="Europe/Madrid" />
 		    			</h:outputText>
 		 			</h:column>
 		 			<h:column>
@@ -45,21 +63,21 @@
 		   			</h:column>
 		   			<h:column>
 		     			<h:panelGroup class="col-md-2 col-md-offset-4">
-		     				<h:outputLink value="../public/showTripView.xhtml" class="btn btn-bbg2">
+		     				<h:outputLink value="../public/showTripView.xhtml" styleClass="btn btn-primary">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<i class="fa fa-info-circle"></i>&nbsp;
 								<h:outputText value="Details" />
 							</h:outputLink>
 		     			</h:panelGroup>
 		     			<h:panelGroup class="col-md-2">
-		     				<h:outputLink value="findAllPassengersView.xhtml" class="btn btn-bbg2">
+		     				<h:outputLink value="findAllPassengersView.xhtml" styleClass="btn btn-primary">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<i class="fa fa-male"></i>&nbsp;
 								<h:outputText value="Passengers" />
 							</h:outputLink>
 		     			</h:panelGroup>
 		     			<h:panelGroup class="col-md-2 col-md-offset-1">
-		     				<h:outputLink value="updateTripInformationView.xhtml" class="btn btn-bbg1">
+		     				<h:outputLink value="updateTripInformationView.xhtml" styleClass="btn btn-info">
 		     					<f:param name="tripId" value="#{item.id}" />
 		     					<i class="fa fa-refresh"></i>&nbsp;
 								<h:outputText value="Update" />

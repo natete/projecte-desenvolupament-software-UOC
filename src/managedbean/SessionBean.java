@@ -12,6 +12,7 @@ public class SessionBean {
 	public static final String USER_ID = "userId";
 	public static final String DRIVER_ROLE = "driverRole";
 	public static final String PASSENGER_ROLE = "passengerRole";
+	public static final String EMAIL = "email";
 
 	public static HttpSession getSession() {
 		return (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
@@ -27,9 +28,10 @@ public class SessionBean {
 		if (session.getAttribute(USER_NAME) != null) {
 			String username = (String) session.getAttribute(USER_NAME);
 			String userId = (String) session.getAttribute(USER_ID);
+			String email = (String) session.getAttribute(EMAIL);
 			boolean isDriver = (boolean) session.getAttribute(DRIVER_ROLE);
 			boolean isPassenger = (boolean) session.getAttribute(PASSENGER_ROLE);
-			user = new UserDTO(username, userId, isDriver, isPassenger);
+			user = new UserDTO(username, userId, email, isDriver, isPassenger);
 		}
 		return user;
 	}
@@ -38,6 +40,7 @@ public class SessionBean {
 		HttpSession session = getSession();
 		session.setAttribute(USER_NAME, user.getUsername());
 		session.setAttribute(USER_ID, user.getId());
+		session.setAttribute(EMAIL, user.getEmail());
 		session.setAttribute(DRIVER_ROLE, user.isDriver());
 		session.setAttribute(PASSENGER_ROLE, user.isPassenger());
 	}

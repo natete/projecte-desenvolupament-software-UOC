@@ -1,64 +1,88 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
 
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
-	<f:metadata>
-		<f:viewParam name="tripId" value="#{tripcomments.tripId}"/>
-		<f:event listener="#{tripcomments.init()}" type="preRenderView"/>
-	</f:metadata>
-	<h:body> 	
-	  <h:form align="left" >	
-		<h:commandLink action="#{tripcomments.previousScreen}" value="Previous" />
-		<h:outputText value="   " />
-		<h:commandLink action="#{tripcomments.nextScreen}" value="Next" />		
-		<h:dataTable value="#{tripcomments.tripcommentsListView}" var="item" bgcolor="#F1F1F1" border="10" first="0" width="100%" frame="hsides" rules="all"  >
- 			<f:facet name="header">			
-  			<h:outputText align="center" value="Trip Comments: #{tripcomments.trip.description}    Driver: #{tripcomments.driver}" />		
-  			</f:facet> 
-  			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Passenger"/>
-   				</f:facet> 
-     			<h:outputText value="#{item.passenger.name}" />
- 			</h:column>
- 			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Subject"/>
-   				</f:facet> 
-     			<h:outputText value="#{item.subject}" />
- 			</h:column>
- 			<h:column>
-   				<f:facet name="header">
-   					<h:outputText value="Body" />
-   				</f:facet> 
-    			<h:outputText value="#{item.body}" />
- 			</h:column>
- 			<h:column>	
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/replyQuestionView.xhtml" class="btn btn-primary" rendered="#{tripcomments.driverLogged}">
+		<f:metadata>
+			<f:viewParam name="tripId" value="#{tripcomments.tripId}"/>
+			<f:event listener="#{tripcomments.init()}" type="preRenderView"/>
+		</f:metadata>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup class="col-xs-8 col-xs-offset-2">
+				<h1 class="page-header">
+					<i class="fa fa-comments-o"></i> Trip comments
+				</h1>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row" rendered="#{empty tripcomments.tripcommentsListView}">
+			<h:panelGroup layout="block" styleClass="col-xs-8 col-xs-offset-2">
+				<h3 class="text-muted">
+					<i class='fa fa-times'></i> Sorry, this trip has no comments yet. You can send a question to the driver now
+				</h3>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row" rendered="#{not empty tripcomments.tripcommentsListView}">
+			<h:panelGroup layout="block" styleClass="col-xs-8 col-xs-offset-2">
+				<ui:repeat var="item" value="#{tripcomments.tripcommentsListView}">
+						<h:panelGroup layout="block" styleClass="user-icon-area">
+							<h1 class="user-icon"><i class="fa fa-user"></i></h1>
+						</h:panelGroup>
+						<h:panelGroup layout="block" styleClass="trip-comment-area">
+							<h4><h:outputText value="#{item.author}"/></h4>
+							<h5><h:outputText value="#{item.subject}"/></h5>
+							<h:panelGroup layout="block" styleClass="text-justify">
+								<h:outputText value="#{item.body}"/>
+							</h:panelGroup>
+							<h:panelGroup layout="block">
+								<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/replyQuestionView.xhtml" rendered="#{tripcomments.driverLogged}">
+									<f:param name="tripId" value="#{tripcomments.tripId}"/>
+									<f:param name="questionId" value="#{item.questionId}" />	
+									<h:outputText value="Reply"/>					
+								</h:outputLink>
+							</h:panelGroup>
+							<ui:repeat var="answer" value="#{item.answers}">
+								<h5><i class="fa fa-reply details-icon"></i><h:outputText value="#{answer.author}"/></h5>
+								<h:panelGroup layout="block" styleClass="text-justify">
+									<h:outputText value="#{answer.body}"/>
+								</h:panelGroup>
+							</ui:repeat>
+						</h:panelGroup>
+				</ui:repeat>
+				<h:form styleClass="text-center"> 
+					<ul class="list-inline">
+						<li>
+							<h:commandLink action="#{tripcomments.previousScreen}" rendered="#{not tripcomments.isFirstScreen}">
+								<i class="fa fa-angle-left"></i> Previous
+							</h:commandLink>
+						</li>
+						<li>
+							<h:commandLink action="#{tripcomments.nextScreen}" rendered="#{not tripcomments.isLastScreen}">
+								Next <i class="fa fa-angle-right"></i>
+							</h:commandLink>
+						</li>
+					</ul>
+				</h:form>
+			</h:panelGroup>
+		</h:panelGroup>
+			
+		<h:panelGroup layout="block" styleClass="text-center">
+			<ul class="list-inline">
+				<li>
+					<h:outputLink value="showTripView.xhtml" class="btn btn-default">
+						<f:param name="tripId" value="#{tripcomments.tripId}" />
+						<h:outputText value="Return"/>
+					</h:outputLink>
+				</li>
+				<li>
+		 			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/askQuestionView.xhtml" class="btn btn-primary" rendered="#{not tripcomments.driverLogged}">
 						<f:param name="tripId" value="#{tripcomments.tripId}"/>
-						<f:param name="questionId" value="#{item.questionId}" />	
-						<h:outputText value="Reply"/>					
-				</h:outputLink>	
-			</h:column>
-  		</h:dataTable>
- 		<p align="center">
- 			<h:outputLink value="/CAT-PDP-GRUP6/pages/public/askQuestionView.xhtml" class="btn btn-primary" rendered="#{not tripcomments.driverLogged}">
-				<f:param name="tripId" value="#{tripcomments.tripId}"/>
-				<f:param name="fromPage" value="/CAT-PDP-GRUP6/pages/public/tripCommentsView.xhtml"/>
-					<h:outputText value="Ask Question"/>
-			</h:outputLink>
-			<h:outputLink value="showTripView.xhtml" class="btn btn-default">
-				<f:param name="tripId" value="#{tripcomments.tripId}" />
-					<h:outputText value="Return"/>
-			</h:outputLink>
- 	  	</p>
- 	  </h:form>		
-	</h:body>
-	
+						<f:param name="fromPage" value="/pages/public/tripCommentsView.xhtml"/>
+						<h:outputText value="Ask Question"/>
+					</h:outputLink>
+				</li>
+			</ul>
+		</h:panelGroup>
   </ui:define>
   </ui:composition>
 </html>

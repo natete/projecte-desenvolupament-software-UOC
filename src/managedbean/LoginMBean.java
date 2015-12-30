@@ -62,7 +62,7 @@ public class LoginMBean implements Serializable {
 	public String getUsername() {
 		return this.user.getUsername();
 	}
-	
+
 	public String getId() {
 		return this.user.getId();
 	}
@@ -73,7 +73,7 @@ public class LoginMBean implements Serializable {
 
 	public void setUser(UserDTO user) {
 		this.user = user;
-		
+
 	}
 
 	public String getRoles() {
@@ -140,9 +140,11 @@ public class LoginMBean implements Serializable {
 	public boolean isLogged() {
 		return this.user != null;
 	}
+
 	public boolean isDriver() {
 		return this.getRoles().contains("Driver");
 	}
+
 	public boolean isPassenger() {
 		return this.getRoles().contains("Passenger");
 	}

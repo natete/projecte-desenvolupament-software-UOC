@@ -11,7 +11,6 @@ import javax.faces.bean.SessionScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-
 import java.util.Iterator;
 import ejb.TripAdministrationFacadeRemote;
 import jpa.UserDTO;

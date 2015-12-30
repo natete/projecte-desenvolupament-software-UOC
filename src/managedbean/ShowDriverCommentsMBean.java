@@ -18,6 +18,7 @@ import ejb.CommunicationFacadeRemote;
 import jpa.DriverCommentJPA;
 import jpa.DriverJPA;
 import jpa.TripJPA;
+import jpa.UserDTO;
 
 /**
  * Managed Bean ShowDriverCommentsMBean
@@ -28,11 +29,12 @@ public class ShowDriverCommentsMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final Object HTML_FULL_STAR = "<i class=\"fa fa-star\"></i>";
+	private static final Object HTML_EMPTY_STAR = "<i class=\"fa fa-star-o\"></i>";
+
 	@EJB
 	private CommunicationFacadeRemote driverCommentsRemote;
 
-	// stores the nif driver
-	private String driverId;
 	// stores the nif passenger
 	private String passengerId;
 	// stores all the instances of DriverCommentJPA
@@ -47,7 +49,8 @@ public class ShowDriverCommentsMBean implements Serializable {
 	private int numberDriverComments = 0;
 	private int tripId;
 	private TripJPA trip;
-	private String noCommentsMsg = "There are no comments about this driver";
+	private UserDTO loggedUser;
+	private String noCommentsMsg = "<i class=\"fa fa-times\"></i> There are no comments about this driver";
 
 	/**
 	 * Constructor method
@@ -58,17 +61,24 @@ public class ShowDriverCommentsMBean implements Serializable {
 		super();
 	}
 
+	/**
+	 * Method to make the init operations
+	 * 
+	 * @throws NamingException
+	 */
 	public void init() throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		driverCommentsRemote = (CommunicationFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		driver = (DriverJPA) driverCommentsRemote.findDriver(this.getDriverId());
+		trip = (TripJPA) driverCommentsRemote.findTrip(this.getTripId());
+		driver = trip.getDriver();
+		loggedUser = SessionBean.getLoggedUser();
 	}
 
 	/**
-	 * Method that returns an instance Collection of 10 or less DriverCommentJPA according
-	 * screen where the user is.
+	 * Method that returns an instance Collection of 10 or less DriverCommentJPA
+	 * according screen where the user is.
 	 * 
 	 * @return Collection DriverCommentJPA
 	 */
@@ -106,46 +116,90 @@ public class ShowDriverCommentsMBean implements Serializable {
 		}
 	}
 
+	/**
+	 * allows backward in user screens
+	 */
 	public void previousScreen() {
 		if ((screen > 0)) {
 			screen -= 1;
 		}
 	}
 
-	public String getDriverId() {
-		return this.driverId;
-	}
-
-	public void setDriverId(String driverId) {
-		this.driverId = driverId;
-	}
-
+	/**
+	 * Method to get the PassengerId
+	 * 
+	 * @return passengerId
+	 */
 	public String getPassengerId() {
 		return this.passengerId;
 	}
 
+	/**
+	 * Method to set the PassengerId
+	 */
 	public void setPassengerId(String passengerId) {
 		this.passengerId = passengerId;
 	}
 
+	/**
+	 * Method to get the TripId
+	 * 
+	 * @return tripId
+	 */
 	public int getTripId() {
 		return this.tripId;
 	}
 
+	/**
+	 * Method to set the TripId
+	 */
 	public void setTripId(int tripId) {
 		this.tripId = tripId;
 	}
 
+	/**
+	 * Method to get Driver name + Driver surname
+	 * 
+	 * @return driver name + driver surname
+	 */
 	public String getDriver() {
-		return driver.getName() + " " + driver.getSurname();
+		return driver.getFullName();
 	}
 
+	/**
+	 * Method to get the Message There are no comments
+	 * 
+	 * @return noCommentsMsg
+	 */
 	public String getNoCommentsMsg() {
 		return noCommentsMsg;
 	}
 
+	/**
+	 * Method that returns a Collection of DriverCommentJPA
+	 * 
+	 * @return Collection DriverCommentJPA
+	 */
 	public Collection<DriverCommentJPA> getDriverCommentsList() {
 		return this.driverCommentsList;
+	}
+
+	/**
+	 * Method than returns if Passenger is logged
+	 * 
+	 * @return boolean
+	 */
+	public boolean isPassengerLogged() {
+		return loggedUser != null && loggedUser.isPassenger();
+	}
+
+	/**
+	 * Method than returns if Passenger is enrolled in the trip
+	 * 
+	 * @return boolean
+	 */
+	public boolean isLoggedUserInTrip() {
+		return isPassengerLogged() && trip.hasPassenger(loggedUser.getId());
 	}
 
 	/**
@@ -168,6 +222,20 @@ public class ShowDriverCommentsMBean implements Serializable {
 		return "rateDriverView";
 	}
 
+	public String getRating(int rating) {
+		StringBuilder result = new StringBuilder();
+
+		for (int i = 0; i < 10; i++) {
+			if (i < rating) {
+				result.append(HTML_FULL_STAR);
+			} else {
+				result.append(HTML_EMPTY_STAR);
+			}
+		}
+
+		return result.toString();
+	}
+
 	/**
 	 * Method that gets a list of instances all DriverCommentJPA
 	 * 
@@ -180,6 +248,6 @@ public class ShowDriverCommentsMBean implements Serializable {
 		screen = 0;
 		driverCommentsRemote = (CommunicationFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
-		driverCommentsList = (Collection<DriverCommentJPA>) driverCommentsRemote.showDriverComments(this.getDriverId());
+		driverCommentsList = (Collection<DriverCommentJPA>) driverCommentsRemote.showDriverComments(driver.getNif());
 	}
 }

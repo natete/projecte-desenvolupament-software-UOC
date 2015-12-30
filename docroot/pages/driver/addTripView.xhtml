@@ -31,7 +31,6 @@
 					</li>
 				</ul>
 			</div>
-		<!--<h:outputText escape="false" value="#{addTripController.searchMessage}" rendered="#{empty addTripController.myCars}"></h:outputText>-->
 		</h:form>
 		<div class="row">
 		<h:form class="col-md-10 col-md-offset-1" rendered="#{!empty addTripController.myCars}">
@@ -110,7 +109,7 @@
 			<div class="cancel-safe-group">
 				<div class="col-md-12 text-right">
 					<h:commandButton value="Cancelar" class="btn btn-default"
-						inmediate="true" action="/pages/public/findTripsView" />&nbsp;
+						immediate="true" action="/pages/public/findTripsView" />&nbsp;
 					<h:commandButton value="Guardar" class="btn btn-primary"
 						action="#{addTripController.addTrip}" />
 				</div>

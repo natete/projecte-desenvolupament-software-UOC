@@ -8,17 +8,42 @@
 	<ui:define name="content">
 		<f:metadata>
 			<f:viewParam name="tripId" value="#{findAllPassengersController.tripId}"/>
-			<!--<f:event listener="#{findAllPassengersController.getPassengers()}" type="preRenderView" />-->
+			<f:event listener="#{findAllPassengersController.getTripData()}" type="preRenderView" />-->
 		</f:metadata>
 		<div class="row">
 			<div class="col-xs-12">
 				<h1 class="page-header">
 					<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-male"></i><i class="fa fa-male"></i>&nbsp;&nbsp;&nbsp;Passengers for Trip&nbsp;&nbsp;
-					<h:outputLabel value="##{findAllPassengersController.tripId}" />
+					<h:outputLabel value="#{findAllPassengersController.tripDepartureCity}" />&nbsp;&#45;
+					<h:outputLabel value="#{findAllPassengersController.tripArrivalCity}" />&nbsp;&nbsp;
+					<h:outputLabel value="#{findAllPassengersController.tripDepartureDate}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" locale="es_ES" timeZone="Europe/Madrid" />
+					</h:outputLabel>&nbsp;
+					<h:outputLabel value="#{findAllPassengersController.tripDepartureTime}">
+						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
+					</h:outputLabel>
 				</h1>
 			</div>
 		</div>
-		<h:form>
+		<h:form rendered="#{empty findAllPassengersController.passengersList}">
+			<h3>
+				<i class='fa fa-times'></i>&nbsp;
+				<h:outputText value="No passengers for this trip"></h:outputText>
+			</h3>
+			<div class="col-md-12 text-left">
+				<ul class="list-inline">
+					<li>
+						<h:commandButton value="Return" class="btn btn-primary" action="/pages/driver/findMyTripsView.xhtml" />
+					</li>
+					<li>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+		</h:form>
+		<h:form rendered="#{!empty findAllPassengersController.passengersList}">
 		<div class="row">
 			<div class="col-xs-12">
 				<h:dataTable var="item" value="#{findAllPassengersController.allPassengers}" class="table table-striped" rendered="#{not empty findAllPassengersController.allPassengers}">
@@ -49,7 +74,7 @@
 		 			<h:column>
 		   				<f:facet name="header">
 		   					<h:outputText value="Email"/>
-		   				</f:facet> 
+		   				</f:facet>
 		     			<h:outputText value="#{item.email}" />
 		 			</h:column>
 				</h:dataTable>
@@ -57,9 +82,9 @@
 		</div>
 		<div class="col-md-12 text-center">
 			<ul class="list-inline">
-				<li><h:commandButton class="btn btn-bbg1" action="#{findAllPassengersController.previousScreen}" value="Previous" /></li>
-				<li><h:commandButton class="btn btn-bbg2" action="/pages/driver/findMyTripsView.xhtml" value="Return" /></li>
-				<li><h:commandButton class="btn btn-bbg1" action="#{findAllPassengersController.nextScreen}" value="Next" /></li>
+				<!--<li><h:commandButton class="btn btn-bbg1" action="#{findAllPassengersController.previousScreen}" value="Previous" /></li>-->
+				<li><h:commandButton class="btn btn-primary" action="/pages/driver/findMyTripsView.xhtml" value="Return" /></li>
+				<!--<li><h:commandButton class="btn btn-bbg1" action="#{findAllPassengersController.nextScreen}" value="Next" /></li>-->
 			</ul>
 		</div>
 	</h:form>

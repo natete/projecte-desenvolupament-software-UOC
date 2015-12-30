@@ -3,6 +3,7 @@ package managedbean;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 import javax.ejb.EJB;
@@ -10,8 +11,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import ejb.TripAdministrationFacadeRemote;
 import jpa.PassengerJPA;
+import jpa.TripJPA;
 
 /**
  * FindAllPassengersMBean
@@ -22,6 +26,8 @@ import jpa.PassengerJPA;
 public class FindAllPassengersMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	private static final String EMPTY_LIST_MESSAGE = "<i class='fa fa-times'></i>"
+			+ "No passengers for this trip.";
 	@EJB
 	private TripAdministrationFacadeRemote tripAdmFacadeRemote;
 	private int tripId;
@@ -29,6 +35,12 @@ public class FindAllPassengersMBean implements Serializable {
 	private Collection<PassengerJPA> passengersList;
 	private int screen = 0;
 	protected int numPassengers = 0;
+	private String tripDepartureCity;
+	private String tripArrivalCity;
+	private Date tripDepartureDate;
+	private Date tripDepartureTime;
+	private TripJPA trip;
+	private String searchMessage = "";
 	
 	
 	/**
@@ -55,6 +67,63 @@ public class FindAllPassengersMBean implements Serializable {
 		this.tripId = tripId;
 	}
 	
+	public String getTripDepartureCity() {
+		return tripDepartureCity;
+	}
+
+	public void setTripDepartureCity(String tripDepartureCity) {
+		this.tripDepartureCity = tripDepartureCity;
+	}
+
+	public String getTripArrivalCity() {
+		return tripArrivalCity;
+	}
+
+	public void setTripArrivalCity(String tripArrivalCity) {
+		this.tripArrivalCity = tripArrivalCity;
+	}
+
+	public Date getTripDepartureDate() {
+		return tripDepartureDate;
+	}
+
+	public void setTripDepartureDate(Date tripDepartureDate) {
+		this.tripDepartureDate = tripDepartureDate;
+	}
+
+	public Date getTripDepartureTime() {
+		return tripDepartureTime;
+	}
+
+	public void setTripDepartureTime(Date tripDepartureTime) {
+		this.tripDepartureTime = tripDepartureTime;
+	}
+	
+	public Collection<PassengerJPA> getPassengersList() {
+		return passengersList;
+	}
+	
+	public void setPassengersList(Collection<PassengerJPA> passengersList) {
+		this.passengersList = passengersList;
+	}
+
+	public TripJPA getTrip() {
+		return trip;
+	}
+
+	public void setTrip(TripJPA trip) {
+		this.trip = trip;
+	}
+	
+	public String getSearchMessage() {
+		return searchMessage;
+	}
+
+	public void setSearchMessage(String searchMessage) {
+		this.searchMessage = searchMessage;
+	}
+
+
 	/**
 	 * Returns a list of passengers registered in a trip
 	 * owned by a logged driver. The list is formatted as
@@ -95,6 +164,9 @@ public class FindAllPassengersMBean implements Serializable {
 		screen = 0;
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx .lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
 		passengersList = (Collection<PassengerJPA>)tripAdmFacadeRemote.findAllPassengers(getTripId());
+		if (passengersList.isEmpty() || passengersList == null) {
+			searchMessage = EMPTY_LIST_MESSAGE;
+		}
 	}
 	
 	/**
@@ -115,5 +187,18 @@ public class FindAllPassengersMBean implements Serializable {
 		if ((screen > 0)) {
 			screen -= 1;
 		}
+	}
+	
+public void getTripData() throws NamingException {
+	Properties properties = System.getProperties();
+	Context context = new InitialContext(properties);
+	tripAdmFacadeRemote = (TripAdministrationFacadeRemote) context
+			.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
+					+ ".TripAdministrationFacadeRemote");
+	trip = tripAdmFacadeRemote.showTrip(tripId);
+	tripDepartureCity = trip.getDepartureCity();
+	tripArrivalCity = trip.getArrivalCity();
+	tripDepartureDate = trip.getDepartureDate();
+	tripDepartureTime = trip.getDepartureTime();
 	}
 }

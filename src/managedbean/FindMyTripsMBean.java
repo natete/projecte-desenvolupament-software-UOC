@@ -41,7 +41,7 @@ public class FindMyTripsMBean implements Serializable {
 	private List<Integer> pages;
 	private List<TripJPA> trips;
 	private Long totalResults;
-	private final String emptyListMessage = "<i class='fa fa-times'></i> Sorry we have no trips matching your search criteria right now...";
+	private final String emptyListMessage = "<i class='fa fa-times'></i>&nbsp;You have no trips assigned.";
 	private String searchMessage = "";
 	
 	/**
@@ -50,7 +50,35 @@ public class FindMyTripsMBean implements Serializable {
 	public FindMyTripsMBean() {
 		super();
 		currentPage = 1;
-		pages = new ArrayList<>();
+		pages = new ArrayList<Integer>();
+		
+		Properties props = System.getProperties();
+		Context ctx;
+		try {
+			ctx = new InitialContext(props);
+
+			tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
+					.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
+		} catch (NamingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		TripsDTO tripsDto = tripAdmFacadeRemote.findMyTrips(getDriverId(), currentPage);
+		trips = tripsDto.getTrips();
+		if (trips == null || trips.isEmpty()) {
+			searchMessage = emptyListMessage;
+		} else {
+			totalResults = tripsDto.getTotal();
+			populatePagesList(totalResults);
+		}
+		
+		try {
+			findTrips(currentPage);
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	/**
@@ -120,6 +148,62 @@ public class FindMyTripsMBean implements Serializable {
 		this.driverName = driverName;
 	}
 	
+	/**
+	 * Returns a list of trips.
+	 * @return List&lt;TripJPA&gt;.
+	 */
+	public List<TripJPA> getTrips() {
+		return trips;
+	}
+	
+	/**
+	 * Sets a list of trips.
+	 * @param List&lt;trips&gt;.
+	 */
+	public void setTrips(List<TripJPA> trips) {
+		this.trips = trips;
+	}
+	
+	/**
+	 * Returns a searchMessage in 
+	 * case of error.
+	 * @return String searchMessage.
+	 */
+	public String getSearchMessage() {
+		return searchMessage;
+	}
+	
+	/**
+	 * Returns the current page.
+	 * @return currentPage.
+	 */
+	public int getCurrentPage() {
+		return currentPage;
+	}
+	
+	/**
+	 * Sets the current page.
+	 * @param page.
+	 */
+	public void setCurrentPage(int page) {
+		this.currentPage = page;
+	}
+	
+	/**
+	 * Returns the list of pages.
+	 * @return List&lt;Integer&gt;.
+	 */
+	public List<Integer> getPages() {
+		return pages;
+	}
+	
+	/**
+	 * Returns the number of trips.
+	 * @return totalResults.
+	 */
+	public Long getTotalResults() {
+		return totalResults;
+	}
 	
 	/**
 	 * Returns a list of trips owned by a 
@@ -194,9 +278,10 @@ public class FindMyTripsMBean implements Serializable {
 	 * queries to database by paging tables 10 
 	 * 10. It get the page number from view to 
 	 * know what page query to make.
-	 * @return int.
+	 * @param int.
 	 */
 	public void findTrips(int page) throws NamingException {
+		
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
@@ -204,6 +289,7 @@ public class FindMyTripsMBean implements Serializable {
 		TripsDTO tripsDto = tripAdmFacadeRemote.findMyTrips(getDriverId(), page - 1);
 		trips = tripsDto.getTrips();
 		currentPage = page;
+		
 		if (trips == null || trips.isEmpty()) {
 			searchMessage = emptyListMessage;
 		} else if (tripsDto.getTotal() != totalResults) {
@@ -214,69 +300,14 @@ public class FindMyTripsMBean implements Serializable {
 	
 	/**
 	 * Auxiliary method to findTrips that adds pages.
+	 * The method gets the number of fages according
+	 * the mount of trips in the database.
 	 * @param total.
 	 */
 	private void populatePagesList(Long total) {
 		pages.clear();
-		for (int i = 0; i * PAGE_SIZE < totalResults; i++) {
-			pages.add(i + 1);
+		for (int i = 0; i * PAGE_SIZE < total + 10; i++) {
+			pages.add(i+1);
 		}
-	}
-	
-	/**
-	 * Returns a list of trips.
-	 * @return List&lt;TripJPA&gt;.
-	 */
-	public List<TripJPA> getTrips() {
-		return trips;
-	}
-	
-	/**
-	 * Sets a list of trips.
-	 * @param List&lt;trips&gt;.
-	 */
-	public void setTrips(List<TripJPA> trips) {
-		this.trips = trips;
-	}
-	
-	/**
-	 * Returns a searchMessage in 
-	 * case of error.
-	 * @return String searchMessage.
-	 */
-	public String getSearchMessage() {
-		return searchMessage;
-	}
-	
-	/**
-	 * Returns the current page.
-	 * @return currentPage.
-	 */
-	public int getCurrentPage() {
-		return currentPage;
-	}
-	
-	/**
-	 * Sets the current page.
-	 * @param page.
-	 */
-	public void setCurrentPage(int page) {
-		this.currentPage = page;
-	}
-	
-	/**
-	 * Returns the list of pages.
-	 * @return List&lt;Integer&gt;.
-	 */
-	public List<Integer> getPages() {
-		return pages;
-	}
-	
-	/**
-	 * Returns the number of trips.
-	 * @return totalResults.
-	 */
-	public Long getTotalResults() {
-		return totalResults;
 	}
 }

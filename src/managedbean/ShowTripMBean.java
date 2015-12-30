@@ -25,7 +25,6 @@ public class ShowTripMBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private static final Object HTML_FULL_STAR = "<i class=\"fa fa-star\"></i>";
-
 	private static final Object HTML_EMPTY_STAR = "<i class=\"fa fa-star-o\"></i>";
 
 	@EJB

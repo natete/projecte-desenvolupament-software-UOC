@@ -10,6 +10,7 @@ public class UserDTO implements Serializable {
 
 	private String username;
 	private String id;
+	private String email;
 	private List<Role> roles;
 
 	public enum Role {
@@ -26,15 +27,16 @@ public class UserDTO implements Serializable {
 		}
 	}
 
-	public UserDTO(String username, String id) {
+	public UserDTO(String username, String id, String email) {
 		super();
 		this.username = username;
 		this.id = id;
+		this.email = email;
 		this.roles = new ArrayList<>();
 	}
 
-	public UserDTO(String username, String userId, boolean isDriver, boolean isPassenger) {
-		this(username, userId);
+	public UserDTO(String username, String userId, String email, boolean isDriver, boolean isPassenger) {
+		this(username, userId, email);
 		if (isDriver) {
 			roles.add(Role.DRIVER);
 		}
@@ -57,6 +59,14 @@ public class UserDTO implements Serializable {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public List<Role> getRoles() {

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -11,63 +10,61 @@
 		<f:viewParam name="questionId" value="#{replyquestion.questionId}"/>
 		<f:event listener="#{replyquestion.init()}" type="preRenderView"/>
 	</f:metadata>
-
-  <h:body>
-		<br/>
- 		<h:form>
- 			<div align="center">
- 				<table border="1" width="50%" id="table1">
-					<tr>
-						<td width="155">
-							<p align="left"/><i><b><font size="4" face="Century">Trip:</font></b></i>
-						</td>
-						<td>
-							<p align="left"/><h:outputText value="#{replyquestion.trip.description}" />
-						</td>
-					</tr>
-					<tr>
-						<td width="155">
-							<p align="left"/><i><b><font size="4" face="Century">Driver:</font></b></i></td>
-						<td>
-							<p align="left"/><h:outputText value="#{replyquestion.driver}" />
-						</td>
-					</tr>
-					<tr>
-						<td width="155">
-							<p align="left"/><i><b><font size="4" face="Century">Subject:</font></b></i>
-						</td>
-						<td>
-							<p align="left"/><h:outputText value="#{replyquestion.subject}" />
-						</td>
-					</tr>
-					<tr>
-						<td width="155">
-							<p align="left"/><i><b><font size="4" face="Century">Question:</font></b></i>
-						</td>
-						<td>
-							<p align="left"/> <h:outputText value="#{replyquestion.body}" /> 
-						</td>
-					</tr>
-					<tr>
-						<td width="155">
-							<p align="left"/><i><b><font size="4" face="Century">Answer:</font></b></i>
-						</td>
-						<td>
-							<p align="left"/> <h:inputText value="#{replyquestion.answer}" /> 
-						</td>
-					</tr>
-				</table> 	
-			</div> 
-			<p align="center">
-				<h:commandButton value="Save"  action="#{replyquestion.setDataTripComment}" class="btn btn-primary" />
-				
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/public/tripCommentsView.xhtml" class="btn btn-default">
-				    <f:param name="tripId" value="#{replyquestion.tripId}" />
-					<h:outputText value="Return"/>
-				</h:outputLink>
-			</p>
- 		</h:form>
-	</h:body>
-  </ui:define>
-  </ui:composition>
+	<h:panelGroup layout="block" styleClass="row">
+		<h:panelGroup layout="block" styleClass="col-xs-8 col-xs-offset-2">
+			<h1 class="page-header">
+				<i class="fa fa-reply"></i> Reply question
+			</h1>
+		</h:panelGroup>
+	</h:panelGroup>
+	
+	<h:panelGroup layout="block" styleClass="row">
+		<h:panelGroup layout="block" styleClass="col-xs-8 col-xs-offset-2 well">
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-xs-12 driver-header">
+					<h4 class="driver-header">
+						<i class="fa fa-user details-icon"></i> 
+						<h:outputText value="#{replyquestion.author}"/>
+					</h4> 
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset1">
+					<h5><h:outputText value="#{replyquestion.subject}"/></h5>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset1 text-justify">
+					<h:outputText value="#{replyquestion.body}"/>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
+	</h:panelGroup>
+	
+	<h:form >
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup styleClass="col-xs-8 col-xs-offset-2 form-group">
+				<h4><h:outputText value="Answer" /></h4>
+				<h:inputTextarea id="answer" rows="5" value="#{replyquestion.answer}" styleClass="form-control" required="true" requiredMessage="This field is mandatory"></h:inputTextarea>
+				<h:message for="answer" styleClass="text-danger"></h:message>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup styleClass="col-xs-8 col-xs-offset-2 text-right">
+				<ul class="list-inline">
+					<li>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/tripCommentsView.xhtml" class="btn btn-default">
+						    <f:param name="tripId" value="#{replyquestion.tripId}" />
+							<h:outputText value="Return"/>
+						</h:outputLink>
+					</li>
+					<li>
+						<h:commandButton value="Save"  action="#{replyquestion.setDataTripComment}" class="btn btn-primary" />
+					</li>
+				</ul>
+			</h:panelGroup>
+		</h:panelGroup>
+	</h:form>
+</ui:define>
+</ui:composition>
 </html>

@@ -6,23 +6,28 @@ import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import ejb.UserFacadeRemote;
+import jpa.UserJPA;
 
 /**
  * Managed Bean RegisterDriverMBean
  */
 @ManagedBean(name = "registerdriver")
-@SessionScoped
+@ViewScoped
 public class RegisterDriverMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final String ERROR_VIEW = "errorView";
+	private static final String HOME_VIEW = "findTripsView";
+
 	@EJB
-	private UserFacadeRemote registerDriverRemote;
+	private UserFacadeRemote userFacadeRemote;
 
 	private String nif;
 	private String name;
@@ -91,33 +96,56 @@ public class RegisterDriverMBean implements Serializable {
 		return errorMessage;
 	}
 
-	public String setDataDriver() throws Exception {
+	public String setDataDriver() {
 
 		String result;
-		
+
 		Properties props = System.getProperties();
-		Context ctx = new InitialContext(props);
-		registerDriverRemote = (UserFacadeRemote) ctx
-				.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
-		
-		if (registerDriverRemote.existsDriver(nif, email, null) == true) {
-			errorMessage = "Driver already exists";
-			result = "errorView";
-		} else if (registerDriverRemote.existsPassengerEmail(nif, name, surname, email, null) == true) {
-			errorMessage = "Passenger already exists with some email or some nif and different name-surname";
+		try {
+			Context ctx = new InitialContext(props);
+			userFacadeRemote = (UserFacadeRemote) ctx
+					.lookup("java:app/CAT-PDP-GRUP6.jar/UserFacadeBean!ejb.UserFacadeRemote");
 
-			result = "errorView";
-		} else {
-			registerDriverRemote.registerDriver(nif, name, surname, phone, password, email);
-			this.setNif("");
-			this.setName("");
-			this.setSurname("");
-			this.setPhone("");
-			this.setPassword("");
-			this.setEmail("");
+			UserJPA user = userFacadeRemote.findUser(nif);
 
-			result = "findTripsView";
+			if (user == null) {
+				if (userFacadeRemote.isEmailUsed(email)) {
+					errorMessage = "This email is being used by another user";
+					result = ERROR_VIEW;
+				} else {
+					userFacadeRemote.registerDriver(nif, name, surname, phone, password, email);
+					result = HOME_VIEW;
+				}
+			} else {
+				if (userFacadeRemote.existDriver(nif)) {
+					errorMessage = "Driver already exists";
+					result = ERROR_VIEW;
+				} else if (userIsRegistered(user)) {
+					userFacadeRemote.registerDriver(nif, name, surname, phone, password, email);
+					result = HOME_VIEW;
+				} else {
+					errorMessage = "A passenger with the given NIF exists and there is a conflict with the provided user info";
+					result = ERROR_VIEW;
+				}
+			}
+
+			return result;
+		} catch (NamingException e) {
+			return ERROR_VIEW;
 		}
+
+	}
+
+	public boolean userIsRegistered(UserJPA user) {
+		boolean result = user.getNif().equals(nif) && user.getEmail().equals(email) && user.getName().equals(name)
+				&& user.getSurname().equals(surname) && user.getPassword().equals(password);
+
+		if (user.getPhone() != null) {
+			result = result && user.getPhone().equals(phone);
+		} else {
+			result = result && (phone == null || phone.equals(""));
+		}
+
 		return result;
 	}
 }

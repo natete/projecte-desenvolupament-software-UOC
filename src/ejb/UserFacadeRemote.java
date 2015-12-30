@@ -1,13 +1,14 @@
 package ejb;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Remote;
-import javax.persistence.PersistenceException;
 
+import jpa.CarJPA;
 import jpa.DriverJPA;
 import jpa.PassengerJPA;
 import jpa.UserDTO;
+import jpa.UserJPA;
 
 /**
  * Session EJB Remote Interfaces
@@ -16,38 +17,38 @@ import jpa.UserDTO;
 public interface UserFacadeRemote {
 	/**
 	 * Remotely invoked method.
-	 * @param userLogged 
+	 * 
+	 * @param userLogged
 	 */
-	public void addCar(String carRegistrationId, String brand, String model, String color, UserDTO userLogged);
+	void addCar(String nif, String carRegistrationId, String brand, String model, String color);
 
-	public Collection<?> listAllCars(String nif);
+	List<CarJPA> listAllCars(String nif);
 
-	public boolean existsTripsByCar(String carRegistrationId);
-		
-	public void deleteCar(String carRegistrationId);
+	boolean carHasTrips(String carRegistrationId);
 
-	public void registerDriver(String nif, String name, String surname, String phone, String password, String email);
+	void deleteCar(String carRegistrationId);
 
-	public void registerPassenger(String nif, String name, String surname, String phone, String password, String email);
+	void registerDriver(String nif, String name, String surname, String phone, String password, String email);
 
-	public UserDTO login(String email, String password);
+	void registerPassenger(String nif, String name, String surname, String phone, String password, String email);
 
-	public boolean existsCar(String carRegistrationId);
+	UserDTO login(String email, String password);
 
-	public boolean existsDriver(String nif, String email, UserDTO userLogged);
+	UserJPA findUser(String nif);
 
-	public DriverJPA findDriver(String nif);
-		
-	public boolean existsPassenger(String nif, String email, UserDTO userLogged);
+	boolean existUser(UserJPA user);
 
-	public PassengerJPA findPassenger(String nif);
-	
-	public void updateDriver(String nif, String name, String surname, String phone, String email, String password);
+	void updatePersonalData(String nif, String name, String surname, String phone, String email, String password);
 
-	public void updatePassenger(String nif, String name, String surname, String phone, String email, String password);
-	
-	public boolean existsDriverEmail(String nif, String name, String surname, String email, UserDTO userLogged);
+	boolean existsCar(String carRegistrationId);
 
-	public boolean existsPassengerEmail(String nif, String name, String surname, String email, UserDTO userLogged);
-	
+	boolean existDriver(String nif);
+
+	boolean existPassenger(String nif);
+
+	DriverJPA findDriver(String nif);
+
+	PassengerJPA findPassenger(String nif);
+
+	boolean isEmailUsed(String email);
 }

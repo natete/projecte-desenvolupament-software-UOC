@@ -2,22 +2,24 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.Properties;
 
 import javax.ejb.EJB;
-import javax.faces.bean.*;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
+import ejb.UserFacadeRemote;
 import jpa.CarJPA;
 import jpa.UserDTO;
-import ejb.UserFacadeRemote;
 
 /**
  * Managed Bean ListcarsMBean
  */
 @ManagedBean(name = "cars")
-@SessionScoped
+@ViewScoped
 public class ListCarsMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,7 +30,7 @@ public class ListCarsMBean implements Serializable {
 	// stores the nif of the driver of cars to be displayed
 	private UserDTO userLogged = SessionBean.getLoggedUser();
 	private String nif = userLogged.getId();
-	
+
 	// stores all the instances of CarJPA
 	private Collection<CarJPA> carsList;
 
@@ -40,7 +42,7 @@ public class ListCarsMBean implements Serializable {
 	public ListCarsMBean() throws Exception {
 
 	}
-	
+
 	public String getNif() {
 		return this.nif;
 	}
@@ -68,7 +70,8 @@ public class ListCarsMBean implements Serializable {
 
 	/**
 	 * Method that gets a list of instances all CarJPA
-	 * @return 
+	 * 
+	 * @return
 	 * 
 	 * @throws Exception
 	 */

@@ -35,16 +35,11 @@ public class ShowDriverCommentsMBean implements Serializable {
 	@EJB
 	private CommunicationFacadeRemote driverCommentsRemote;
 
-	// stores the nif passenger
+	
 	private String passengerId;
-	// stores all the instances of DriverCommentJPA
 	private Collection<DriverCommentJPA> driverCommentsList;
-	// stores the screen number where the user is
 	private int screen = 0;
-	// stores ten or fewer DriverCommentJPA instances that the user can see on a
-	// screen
 	protected Collection<DriverCommentJPA> driverCommentsView;
-	// stores a instance of DriverJPA
 	private DriverJPA driver;
 	private int numberDriverComments = 0;
 	private int tripId;
@@ -241,7 +236,6 @@ public class ShowDriverCommentsMBean implements Serializable {
 	 * 
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	private void driverCommentsList() throws Exception {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);

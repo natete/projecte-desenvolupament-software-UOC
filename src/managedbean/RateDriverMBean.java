@@ -191,7 +191,6 @@ public class RateDriverMBean implements Serializable {
 
 	/**
 	 * Method to set Data Driver Comment
-	 * 
 	 * @return to driverCommentView
 	 * @throws Exception
 	 */

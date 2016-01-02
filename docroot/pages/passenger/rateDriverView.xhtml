@@ -53,9 +53,7 @@
 				</h:panelGroup>
 				<ul class="list-inline text-center">
 					<li>
-						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml" styleClass="btn btn-default">
-							<h:outputText value="Return"/>
-						</h:outputLink>
+						<h:commandButton value="Return" styleClass="btn btn-default" action="return" immediate="true"/>
 					</li>
 					<li>
 						<h:commandButton value="Save"  action="#{ratedriver.setDataDriverComment}" class="btn btn-primary" />

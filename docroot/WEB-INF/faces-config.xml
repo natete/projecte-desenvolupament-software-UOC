@@ -171,6 +171,16 @@
 			</redirect>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>return</from-outcome>
+			<to-view-id>#{ratedriver.redirectTo}</to-view-id>
+			<redirect>
+				<view-param>
+					<name>tripId</name>
+					<value>#{ratedriver.tripId}</value>
+				</view-param>
+			</redirect>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>driverComments</from-outcome>
 			<to-view-id>/pages/public/driverCommentsView</to-view-id>
 			<redirect>

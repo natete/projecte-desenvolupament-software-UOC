@@ -93,6 +93,7 @@
 						</h4>
 						<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/rateDriverView.xhtml" rendered="#{showTripController.loggedUserInTrip}">
 							<f:param name="tripId" value="#{showTripController.tripId}"/>
+							<f:param name="fromPage" value="/pages/public/showTripView.xhtml" />
 						<h:outputText value="Rate driver"/>
 						</h:outputLink>
 					</h:panelGroup>

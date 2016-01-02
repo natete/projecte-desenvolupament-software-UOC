@@ -40,6 +40,8 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
 	/**
 	 * Method that returns Collection of comments of one trip
+	 * @param tripId, the Id of the trip
+	 * @return collection of comments (questions and answers) about the trip
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<MessageJPA> showTripComments(int tripId) throws PersistenceException {
@@ -52,6 +54,8 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
 	/**
 	 * Method that returns Collection of comments of one driver
+	 * @param driverId, the Id of the driver
+	 * @return collection of comments and ratings about the driver
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<DriverCommentJPA> showDriverComments(String driverId) throws PersistenceException {
@@ -63,6 +67,10 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
 	/**
 	 * Method that adds a question
+	 * @param tripId, the id of the trip
+	 * @param passengerId, the Id of the passenger. It may be null if it's an unknown user
+	 * @param subject, the subject of the question
+	 * @param body, the body of the question
 	 */
 	public void askQuestion(int tripId, String passengerId, String subject, String body) throws PersistenceException {
 
@@ -87,6 +95,11 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
 	/**
 	 * Method that replies a question
+	 * @param tripId, the id of the trip
+	 * @param questionId, the id of the question
+	 * @param driverId, the id of the driver
+	 * @param subject, the subject of the question
+	 * @param body, the body of the answer
 	 */
 	public void replyQuestion(int tripId, int questionId, String driverId, String subject, String body)
 			throws PersistenceException {
@@ -113,6 +126,10 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 
 	/**
 	 * Method that rate a driver
+	 * @param driverId, the id of the driver
+	 * @param passengerId, the id of the passenger
+	 * @param comment, opinion about the driver
+	 * @param rating, rating about the driver (0-10)
 	 */
 	public void rateDriver(String driverId, String passengerId, String comment, int rating) {
 
@@ -169,7 +186,6 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 */
 	public DriverJPA findDriver(String driverId) throws PersistenceException {
 
-		@SuppressWarnings("unchecked")
 		DriverJPA driver = (DriverJPA) entman.createQuery("FROM DriverJPA b WHERE b.nif = ?1").setParameter(1, driverId)
 				.getSingleResult();
 		return driver;
@@ -179,7 +195,7 @@ public class CommunicationFacadeBean implements CommunicationFacadeRemote {
 	 * Method that find a passenger
 	 */
 	public PassengerJPA findPassenger(String passengerId) throws PersistenceException {
-		@SuppressWarnings("unchecked")
+		
 		PassengerJPA passenger = (PassengerJPA) entman.createQuery("FROM PassengerJPA b WHERE b.nif = ?1")
 				.setParameter(1, passengerId).getSingleResult();
 		return passenger;

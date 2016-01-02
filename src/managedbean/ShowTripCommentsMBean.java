@@ -31,13 +31,8 @@ public class ShowTripCommentsMBean implements Serializable {
 
 	@EJB
 	private CommunicationFacadeRemote tripCommentsRemote;
-
-	// stores all the instances of MessageJPA
 	private Collection<MessageJPA> tripCommentsList;
-	// stores the screen number where the user is
 	private int screen = 0;
-	// stores ten or fewer MessageJPA instances that the user can see on a
-	// screen
 	private Collection<MessageJPA> tripCommentsView;
 	private int tripId;
 	private TripJPA trip;
@@ -55,11 +50,15 @@ public class ShowTripCommentsMBean implements Serializable {
 		screen = 0;
 	}
 
+	/**
+	 * Method to make the init operations
+	 * 
+	 * @throws NamingException
+	 */
 	public void init() throws NamingException {
 		loggedUser = SessionBean.getLoggedUser();
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
-		System.out.println("tripId " + tripId);
 		tripCommentsRemote = (CommunicationFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/CommunicationFacadeBean!ejb.CommunicationFacadeRemote");
 		if (tripCommentsList == null) {
@@ -82,13 +81,16 @@ public class ShowTripCommentsMBean implements Serializable {
 		return tripCommentsView;
 	}
 
+	/**
+	 * Method to populate tripCommentsView with trip comments
+	 */
 	private void populateTripCommentsList() {
 		int n = 0;
 		tripCommentsView.clear();
 		for (Iterator<MessageJPA> iter2 = tripCommentsList.iterator(); iter2.hasNext();) {
-			MessageJPA driverComment = (MessageJPA) iter2.next();
+			MessageJPA tripComment = (MessageJPA) iter2.next();
 			if (n >= screen * PAGE_SIZE && n < (screen * PAGE_SIZE + PAGE_SIZE)) {
-				this.tripCommentsView.add(driverComment);
+				this.tripCommentsView.add(tripComment);
 			}
 			n += 1;
 		}
@@ -109,26 +111,49 @@ public class ShowTripCommentsMBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Method to get the trip
+	 * @return trip
+	 */
 	public TripJPA getTrip() {
 		return this.trip;
 	}
 
+	/**
+	 * Method to set the trip
+	 * @param trip
+	 */
 	public void setTrip(TripJPA trip) {
 		this.trip = trip;
 	}
 
+	/**
+	 * Method to get the TripId
+	 * @return tripId
+	 */
 	public int getTripId() {
 		return this.tripId;
 	}
 
+	/**
+	 * Method to set the tripId
+	 * @param tripId
+	 */
 	public void setTripId(int tripId) {
 		this.tripId = tripId;
 	}
 
+	/**
+	 * Method to get the driver
+	 * @return driver
+	 */
 	public String getDriver() {
 		return trip.getDriver().getFullName();
 	}
 
+	/**
+	 * Method to check if the user logged has driver's role
+	 */
 	public boolean isDriverLogged() {
 		return isDriverLogged;
 	}
@@ -142,10 +167,16 @@ public class ShowTripCommentsMBean implements Serializable {
 		return "askQuestionView";
 	}
 
+	/**
+	 * Method to get if it's the first screen
+	 */
 	public boolean getIsFirstScreen() {
 		return screen == 0;
 	}
 
+	/**
+	 * Method to get if it's the last screen
+	 */
 	public boolean getIsLastScreen() {
 		return ((int) (tripCommentsList.size() / PAGE_SIZE)) == screen;
 	}

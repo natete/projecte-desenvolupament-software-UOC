@@ -3,7 +3,6 @@ package jpa;
 import java.io.Serializable;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -21,7 +20,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "car")
 @NamedQueries({
-		@NamedQuery(name = "CarJPA.findCarsByDriver", query = "SELECT c FROM CarJPA c WHERE c.driver = :driver"),
+		// @NamedQuery(name = "CarJPA.findCarsByDriver", query = "SELECT c FROM
+		// CarJPA c WHERE c.driver.nif = :"),
 		@NamedQuery(name = "CarJPA.findCarsByDriverId", query = "SELECT c FROM CarJPA c WHERE c.driver.nif = :nif"),
 		@NamedQuery(name = "CarJPA.findCarById", query = "SELECT c FROM CarJPA c WHERE c.carRegistrationId = :carRegistrationId"),
 		@NamedQuery(name = "CarJPA.findCarByBrandModelColour", query = "SELECT c FROM CarJPA c WHERE c.brand = :brand AND c.model = :model AND c.color = :colour"), })
@@ -41,7 +41,7 @@ public class CarJPA implements Serializable {
 	@Column(name = "color")
 	private String color;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "car")
 	private Collection<TripJPA> trips;
 
 	@ManyToOne
@@ -112,5 +112,10 @@ public class CarJPA implements Serializable {
 
 	public void setDriver(DriverJPA driver) {
 		this.driver = driver;
+	}
+
+	@Override
+	public String toString() {
+		return brand + " " + model + " - " + color;
 	}
 }

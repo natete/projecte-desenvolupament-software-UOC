@@ -23,6 +23,7 @@ public class FindTripsMBean implements Serializable {
 
 	private static final long serialVersionUID = -8313865001184025539L;
 
+	private static final String NO_SEARCH_RESULTS = "<i class='fa fa-times'></i> Sorry we have no trips matching your search criteria right now...";
 	private static final int PAGE_SIZE = 10;
 
 	@EJB
@@ -41,8 +42,6 @@ public class FindTripsMBean implements Serializable {
 	private boolean hasSeats;
 	private float minPrice;
 	private float maxPrice;
-
-	private final String emptyListMessage = "<i class='fa fa-times'></i> Sorry we have no trips matching your search criteria right now...";
 
 	private String searchMessage = "";
 
@@ -68,7 +67,7 @@ public class FindTripsMBean implements Serializable {
 		trips = tripsDto.getTrips();
 		currentPage = page;
 		if (trips == null || trips.isEmpty()) {
-			searchMessage = emptyListMessage;
+			searchMessage = NO_SEARCH_RESULTS;
 		} else if (tripsDto.getTotal() != totalResults) {
 			totalResults = tripsDto.getTotal();
 			populatePagesList(tripsDto.getTotal());
@@ -77,7 +76,7 @@ public class FindTripsMBean implements Serializable {
 
 	private void populatePagesList(Long total) {
 		pages.clear();
-		for (int i = 1; i * PAGE_SIZE <= total + (10-total%10); i++) {
+		for (int i = 1; i * PAGE_SIZE <= total + (10 - total % 10); i++) {
 			pages.add(i);
 		}
 	}

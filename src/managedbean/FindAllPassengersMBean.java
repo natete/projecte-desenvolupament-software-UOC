@@ -197,7 +197,7 @@ public class FindAllPassengersMBean implements Serializable {
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) context
 			.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
 					+ ".TripAdministrationFacadeRemote");
-		trip = tripAdmFacadeRemote.showTrip(tripId);
+		trip = tripAdmFacadeRemote.getTrip(tripId);
 		tripDepartureCity = trip.getDepartureCity();
 		tripArrivalCity = trip.getArrivalCity();
 		tripDepartureDate = trip.getDepartureDate();

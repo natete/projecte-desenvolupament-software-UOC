@@ -1,18 +1,17 @@
 package managedbean;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Properties;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
-import ejb.TripAdministrationFacadeBean;
 import ejb.TripAdministrationFacadeRemote;
 import jpa.CarJPA;
 import jpa.TripJPA;
@@ -20,289 +19,287 @@ import jpa.UserDTO;
 
 /**
  * UpdateTripInformationMBean
+ * 
  * @author GRUP6 jordi-nacho-ximo-joan
  */
 @ManagedBean(name = "updateTripInformationController")
 @ViewScoped
 public class UpdateTripInformationMBean implements Serializable {
-	
-	private static final long serialVersionUID = 1L;	
+
+	private static final long serialVersionUID = 1L;
+
 	@EJB
-	private TripAdministrationFacadeRemote updateTripInformationRemote;	
-	private String tripDescription;
-	private String tripDepartureCity;
-	private String tripFromPlace;
-	private Date tripDepartureDate;
-	private Date tripDepartureTime;
-	private String tripArrivalCity;
-	private String tripToPlace;
-	private Integer tripAvailableSeats;
-	private Float tripPrice;
-	private Integer tripId;
+	private TripAdministrationFacadeRemote updateTripInformationRemote;
+
 	private TripJPA trip;
+	private Integer tripId;
 	private Collection<CarJPA> cars;
+	private UserDTO loggedUser;
+	private boolean isEditing;
 	private String carSelected;
-	
-	
-	/**
-	 * AddTripMBean Default Constructor.
-	 */
+
 	public UpdateTripInformationMBean() {
-		
+		super();
 	}
-	
-	
+
+	public void init() throws NamingException {
+		Properties properties = System.getProperties();
+		Context context = new InitialContext(properties);
+		loggedUser = SessionBean.getLoggedUser();
+		updateTripInformationRemote = (TripAdministrationFacadeRemote) context.lookup(
+				"java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb" + ".TripAdministrationFacadeRemote");
+		if (tripId != null) {
+			isEditing = true;
+			trip = updateTripInformationRemote.getTrip(tripId);
+			cars = updateTripInformationRemote.getMyCars(loggedUser.getId());
+		} else {
+			isEditing = false;
+		}
+	}
+
 	/**
 	 * Returns parameter trip.
+	 * 
 	 * @return trip.
 	 */
 	public TripJPA getTrip() {
 		return trip;
 	}
-	
+
 	/**
 	 * Sets parameter trip.
+	 * 
 	 * @param trip.
 	 */
 	public void setTrip(TripJPA trip) {
 		this.trip = trip;
 	}
-	
+
 	/**
 	 * Returns parameter tripId.
+	 * 
 	 * @return tripId.
 	 */
 	public Integer getTripId() {
 		return tripId;
 	}
-	
+
 	/**
 	 * Sets parameter tripId.
+	 * 
 	 * @param tripId.
 	 */
 	public void setTripId(Integer tripId) {
 		this.tripId = tripId;
 	}
-	
+
 	/**
 	 * Returns parameter tripDepartureCity.
+	 * 
 	 * @return tripDepartureCity.
 	 */
-	public String getTripDepartureCity() {
+	public String getDepartureCity() {
 		return trip.getDepartureCity();
 	}
-	
+
 	/**
 	 * Sets parameter tripDeparturecity.
+	 * 
 	 * @param tripDepartureCity.
 	 */
-	public void setTripDepartureCity(String tripDepartureCity) {
-		this.tripDepartureCity = tripDepartureCity;
+	public void setDepartureCity(String departureCity) {
+		trip.setDepartureCity(departureCity);
 	}
-	
+
 	/**
 	 * Returns parameter tripArrivalCity.
+	 * 
 	 * @return tripArrivalCity.
 	 */
-	public String getTripArrivalCity() {
+	public String getArrivalCity() {
 		return trip.getArrivalCity();
 	}
-	
+
 	/**
 	 * Sets parameter tripArrivalCity.
+	 * 
 	 * @param tripArrivalCity.
 	 */
-	public void setTripArrivalCity(String tripArrivalCity) {
-		this.tripArrivalCity = tripArrivalCity;
+	public void setArrivalCity(String arrivalCity) {
+		this.trip.setArrivalCity(arrivalCity);
 	}
-	
+
 	/**
 	 * Returns parameter tripFromPlace.
+	 * 
 	 * @return tripFromPlace.
 	 */
-	public String getTripFromPlace() {
+	public String getFromPlace() {
 		return trip.getFromPlace();
 	}
-	
+
 	/**
 	 * Sets parameter tripFromPlace.
+	 * 
 	 * @param tripFromPlace.
 	 */
-	public void setTripFromPlace(String tripFromPlace) {
-		this.tripFromPlace = tripFromPlace;
+	public void setFromPlace(String fromPlace) {
+		this.trip.setFromPlace(fromPlace);
 	}
-	
+
 	/**
 	 * Returns parameter tripToPlace.
+	 * 
 	 * @return tripToPlace.
 	 */
-	public String getTripToPlace() {
+	public String getToPlace() {
 		return trip.getToPlace();
 	}
-	
+
 	/**
-	 * 
 	 * Sets parameter tripToPlace.
+	 * 
 	 * @param tripToPlace.
 	 */
-	public void setTripToPlace(String tripToPlace) {
-		this.tripToPlace = tripToPlace;
+	public void setToPlace(String toPlace) {
+		this.trip.setToPlace(toPlace);
 	}
-	
+
 	/**
 	 * Returns parameter tripDepartureDate.
+	 * 
 	 * @return tripDepartureDate.
 	 */
-	public Date getTripDepartureDate() {
+	public Date getDepartureDate() {
 		return trip.getDepartureDate();
 	}
-	
+
 	/**
 	 * Sets parameter tripDepartureDate.
+	 * 
 	 * @param tripDepartureDate.
 	 */
-	public void setTripDepartureDate(Date tripDepartureDate) {
-		this.tripDepartureDate = tripDepartureDate;
+	public void setDepartureDate(Date departureDate) {
+		this.trip.setDepartureDate(departureDate);
 	}
-	
+
 	/**
 	 * Returns parameter tripDepartureTime.
+	 * 
 	 * @return tripDepartureTime.
 	 */
-	public Date getTripDepartureTime() {
+	public Date getDepartureTime() {
 		return trip.getDepartureTime();
 	}
-	
+
 	/**
 	 * Sets parameter tripDeparturetime.
+	 * 
 	 * @param tripDepartureTime.
 	 */
-	public void setTripDepartureTime(Date tripDepartureTime) {
-		this.tripDepartureTime = tripDepartureTime;
+	public void setDepartureTime(Date departureTime) {
+		this.trip.setDepartureTime(departureTime);
 	}
-	
+
 	/**
 	 * Returns parameter tripAvailableSeats.
+	 * 
 	 * @param tripAvailableSeats.
 	 */
-	public int getTripAvailableSeats() {
+	public int getAvailableSeats() {
 		return trip.getAvailableSeats();
 	}
-	
+
 	/**
 	 * Sets tripAvailableSeats.
+	 * 
 	 * @param tripAvailableSeats.
 	 */
-	public void setTripAvailableSeats(int tripAvailableSeats) {
-		this.tripAvailableSeats = tripAvailableSeats;
+	public void setAvailableSeats(int availableSeats) {
+		this.trip.setAvailableSeats(availableSeats);
 	}
-	
+
 	/**
 	 * Returns parameter tripPrice.
+	 * 
 	 * @return tripPrice.
 	 */
-	public float getTripPrice() {
+	public float getPrice() {
 		return trip.getPrice();
 	}
-	
+
 	/**
 	 * Sets parameter tripPrice.
+	 * 
 	 * @param tripPrice.
 	 */
-	public void setTripPrice(float tripPrice) {
-		this.tripPrice = tripPrice;
+	public void setPrice(float price) {
+		this.trip.setPrice(price);
 	}
-	
+
 	/**
 	 * Returns parameter tripDescription.
+	 * 
 	 * @return tripDescription.
 	 */
-	public String getTripDescription() {
+	public String getDescription() {
 		return trip.getDescription();
 	}
-	
+
 	/**
 	 * Sets parameter tripDescription.
+	 * 
 	 * @param tripDescription.
 	 */
-	public void setTripDescription(String tripDescription) {
-		this.tripDescription = tripDescription;
+	public void setDescription(String description) {
+		this.trip.setDescription(description);
 	}
-	
+
 	/**
 	 * Returns parameter carSelected.
+	 * 
 	 * @return carSelected.
 	 */
 	public String getCarSelected() {
-		return carSelected;
+		return this.carSelected;
 	}
-	
+
 	/**
 	 * Sets parameter carSelected.
+	 * 
 	 * @param carSelected.
 	 */
 	public void setCarSelected(String carSelected) {
 		this.carSelected = carSelected;
 	}
-	
-	
+
 	/**
-	 * Gets a trip from trip table upon the 
-	 * tripId given parameter. The result 
-	 * is put into trip variable.
-	 * @throws Exception
-	 */
-	public void updateTrip() throws Exception {
-		Properties properties = System.getProperties();
-		Context context = new InitialContext(properties);
-		updateTripInformationRemote = (TripAdministrationFacadeRemote) context
-				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
-						+ ".TripAdministrationFacadeRemote");
-		if (tripId != null) {
-		trip = updateTripInformationRemote.showTrip(tripId);
-		tripDepartureCity = trip.getDepartureCity();
-		tripArrivalCity = trip.getArrivalCity();
-		tripDepartureDate = trip.getDepartureDate();
-		}
-	}
-	
-	/**
-	 * Gets a list of cars owned by the 
-	 * logged driver. Cars are shown on 
-	 * a selectMenu for the driver to 
-	 * select one of driver's cars.
+	 * Gets a list of cars owned by the logged driver. Cars are shown on a
+	 * selectMenu for the driver to select one of driver's cars.
+	 * 
 	 * @return ArrayList&lt;String&gt;.
 	 * @throws Exception
 	 */
-	public ArrayList<String> getCars() throws Exception {
-		UserDTO userDTO = SessionBean.getLoggedUser();
-		String driverId = userDTO.getId();
-		Properties properties = System.getProperties();
-		Context context = new InitialContext(properties);
-		updateTripInformationRemote = (TripAdministrationFacadeRemote) context.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
-		cars = null;
-		cars = updateTripInformationRemote.getMyCars(driverId);
-		ArrayList<String> brands = new ArrayList<String>();
-		Iterator<CarJPA> it = cars.iterator();
-		while (it.hasNext()) {
-			CarJPA car = it.next();
-			brands.add(car.getBrand()+" "+car.getModel()+" "+car.getColor());
-		}
-		return brands;
+	public Collection<CarJPA> getCars() {
+		return this.cars;
 	}
-	
+
 	/**
-	 * Method that calls the remote interface 
-	 * to persist car's updates.
+	 * Method that calls the remote interface to persist car's updates.
+	 * 
 	 * @return initial page.
 	 * @throws Exception
 	 */
 	public String refreshTrip() throws Exception {
-		
-			updateTripInformationRemote.updateTripInformation(tripId, tripDescription, 
-				tripDepartureCity, tripFromPlace, tripDepartureDate, tripDepartureTime, 
-				tripArrivalCity, tripToPlace, tripAvailableSeats, tripPrice, carSelected);
-			
-			return "/pages/public/findTripsView";
+
+		updateTripInformationRemote.updateTripInformation(tripId, getDescription(), getDepartureCity(), getFromPlace(),
+				getDepartureDate(), getDepartureTime(), getArrivalCity(), getToPlace(), getAvailableSeats(), getPrice(),
+				carSelected);
+
+		return "/pages/public/findTripsView";
+	}
+
+	public boolean getIsEditing() {
+		return isEditing;
 	}
 }

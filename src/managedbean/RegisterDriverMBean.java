@@ -16,6 +16,9 @@ import jpa.UserJPA;
 
 /**
  * Managed Bean RegisterDriverMBean
+ * 
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @ManagedBean(name = "registerdriver")
 @ViewScoped
@@ -96,6 +99,12 @@ public class RegisterDriverMBean implements Serializable {
 		return errorMessage;
 	}
 
+	/**
+	 * Method that set data of the driver
+	 * 
+	 * @return String
+	 *
+	 */
 	public String setDataDriver() {
 
 		String result;
@@ -136,6 +145,15 @@ public class RegisterDriverMBean implements Serializable {
 
 	}
 
+	/**
+	 * Check if exist the user that match the given conditions
+	 * 
+	 * @param user
+	 *            user to check
+	 * 
+	 * @return boolean
+	 *
+	 */
 	public boolean userIsRegistered(UserJPA user) {
 		boolean result = user.getNif().equals(nif) && user.getEmail().equals(email) && user.getName().equals(name)
 				&& user.getSurname().equals(surname) && user.getPassword().equals(password);

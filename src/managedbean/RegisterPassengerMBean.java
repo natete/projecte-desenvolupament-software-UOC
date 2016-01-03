@@ -16,6 +16,9 @@ import jpa.UserJPA;
 
 /**
  * Managed Bean RegisterPassengerMBean
+ * 
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @ManagedBean(name = "registerpassenger")
 @ViewScoped
@@ -97,6 +100,12 @@ public class RegisterPassengerMBean implements Serializable {
 		return errorMessage;
 	}
 
+	/**
+	 * Method that set data of the passenger
+	 * 
+	 * @return String
+	 *
+	 */
 	public String setDataPassenger() {
 
 		String result;
@@ -137,6 +146,15 @@ public class RegisterPassengerMBean implements Serializable {
 
 	}
 
+	/**
+	 * Check if exist the user that match the given conditions
+	 * 
+	 * @param user
+	 *            user to check
+	 * 
+	 * @return boolean
+	 *
+	 */
 	private boolean userIsRegistered(UserJPA user) {
 		boolean result = user.getNif().equals(nif) && user.getEmail().equals(email) && user.getName().equals(name)
 				&& user.getSurname().equals(surname) && user.getPassword().equals(password);

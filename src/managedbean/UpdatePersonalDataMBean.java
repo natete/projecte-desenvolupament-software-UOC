@@ -17,6 +17,9 @@ import jpa.UserJPA;
 
 /**
  * Managed Bean UpdatePersonalDataMBean
+ * 
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @ManagedBean(name = "updatepersonaldata")
 @ViewScoped
@@ -114,6 +117,12 @@ public class UpdatePersonalDataMBean implements Serializable {
 		return this.errorMessage;
 	}
 
+	/**
+	 * Method that set data user
+	 * 
+	 * @return String
+	 *
+	 */
 	public String setDataUser() throws Exception {
 
 		String result = "findTripsView.xhtml";
@@ -140,6 +149,10 @@ public class UpdatePersonalDataMBean implements Serializable {
 		return result;
 	}
 
+	/**
+	 * Method that update personal data
+	 * 
+	 */
 	private void updatePersonalData() {
 		userFacadeRemote.updatePersonalData(user.getNif(), user.getName(), user.getSurname(), user.getPhone(),
 				user.getEmail(), user.getPassword());

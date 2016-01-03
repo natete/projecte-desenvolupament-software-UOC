@@ -16,7 +16,10 @@ import jpa.CarJPA;
 import jpa.UserDTO;
 
 /**
- * Managed Bean ListcarsMBean
+ * Managed Bean ListCarsMBean
+ *
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @ManagedBean(name = "cars")
 @ViewScoped
@@ -27,11 +30,9 @@ public class ListCarsMBean implements Serializable {
 	@EJB
 	private UserFacadeRemote carsRemote;
 
-	// stores the nif of the driver of cars to be displayed
 	private UserDTO userLogged = SessionBean.getLoggedUser();
 	private String nif = userLogged.getId();
 
-	// stores all the instances of CarJPA
 	private Collection<CarJPA> carsList;
 
 	/**
@@ -59,11 +60,6 @@ public class ListCarsMBean implements Serializable {
 		this.carsList = carsList;
 	}
 
-	/**
-	 * Method used for Facelet to call addCarView Facelet
-	 * 
-	 * @return Facelet name
-	 */
 	public String addCar() {
 		return "addCarView";
 	}
@@ -71,7 +67,7 @@ public class ListCarsMBean implements Serializable {
 	/**
 	 * Method that gets a list of instances all CarJPA
 	 * 
-	 * @return
+	 * @return Collection<CarJPA>
 	 * 
 	 * @throws Exception
 	 */

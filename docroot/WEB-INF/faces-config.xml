@@ -147,7 +147,7 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-	<from-view-id>/pages/addTripView.xhtml</from-view-id>
+	<from-view-id>/pages/driver/addTripView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>errorView</from-outcome>
 			<to-view-id>/pages/public/errorView.xhtml</to-view-id>

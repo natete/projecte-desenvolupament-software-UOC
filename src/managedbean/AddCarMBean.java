@@ -14,7 +14,10 @@ import ejb.UserFacadeRemote;
 import jpa.UserDTO;
 
 /**
- * Managed Bean ShowPetMBean
+ * Managed Bean AddCarMBean
+ *
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @ManagedBean(name = "addcar")
 @SessionScoped
@@ -79,6 +82,12 @@ public class AddCarMBean implements Serializable {
 		return errorMessage;
 	}
 
+	/**
+	 * Method that set data car of the driver
+	 * 
+	 * @return String
+	 *
+	 */
 	public String setDataCar() throws Exception {
 
 		String result;

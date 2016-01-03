@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
 	xmlns:h="http://java.sun.com/jsf/html">
 	
 <ui:composition template="templates/main.xhtml">
@@ -25,11 +26,14 @@
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="col-xs-3 form-group" rendered="#{not findTripsController.isAdvancedSearch}">
 					<h:outputLabel for="departureDate" styleClass="control-label" value="Date"/>
-					<h:inputText id="departureDate" value="#{findTripsController.departureDate}"
-						styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:inputText>
-					<h:message for="departureDate" styleClass="text-danger"/>
+					<h:panelGroup layout="block" styleClass="input-group">
+						<input type="date" jsf:id="departureDate" jsf:value="#{findTripsController.departureDate}"
+							jsf:styleClass="form-control" >
+							<f:convertDateTime pattern="yyyy-MM-dd" />
+						</input>
+						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
+						<h:message for="departureDate" styleClass="text-danger"/>
+					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="col-xs-3 form-group checkbox" rendered="#{findTripsController.isAdvancedSearch}">
 					<h:outputLabel><h:selectBooleanCheckbox value="#{findTripsController.hasSeats}"/> Has seats</h:outputLabel>
@@ -46,33 +50,45 @@
 			<h:panelGroup layout="block" styleClass="row" rendered="#{findTripsController.isAdvancedSearch}">
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="initialDate" styleClass="control-label" value="Departure date from"/>
-					<h:inputText id="initialDate" value="#{findTripsController.initialDate}" styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:inputText>
-					<h:message for="initialDate" styleClass="text-danger"/>
+					<h:panelGroup layout="block" styleClass="input-group">
+						<input type="date" jsf:id="initialDate" jsf:value="#{findTripsController.initialDate}" jsf:styleClass="form-control" jsf:converterMessage="Bad format date (dd/mm/yyyy)">
+							<f:convertDateTime pattern="yyyy-MM-dd" />
+						</input>
+						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
+						<h:message for="initialDate" styleClass="text-danger"/>
+					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="finalDate" styleClass="control-label" value="Departure date to"/>
-					<h:inputText id="finalDate" value="#{findTripsController.finalDate}" styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:inputText>
-					<h:message for="finalDate" styleClass="text-danger"/>
+					<h:panelGroup layout="block" styleClass="input-group">
+						<input type="date" jsf:id="finalDate" jsf:value="#{findTripsController.finalDate}" jsf:styleClass="form-control" jsf:converterMessage="Bad format date (dd/mm/yyyy)">
+							<f:convertDateTime pattern="yyyy-MM-dd" />
+						</input>
+						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
+						<h:message for="finalDate" styleClass="text-danger"/>
+					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="minPrice" styleClass="control-label" value="Min price"/>
-					<h:inputText id="minPrice" styleClass="form-control" value="#{findTripsController.minPrice}" validatorMessage="Amount must be greater than 0" converterMessage="Bad format, must be a number">
-						<f:convertNumber currencySymbol="€" locale="es_ES" maxFractionDigits="2" type="currency" groupingUsed="true"/>
-						<f:validateDoubleRange minimum="0" />
-					</h:inputText>
-					<h:message for="minPrice" styleClass="text-danger"/>
+					<h:panelGroup layout="block" styleClass="input-group">
+						<h:inputText id="minPrice" styleClass="form-control" value="#{findTripsController.minPrice}" validatorMessage="Amount must be greater than 0" converterMessage="Bad format, must be a number">
+							<f:convertNumber maxFractionDigits="2" type="number" groupingUsed="true"/>
+							<f:validateDoubleRange minimum="0" />
+						</h:inputText>
+						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-eur"></i></h:panelGroup>
+						<h:message for="minPrice" styleClass="text-danger"/>
+					</h:panelGroup>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
-					<h:outputLabel for="maxPrice" styleClass="control-label" value="Max price"/>
-					<h:inputText id="maxPrice" styleClass="form-control" value="#{findTripsController.maxPrice}" validatorMessage="Amount must be greater than 0" converterMessage="Bad format, must be a number">
-						<f:convertNumber currencySymbol="€" locale="es_ES" maxFractionDigits="2" type="currency" groupingUsed="false"/>
-						<f:validateDoubleRange minimum="0" />
-					</h:inputText>
-					<h:message for="maxPrice" styleClass="text-danger"/>
+						<h:outputLabel for="maxPrice" styleClass="control-label" value="Max price"/>
+						<h:panelGroup layout="block" styleClass="input-group">
+							<h:inputText id="maxPrice" styleClass="form-control" value="#{findTripsController.maxPrice}" validatorMessage="Amount must be greater than 0" converterMessage="Bad format, must be a number">
+								<f:convertNumber maxFractionDigits="2" type="number" groupingUsed="false"/>
+								<f:validateDoubleRange minimum="0" />
+							</h:inputText>
+							<h:panelGroup styleClass="input-group-addon"><i class="fa fa-eur"></i></h:panelGroup>
+						<h:message for="maxPrice" styleClass="text-danger"/>
+					</h:panelGroup>
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:form>

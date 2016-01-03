@@ -33,20 +33,15 @@ public class FindMyTripsMBean implements Serializable {
 	@EJB
 	private TripAdministrationFacadeRemote tripAdmFacadeRemote;
 
-	// protected Collection<TripJPA> tripsListView;
-	// private Collection<TripJPA> tripsList;
 	private UserDTO logedUser;
 	private String driverId;
 	private String driverName;
 	private Integer tripId;
-	// protected int numTrips = 0;
 	private int currentPage;
 	private List<Integer> pages;
 	private List<TripJPA> trips;
 	private Long totalResults;
 	private String searchMessage = "";
-	// private boolean tagAddTrip = false;
-	// private boolean tagUpdateTrip = false;
 
 	/**
 	 * FindMyTripsMBean Default Constructor.
@@ -63,17 +58,6 @@ public class FindMyTripsMBean implements Serializable {
 		Context ctx = new InitialContext(props);
 		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
-		// TripsDTO tripsDto = tripAdmFacadeRemote.findMyTrips(getDriverId(),
-		// currentPage - 1);
-		// trips = tripsDto.getTrips();
-		// totalResults = tripAdmFacadeRemote.countMyTrips(getDriverId());
-		// if (totalResults == 0) {
-		// searchMessage = emptyListMessage;
-		// }
-		// else {
-		// populatePagesList(totalResults);
-		// findTrips(currentPage);
-		// }
 		findTrips(currentPage);
 	}
 
@@ -170,27 +154,6 @@ public class FindMyTripsMBean implements Serializable {
 		this.trips = trips;
 	}
 
-	// public boolean getTagAddTrip() {
-	// return tagAddTrip;
-	// }
-	/*
-	 * public String setTagAddTrip(boolean tagAddTrip) { this.tagAddTrip =
-	 * tagAddTrip; tagUpdateTrip = false; return
-	 * "/pages/driver/addTripView.xhtml"; }
-	 */
-	// public void setTagAddTrip(boolean tagAddTrip) {
-	// this.tagAddTrip = tagAddTrip;
-	// tagUpdateTrip = false;
-	// }
-	// public boolean getTagUpdateTrip() {
-	// return tagUpdateTrip;
-	// }
-	//
-	// public void setTagUpdateTrip(boolean tagUpdateTrip) {
-	// this.tagUpdateTrip = tagUpdateTrip;
-	// tagAddTrip = false;
-	// }
-
 	/**
 	 * Returns a searchMessage in case of error.
 	 * 
@@ -235,72 +198,6 @@ public class FindMyTripsMBean implements Serializable {
 	public Long getTotalResults() {
 		return totalResults;
 	}
-
-	// /**
-	// * Returns a list of trips owned by a
-	// * logged driver. The list is formatted as
-	// * Collection&lt;PassengerJPA&gt;. The
-	// * method lists screen up to 10 passengers.
-	// * @see tripList() to know how this method
-	// * gets the trips from the database.
-	// * @return Collection&lt;TripJPA&gt;.
-	// * @throws Exception
-	// */
-	// public Collection<TripJPA> getTripListView() throws Exception {
-	// int n = 0;
-	// tripsListView = new ArrayList<TripJPA>();
-	// this.tripList();
-	// for (Iterator<TripJPA> iter2 = tripsList.iterator(); iter2.hasNext();) {
-	// TripJPA trip = (TripJPA) iter2.next();
-	// if (n >= screen * 10 && n < (screen * 10 + 10)) {
-	// this.tripsListView.add(trip);
-	// }
-	// n += 1;
-	// }
-	// this.numTrips = n;
-	// return tripsListView;
-	// }
-
-	// /**
-	// * Gets all trips owned by a logged user
-	// * from carsharing.trip table. This method
-	// * is used by getTripListView() to show on
-	// * screen the passengers.
-	// * @show getTripListView().
-	// * @throws Exception.
-	// * @notice This method is no longer used,
-	// * see findTrips(int page) instead.
-	// * @see findTrips(int page).
-	// */
-	// private void tripList() throws Exception {
-	// Properties props = System.getProperties();
-	// Context ctx = new InitialContext(props);
-	// screen = 0;
-	// tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
-	// .lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
-	// tripsList =
-	// (Collection<TripJPA>)tripAdmFacadeRemote.findMyTrips(getDriverId());
-	// }
-
-	// /**
-	// * Method used by getTripListView() to page
-	// * all passenger registered on a trip.
-	// */
-	// public void nextScreen() {
-	// if (((screen + 1) * 10 < tripsList.size())) {
-	// screen += 1;
-	// }
-	// }
-	//
-	// /**
-	// * Method used by getTripListView() to page
-	// * all passenger registered on a trip.
-	// */
-	// public void previousScreen() {
-	// if ((screen > 0)) {
-	// screen -= 1;
-	// }
-	// }
 
 	/**
 	 * Gets all trips owned by a logged user from carsharing.trip table. This

@@ -60,6 +60,7 @@ public class TripFacadeBean implements TripFacadeRemote {
 		List<Predicate> predicates = processBasicParameters(departureCity, departureDate, arrivalCity, cb, root);
 
 		criteriaQuery.where(cb.and(predicates.toArray(new Predicate[0])));
+		criteriaQuery.orderBy(cb.asc(root.get(PARAMETER_DEPARTURE_DATE)));
 
 		final TypedQuery<TripJPA> query = entman.createQuery(criteriaQuery);
 
@@ -84,16 +85,11 @@ public class TripFacadeBean implements TripFacadeRemote {
 	 * Process basic search parameters returning a list of predicates related
 	 * with the criteria query being constructed
 	 * 
-	 * @param departureCity
-	 *            the departure city of the trip
-	 * @param departureDate
-	 *            the departure date of the trip
-	 * @param arrivalCity
-	 *            the arrival city of the trip
-	 * @param cb
-	 *            the {@link CriteriaBuilder} to add the criteria
-	 * @param root
-	 *            the {@link Root} to add the criteria
+	 * @param departureCity the departure city of the trip
+	 * @param departureDate the departure date of the trip
+	 * @param arrivalCity the arrival city of the trip
+	 * @param cb the {@link CriteriaBuilder} to add the criteria
+	 * @param root the {@link Root} to add the criteria
 	 * @return
 	 */
 	private List<Predicate> processBasicParameters(String departureCity, Date departureDate, String arrivalCity,
@@ -216,6 +212,7 @@ public class TripFacadeBean implements TripFacadeRemote {
 		}
 
 		criteriaQuery.where(cb.and(predicates.toArray(new Predicate[0])));
+		criteriaQuery.orderBy(cb.asc(root.get(PARAMETER_DEPARTURE_DATE)));
 
 		final TypedQuery<TripJPA> query = entman.createQuery(criteriaQuery);
 

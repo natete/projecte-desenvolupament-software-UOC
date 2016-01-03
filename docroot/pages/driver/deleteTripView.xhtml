@@ -29,22 +29,28 @@
 		
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-4">
-				<h:outputLabel value="From"/>
-				<div>
+				<h:panelGroup layout="block">
+					<h:outputText styleClass="bold" value="From"/>
+				</h:panelGroup>
+				<h:panelGroup layout="block" id="pickupPoint">
 					<h:outputText value="#{deleteTripController.pickupPoint}"/>
-				</div>
+				</h:panelGroup>
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="col-xs-4">
-				<h:outputLabel value="To"/>
-				<div>
+				<h:panelGroup layout="block">
+					<h:outputText styleClass="bold" value="To" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" id="dropoffPoint">
 					<h:outputText value="#{deleteTripController.dropoffPoint}"/>
-				</div>
+				</h:panelGroup>
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="col-xs-4">
-				<h:outputLabel value="Date"/>
-				<div>
+				<h:panelGroup layout="block">
+					<h:outputText styleClass="bold" value="Date" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" id="date">
 					<h:outputText value="#{deleteTripController.date}"/>
-				</div>
+				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
 		<br/>
@@ -54,7 +60,7 @@
 					<ul class="list-inline">
 						<li>
 							<h:commandButton value="Cancel" class="btn btn-danger" 
-								immediate="true" action="/pages/public/findTripsView" />
+								immediate="true" action="/pages/driver/findMyTripsView" />
 						</li>
 						<li>
 							<h:commandButton value="Confirm" class="btn btn-success"

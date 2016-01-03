@@ -6,6 +6,12 @@ import javax.servlet.http.HttpSession;
 
 import jpa.UserDTO;
 
+/**
+ * Manages the logged user
+ * 
+ * @author Ignacio González Bullón - nachoglezbul@uoc.edu
+ *
+ */
 public class SessionBean {
 
 	public static final String USER_NAME = "username";
@@ -22,8 +28,13 @@ public class SessionBean {
 		return (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 	}
 
+	/**
+	 * Retrieves the logged user in the current instance of the Session
+	 * 
+	 * @return user the logged {@link UserDTO}
+	 */
 	public static UserDTO getLoggedUser() {
-		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+		HttpSession session = getSession();
 		UserDTO user = null;
 		if (session.getAttribute(USER_NAME) != null) {
 			String username = (String) session.getAttribute(USER_NAME);
@@ -36,6 +47,12 @@ public class SessionBean {
 		return user;
 	}
 
+	/**
+	 * Sets the given user as logged in the current session
+	 * 
+	 * @param user
+	 *            the {@link UserDTO} to be registered as logged
+	 */
 	public static void setLoggedUser(UserDTO user) {
 		HttpSession session = getSession();
 		session.setAttribute(USER_NAME, user.getUsername());

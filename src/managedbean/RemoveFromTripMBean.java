@@ -31,9 +31,17 @@ public class RemoveFromTripMBean implements Serializable {
 	private Integer tripId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
+	private boolean isRegistered;
 
 	private String errorMessage;
 
+	/**
+	 * Method that initializes the managed bean and gets the trip passed as a
+	 * parameter
+	 * 
+	 * @return error if the trip being requested doesn't exist
+	 * @throws NamingException
+	 */
 	public String init() throws NamingException {
 		String result = "";
 		Properties props = System.getProperties();
@@ -46,9 +54,15 @@ public class RemoveFromTripMBean implements Serializable {
 			result = "errorView";
 		}
 		loggedUser = SessionBean.getLoggedUser();
+		isRegistered = trip.hasPassenger(loggedUser.getId());
 		return result;
 	}
 
+	/**
+	 * Removes the logged passenger from the trip
+	 * 
+	 * @return redirects to the showTrip view if success to error view otherwise
+	 */
 	public String removeFromTrip() {
 		String result = "showTrip";
 		try {
@@ -90,5 +104,9 @@ public class RemoveFromTripMBean implements Serializable {
 
 	public String getLoggedUsername() {
 		return loggedUser.getUsername();
+	}
+
+	public boolean getIsRegistered() {
+		return isRegistered;
 	}
 }

@@ -7,59 +7,86 @@
 <ui:composition template="/pages/public/templates/main.xhtml">
 	<ui:define name="content">
 		<f:metadata>
-			<f:viewParam name="tripId" value="#{registerInTripController.tripId}"/>
-			<f:viewAction action="#{registerInTripController.init()}"/>
+			<f:viewParam name="tripId" value="#{registerInTripController.tripId}" />
+			<f:viewAction action="#{registerInTripController.init()}" />
 		</f:metadata>
-		<div class="row">
-			<div class="col-xs-12">
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h1 class="page-header">
 					<i class="fa fa-thumbs-o-up"></i> Join to trip
 				</h1>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-12">
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row" rendered="#{registerInTripController.isRegistered}">
+			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
 				<h3>
-					<h:outputText value="#{registerInTripController.loggedUsername}" />, are you sure you want to join the following trip?
+					<h:outputText value="Sorry, you already joined this trip" />
 				</h3>
-			</div>
-		</div>
-		<br/>
-		<div class="row">
-			<div class="col-xs-4">
-				<h:outputLabel value="From"/>
-				<div>
-					<h:outputText value="#{registerInTripController.pickupPoint}"/>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<h:outputLabel value="To"/>
-				<div>
-					<h:outputText value="#{registerInTripController.dropoffPoint}"/>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<h:outputLabel value="Date"/>
-				<div>
-					<h:outputText value="#{registerInTripController.date}"/>
-				</div>
-			</div>
-		</div>
-		<br/>
-		<div class="row">
-			<h:form>
-				<div class="col-xs-12 text-center">
-					<ul class="list-inline">
-						<li>
-							<h:commandButton value="Cancel" action="#{registerInTripController.cancelRegistration}" styleClass="btn btn-danger"/>
-						</li>
-						<li>
-							<h:commandButton value="Confirm" action="#{registerInTripController.registerInTrip}" styleClass="btn btn-success"/>
-						</li>
-					</ul>
-				</div>
-			</h:form>
-		</div>
+				<h:form>
+					<h:commandButton value="Return"
+										action="#{registerInTripController.cancelRegistration}"
+										styleClass="btn btn-default"/>
+				</h:form>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row" rendered="#{not registerInTripController.isRegistered}">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-12">
+						<h3>
+							<h:outputText value="#{registerInTripController.loggedUsername}" />
+							, are you sure you want to join the following trip?
+						</h3>
+					</h:panelGroup>
+				</h:panelGroup>
+				<br />
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-4">
+						<h:panelGroup layout="block">
+							<h:outputText styleClass="bold" value="From" />
+						</h:panelGroup>
+						<h:panelGroup layout="block" id="pickupPoint">
+							<h:outputText value="#{registerInTripController.pickupPoint}" />
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-4">
+						<h:panelGroup layout="block">
+							<h:outputText styleClass="bold" value="To" />
+						</h:panelGroup>
+						<h:panelGroup layout="block" id="dropoffPoint">
+							<h:outputText value="#{registerInTripController.dropoffPoint}" />
+						</h:panelGroup>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-4">
+						<h:panelGroup layout="block">
+							<h:outputText styleClass="bold" value="Date" />
+						</h:panelGroup>
+						<h:panelGroup layout="block" id="date">
+							<h:outputText value="#{registerInTripController.date}" />
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+				<br />
+				<h:panelGroup layout="block" styleClass="row">
+					<h:form>
+						<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
+							<ul class="list-inline">
+								<li>
+									<h:commandButton value="Cancel"
+										action="#{registerInTripController.cancelRegistration}"
+										styleClass="btn btn-danger"/>
+								</li>
+								<li>
+									<h:commandButton value="Confirm"
+										action="#{registerInTripController.registerInTrip}"
+										styleClass="btn btn-success"/>
+								</li>
+							</ul>
+						</h:panelGroup>
+					</h:form>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:panelGroup>
 	</ui:define>
 </ui:composition>
 </html>

@@ -18,7 +18,7 @@ import jpa.UserDTO;
 
 @ManagedBean(name = "registerInTripController")
 @ViewScoped
-public class ResgisterInTripMBean implements Serializable {
+public class RegisterInTripMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -31,9 +31,17 @@ public class ResgisterInTripMBean implements Serializable {
 	private Integer tripId;
 	private TripJPA trip;
 	private UserDTO loggedUser;
+	private boolean isRegistered;
 
 	private String errorMessage;
 
+	/**
+	 * Method that initializes the managed bean and gets the trip passed as a
+	 * parameter
+	 * 
+	 * @return error if the trip being requested doesn't exist
+	 * @throws NamingException
+	 */
 	public String init() throws NamingException {
 		String result = "";
 		Properties props = System.getProperties();
@@ -46,9 +54,15 @@ public class ResgisterInTripMBean implements Serializable {
 			result = "errorView";
 		}
 		loggedUser = SessionBean.getLoggedUser();
+		isRegistered = trip.hasPassenger(loggedUser.getId());
 		return result;
 	}
 
+	/**
+	 * Registers the logged passenger in the trip
+	 * 
+	 * @return redirects to the showTrip view if success to error view otherwise
+	 */
 	public String registerInTrip() {
 		String result = "showTrip";
 		try {
@@ -91,4 +105,9 @@ public class ResgisterInTripMBean implements Serializable {
 	public String getLoggedUsername() {
 		return loggedUser.getUsername();
 	}
+
+	public boolean getIsRegistered() {
+		return isRegistered;
+	}
+
 }

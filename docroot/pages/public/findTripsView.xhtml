@@ -3,11 +3,11 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html">
-
+	
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
 		<h:panelGroup layout="block" styleClass="row">
-			<h:panelGroup class="col-xs-12">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h1 class="page-header">
 					<i class="fa fa-search"></i> Find your trips
 				</h1>
@@ -17,21 +17,21 @@
 			<h:panelGroup layout="block" styleClass="row">
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="departureCity" styleClass="control-label" value="From"/>
-					<h:inputText value="#{findTripsController.departureCity}" styleClass="form-control"></h:inputText>
+					<h:inputText id="departureCity" value="#{findTripsController.departureCity}" styleClass="form-control"></h:inputText>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="arrivalCity" styleClass="control-label" value="To"/>
-					<h:inputText value="#{findTripsController.arrivalCity}" styleClass="form-control" />
+					<h:inputText id="arrivalCity" value="#{findTripsController.arrivalCity}" styleClass="form-control" />
 				</h:panelGroup>
-				<h:panelGroup class="col-xs-3 form-group" rendered="#{not findTripsController.isAdvancedSearch}">
+				<h:panelGroup layout="block" styleClass="col-xs-3 form-group" rendered="#{not findTripsController.isAdvancedSearch}">
 					<h:outputLabel for="departureDate" styleClass="control-label" value="Date"/>
-					<h:inputText id="date" value="#{findTripsController.departureDate}"
+					<h:inputText id="departureDate" value="#{findTripsController.departureDate}"
 						styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:inputText>
-					<h:message for="date" styleClass="text-danger"/>
+					<h:message for="departureDate" styleClass="text-danger"/>
 				</h:panelGroup>
-				<h:panelGroup class="col-xs-3 form-group checkbox" rendered="#{findTripsController.isAdvancedSearch}">
+				<h:panelGroup layout="block" styleClass="col-xs-3 form-group checkbox" rendered="#{findTripsController.isAdvancedSearch}">
 					<h:outputLabel><h:selectBooleanCheckbox value="#{findTripsController.hasSeats}"/> Has seats</h:outputLabel>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
@@ -45,14 +45,14 @@
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="row" rendered="#{findTripsController.isAdvancedSearch}">
 				<h:panelGroup styleClass="col-xs-3 form-group">
-					<h:outputLabel for="initialDate" styleClass="control-label" value="Departure date before"/>
+					<h:outputLabel for="initialDate" styleClass="control-label" value="Departure date from"/>
 					<h:inputText id="initialDate" value="#{findTripsController.initialDate}" styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:inputText>
 					<h:message for="initialDate" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
-					<h:outputLabel for="finalDate" styleClass="control-label" value="Departure date after"/>
+					<h:outputLabel for="finalDate" styleClass="control-label" value="Departure date to"/>
 					<h:inputText id="finalDate" value="#{findTripsController.finalDate}" styleClass="form-control" converterMessage="Bad format date (dd/mm/yyyy)">
 						<f:convertDateTime pattern="dd/MM/yyyy" />
 					</h:inputText>
@@ -77,7 +77,7 @@
 			</h:panelGroup>
 		</h:form>
 		<h:panelGroup layout="block" class="row">
-			<h:panelGroup class="col-xs-12">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h3>
 					<h:outputText escape="false" value="#{findTripsController.searchMessage}" rendered="#{empty findTripsController.trips}"></h:outputText>
 				</h3>
@@ -86,36 +86,36 @@
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:panelGroup class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="From"></h:outputText>
 							</h:panelGroup>
 						</f:facet>
 						<!-- row record  -->
-						<h:panelGroup class="text-center">
+						<h:panelGroup layout="block">
 							<h:outputText value="#{trip.departureCity}"/>
 						</h:panelGroup>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:panelGroup class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="To"/>
 							</h:panelGroup>
 						</f:facet>
 						<!-- row record  -->
-						<h:panelGroup class="text-center">
+						<h:panelGroup layout="block">
 							<h:outputText value="#{trip.arrivalCity}"/>
 						</h:panelGroup>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:panelGroup class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="Date"/>
 							</h:panelGroup>
 						</f:facet>
 						<!-- row record  -->
-						<h:panelGroup class="text-center">
+						<h:panelGroup layout="block">
 							<h:outputText value="#{trip.departureDate}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</h:outputText>
@@ -124,36 +124,36 @@
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:panelGroup class="text-center">
+							<h:panelGroup layout="block" styleClass="text-center">
 								<h:outputText value="Available seats"/>
 							</h:panelGroup>
 						</f:facet>
 						<!-- row record  -->
-						<h:panelGroup class="text-center">
+						<h:panelGroup layout="block" styleClass="text-center">
 							<h:outputText value="#{trip.availableSeats}"/>
 						</h:panelGroup>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:panelGroup class="text-center">
+							<h:panelGroup layout="block" styleClass="text-center">
 								<h:outputText value="Price"/>
 							</h:panelGroup>
 						</f:facet>
 						<!-- row record  -->
-						<h:panelGroup class="text-center">
+						<h:panelGroup layout="block" styleClass="text-center">
 							<h:outputText value="#{trip.price} €"/>
 						</h:panelGroup>
 					</h:column>
 					<h:column>
 						<!-- Column header -->
 						<f:facet name="header">
-							<h:panelGroup class="text-center">
+							<h:panelGroup layout="block" styleClass="text-center">
 								<h:outputText value="" />
 							</h:panelGroup>
 						</f:facet>
 						<!-- row record  -->
-						<h:panelGroup class="text-center">
+						<h:panelGroup layout="block" styleClass="text-center">
 							<h:outputLink value="showTripView.xhtml" styleClass="btn btn-info">
 								<f:param name="tripId" value="#{trip.id}"/>
 								<h:outputText value="Details"/>
@@ -164,7 +164,7 @@
 			</h:panelGroup>
 		</h:panelGroup>
 		<h:form styleClass="row" rendered="#{not empty findTripsController.trips}">
-			<h:panelGroup class="col-xs-12 text-center">
+			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
 				<nav>
 					<ul class="pagination pagination-lg">
 						<li class="#{findTripsController.currentPage eq 1 ? 'disabled' : ''}">

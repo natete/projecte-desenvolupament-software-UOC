@@ -43,8 +43,14 @@ public class ShowTripMBean implements Serializable {
 		super();
 	}
 
+	/**
+	 * Method that initializes the managed bean and gets the trip passed as a
+	 * parameter
+	 * 
+	 * @return error if the trip being requested doesn't exist
+	 * @throws NamingException
+	 */
 	public String init() throws NamingException {
-		String result = "";
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		tripFacadeRemote = (TripFacadeRemote) ctx
@@ -52,11 +58,12 @@ public class ShowTripMBean implements Serializable {
 		trip = tripFacadeRemote.showTrip(tripId);
 		if (trip == null) {
 			errorMessage = "The required trip does not exist";
-			result = "errorView";
+			return "errorView";
+		} else {
+			driverId = trip.getDriver().getNif();
+			loggedUser = SessionBean.getLoggedUser();
+			return "";
 		}
-		driverId = trip.getDriver().getNif();
-		loggedUser = SessionBean.getLoggedUser();
-		return result;
 	}
 
 	public Integer getTripId() {

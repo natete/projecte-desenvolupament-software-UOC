@@ -10,23 +10,23 @@
 			<f:viewParam name="userId" value="#{login.id}"/>
 		</f:metadata>
 		<h:form>
-			<div class="row">
-				<div class="col-xs-12">
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-xs-12">
 					<h1 class="page-header">
 						<i><h:outputLabel class="fa fa-user" value=" My cars" /></i>
 					</h1>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12 text-left">
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-md-12 text-left">
 					<ul class="list-inline">
 						<li>
 							<h:commandButton value="Add Car" class="btn btn-primary"
 								action="addCarView" />
 						</li>
 					</ul>
-				</div>
-				<div class="col-xs-12">
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="col-xs-12">
 					<h3>
 						<h:outputText escape="false" value="This driver does not have cars" rendered="#{empty cars.carsList}"></h:outputText>
 					</h3>
@@ -35,67 +35,67 @@
 			 			<h:column>
 							<!-- Column header -->
 			   				<f:facet name="header">
-								<div class="text-center">
+								<h:panelGroup layout="block">
 									<h:outputText value="Registration Id"></h:outputText>
-								</div>
+								</h:panelGroup>
 							</f:facet> 
 							<!-- row record  -->
-							<div class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="#{item.carRegistrationId}"/>
-							</div>
+							</h:panelGroup>
 			 			</h:column>
 			 			<h:column>
 							<!-- Column header -->
 			   				<f:facet name="header">
-								<div class="text-center">
+								<h:panelGroup layout="block">
 									<h:outputText value="Brand"></h:outputText>
-								</div>
+								</h:panelGroup>
 							</f:facet> 
 							<!-- row record  -->
-							<div class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="#{item.brand}"/>
-							</div>
+							</h:panelGroup>
 			 			</h:column>
 			 			<h:column>
 							<!-- Column header -->
 			   				<f:facet name="header">
-								<div class="text-center">
+								<h:panelGroup layout="block">
 									<h:outputText value="Model"></h:outputText>
-								</div>
+								</h:panelGroup>
 							</f:facet> 
 							<!-- row record  -->
-							<div class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="#{item.model}"/>
-							</div>
+							</h:panelGroup>
 			 			</h:column>
 			 			<h:column>
 							<!-- Column header -->
 			   				<f:facet name="header">
-								<div class="text-center">
+								<h:panelGroup layout="block">
 									<h:outputText value="Color"></h:outputText>
-								</div>
+								</h:panelGroup>
 							</f:facet> 
 							<!-- row record  -->
-							<div class="text-center">
+							<h:panelGroup layout="block">
 								<h:outputText value="#{item.color}"/>
-							</div>
+							</h:panelGroup>
 			 			</h:column>
 			 			<h:column>
 							<!-- Column header -->
 			   				<f:facet name="header">
-								<div class="text-center">
+								<h:panelGroup layout="block">
 									<h:outputText value=""></h:outputText>
-								</div>
+								</h:panelGroup>
 							</f:facet> 
 							<!-- row record  -->
-							<div class="text-center">
+							<h:panelGroup layout="block" styleClass="text-center">
 								<h:commandButton value="Delete Car" class="btn btn-primary"
 									action="#{deletecar.deleteCar(item.carRegistrationId)}" />
-							</div>
+							</h:panelGroup>
 			 			</h:column>
 			 		</h:dataTable>
-				</div>
-			</div>
+				</h:panelGroup>
+			</h:panelGroup>
 		</h:form>
 	</ui:define>
 </ui:composition>

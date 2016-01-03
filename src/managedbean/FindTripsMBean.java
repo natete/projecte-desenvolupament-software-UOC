@@ -46,6 +46,9 @@ public class FindTripsMBean implements Serializable {
 
 	private String searchMessage = "";
 
+	/**
+	 * Basic constructor
+	 */
 	public FindTripsMBean() {
 		super();
 		currentPage = 1;
@@ -53,6 +56,13 @@ public class FindTripsMBean implements Serializable {
 		isAdvancedSearch = false;
 	}
 
+	/**
+	 * Method that performs basic search
+	 * 
+	 * @param page
+	 *            the number of the required page
+	 * @throws NamingException
+	 */
 	public void findTrips(int page) throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
@@ -75,6 +85,12 @@ public class FindTripsMBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Updates the list of pages according the given total of results
+	 * 
+	 * @param total
+	 *            the total of results
+	 */
 	private void populatePagesList(Long total) {
 		pages.clear();
 		for (int i = 0; i * PAGE_SIZE < total; i++) {

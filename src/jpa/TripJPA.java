@@ -210,26 +210,46 @@ public class TripJPA implements Serializable {
 		this.car = car;
 	}
 
+	/**
+	 * Method that returns true if the trip has the given passenger as a
+	 * registered passenger
+	 * 
+	 * @param passengerId
+	 *            the passenger id to be found
+	 * @return true if the passenger is already registered, false otherwise
+	 */
 	@Transient
 	public boolean hasPassenger(String passengerId) {
-		boolean result = false;
 		if (passengers != null && !passengers.isEmpty()) {
 			for (PassengerJPA passenger : passengers) {
 				if (passenger.getNif().equals(passengerId)) {
-					result = true;
-					break;
+					return true;
 				}
 			}
 		}
-		return result;
+		return false;
 	}
 
+	/**
+	 * Method that adds the given passenger to the trip and updates the number
+	 * of available seats
+	 * 
+	 * @param passenger
+	 *            the {@link PassengerJPA} to be added
+	 */
 	@Transient
 	public void addPassenger(PassengerJPA passenger) {
 		passengers.add(passenger);
 		availableSeats = availableSeats - 1;
 	}
 
+	/**
+	 * Method that removes the given passenger from the trip and updates the
+	 * number of available seats
+	 * 
+	 * @param passenger
+	 *            the {@link PassengerJPA} to be removed
+	 */
 	@Transient
 	public void removePassenger(PassengerJPA passenger) {
 		passengers.remove(passenger);

@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,16 +25,9 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "trip")
-@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t " + "WHERE t.id = :tripId"),
-		@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t "
-				+ "WHERE t.driver.nif = :driverNif"),
-		@NamedQuery(name = "TripJPA.updateTrip", query = "UPDATE TripJPA t SET "
-				+ "t.description = :description, t.departureCity = :departureCity, "
-				+ "t.fromPlace = :fromPlace, t.departureDate = :departureDate, "
-				+ "t.departureTime = :departureTime, t.arrivalCity = :arrivalCity, "
-				+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price, "
-				+ "t.car = :myCar WHERE t.id = :tripId"),
-		@NamedQuery(name = "TripJPA.findTripsByDriverDataBasePaging", query = "SELECT t FROM TripJPA t"), })
+@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t WHERE t.id = :tripId"),
+		@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t WHERE t.driver.nif = :nif ORDER BY t.departureDate DESC"),
+		@NamedQuery(name = "TripJPA.countTripJPA", query = "SELECT COUNT (*) FROM TripJPA WHERE driver.nif = :nif"), })
 public class TripJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -254,5 +248,17 @@ public class TripJPA implements Serializable {
 	public void removePassenger(PassengerJPA passenger) {
 		passengers.remove(passenger);
 		availableSeats = availableSeats + 1;
+	}
+
+	@PreRemove
+	public void preRemove() {
+		car.getTrips().remove(this);
+		driver.getTrips().remove(this);
+		for (PassengerJPA passenger : passengers) {
+			passenger.getTrips().remove(this);
+		}
+		car = null;
+		driver = null;
+		passengers = null;
 	}
 }

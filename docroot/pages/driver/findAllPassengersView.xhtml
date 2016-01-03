@@ -25,7 +25,7 @@
 				</h1>
 			</div>
 		</div>
-		<h:form rendered="#{empty findAllPassengersController.passengersList}">
+		<h:form rendered="#{empty findAllPassengersController.allPassengers}">
 			<h3>
 				<i class='fa fa-times'></i>&nbsp;
 				<h:outputText value="No passengers for this trip"></h:outputText>
@@ -43,7 +43,7 @@
 				</ul>
 			</div>
 		</h:form>
-		<h:form rendered="#{!empty findAllPassengersController.passengersList}">
+		<h:form rendered="#{!empty findAllPassengersController.allPassengers}">
 		<div class="row">
 			<div class="col-xs-12">
 				<h:dataTable var="item" value="#{findAllPassengersController.allPassengers}" class="table table-striped" rendered="#{not empty findAllPassengersController.allPassengers}">

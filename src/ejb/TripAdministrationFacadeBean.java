@@ -1,5 +1,6 @@
 package ejb;
 
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import jpa.CarJPA;
 import jpa.DriverJPA;
@@ -25,28 +27,18 @@ import jpa.TripsDTO;
 @Stateless
 public class TripAdministrationFacadeBean implements TripAdministrationFacadeRemote {
 
-	public static final String BLANK_SPACE = " ";
-	public static final String QUERY_FIND_TRIPS_BY_DRIVER = "TripJPA.findTripsByDriver";
-	public static final String QUERY_GET_TRIP_BY_ID = "TripJPA.getTripById";
-	public static final String QUERY_FIND_TRIPS_BY_DRIVER_TABLE_PAGES = "TripJPA.findTripsByDriverDataBasePaging";
-	public static final String QUERY_UPDATE_TRIP = "TripJPA.updateTrip";
-	public static final String QUERY_GET_DRIVER_BY_NIF = "findMyDriver";
-	public static final String QUERY_GET_CARS_BY_DRIVER = "CarJPA.findCarsByDriver";
-	public static final String PARAMETER_CARS_DRIVER = "driver";
-	public static final String PARAMETER_DRIVER_NIF = "driverNif";
-	public static final String PARAMETER_DRIVER_NIF1 = "nif";
-	public static final String PARAMETER_TRIP_ID = "tripId";
-	public static final String PARAMETER_TRIP_DESCRIPTION = "description";
-	public static final String PARAMETER_TRIP_DEPARTURE_CITY = "departureCity";
-	public static final String PARAMETER_TRIP_FROM_PLACE = "fromPlace";
-	public static final String PARAMETER_TRIP_DEPARTURE_DATE = "departureDate";
-	public static final String PARAMETER_TRIP_DEPARTURE_TIME = "departureTime";
-	public static final String PARAMETER_TRIP_ARRIVAL_CITY = "arrivalCity";
-	public static final String PARAMETER_TRIP_TO_PLACE = "toPlace";
-	public static final String PARAMETER_TRIP_AVAILABLE_SEATS = "availableSeats";
-	public static final String PARAMETER_TRIP_PRICE = "price";
-	public static final String PARAMETER_TRIP_CAR = "myCar";
+	private static final String QUERY_FIND_TRIPS_BY_DRIVER = "TripJPA.findTripsByDriver";
+	private static final String QUERY_GET_TRIP_BY_ID = "TripJPA.getTripById";
+	private static final String QUERY_FIND_DRIVER = "DriverJPA.getByNif";
+	private static final String QUERY_GET_CARS_BY_DRIVER = "CarJPA.findCarsByDriverId";
+	private static final String QUERY_COUNT_TRIPS_BY_DRIVER = "TripJPA.countTripJPA";
+	private static final String QUERY_FIND_CAR_BY_ID = "CarJPA.findCarById";
+	private static final String PARAMETER_DRIVER_NIF = "nif";
+	private static final String PARAMETER_TRIP_ID = "tripId";
+	private static final String PARAMETER_CAR_ID = "carRegistrationId";
 	private static final int PAGE_SIZE = 10;
+	private static final int MINIMUM_DAYS_REQUIRED = 2;
+
 	@PersistenceContext(unitName = "CarSharing")
 	private EntityManager entman;
 
@@ -80,47 +72,20 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	@Override
 	@SuppressWarnings("unchecked")
 	public TripsDTO findMyTrips(String driver, int page) {
-		// TODO Auto-generated method stub
 
-		Query query = entman.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER).setParameter("driverNif", driver)
+		Query query = entman.createNamedQuery(QUERY_FIND_TRIPS_BY_DRIVER).setParameter(PARAMETER_DRIVER_NIF, driver)
 				.setFirstResult(page * PAGE_SIZE).setMaxResults(PAGE_SIZE);
 		TripsDTO trips = new TripsDTO();
 		trips.setTrips(query.getResultList());
-		Integer total = trips.getTrips().size();
 
-		trips.setTotal(total.longValue());
+		trips.setTotal(countMyTrips(driver));
 		return trips;
-		/*
-		 * DriverJPA myDriver = (DriverJPA)
-		 * entman.createNamedQuery(QUERY_GET_DRIVER_BY_NIF) .setParameter("nif",
-		 * driver) .getSingleResult(); CriteriaBuilder cb =
-		 * entman.getCriteriaBuilder(); CriteriaQuery<TripJPA> criteriaQuery =
-		 * cb.createQuery(TripJPA.class); Root<TripJPA> root =
-		 * criteriaQuery.from(TripJPA.class); List<Predicate> predicates = new
-		 * ArrayList<>(); Predicate pred = cb.equal(root.get("driver"),
-		 * myDriver); predicates.add(pred);
-		 * criteriaQuery.where(cb.and(predicates.toArray(new Predicate[0])));
-		 * final TypedQuery<TripJPA> query = entman.createQuery(criteriaQuery);
-		 * query.setFirstResult(page * PAGE_SIZE);
-		 * query.setMaxResults(PAGE_SIZE); TripsDTO trips = new TripsDTO();
-		 * trips.setTrips(query.getResultList()); CriteriaQuery<Long>
-		 * countCriteria = cb.createQuery(Long.class); Root<TripJPA> countRoot =
-		 * countCriteria.from(TripJPA.class);
-		 * countCriteria.select(cb.count(countRoot));
-		 * countCriteria.where(cb.and(predicates.toArray(new Predicate[0])));
-		 * trips.setTotal(entman.createQuery(countCriteria).getSingleResult());
-		 * return trips;
-		 */
 	}
 
-	public static int getLastPage(int totalElements, int pageSize) {
-		int base = totalElements / pageSize;
-		int mod = totalElements % pageSize;
-		return base + (mod > 0 ? 1 : 0);
-	}
-
-	public static int getStartItemByPage(int currentPage, int pageSize) {
-		return Math.max((pageSize * (currentPage - 1)) + 1, 1);
+	private Long countMyTrips(String driverNif) {
+		Long totalResults = (Long) entman.createNamedQuery(QUERY_COUNT_TRIPS_BY_DRIVER)
+				.setParameter(PARAMETER_DRIVER_NIF, driverNif).getSingleResult();
+		return totalResults;
 	}
 
 	/**
@@ -132,7 +97,6 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
 			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif,
 			String selectedCar) {
-		// TODO Auto-generated method stub
 
 		TripJPA trip = new TripJPA();
 		trip.setDescription(description);
@@ -145,27 +109,37 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		trip.setAvailableSeats(availableSeats);
 		trip.setPrice(price);
 
-		DriverJPA driverJPA = null;
-		try {
-			driverJPA = (DriverJPA) entman.createNamedQuery("findMyDriver").setParameter("nif", nif).getSingleResult();
-		} catch (PersistenceException e) {
-			System.out.println(e);
-		}
-		trip.setDriver(driverJPA);
+		DriverJPA driver = getDriver(nif);
 
-		String[] tokens = selectedCar.split(" ");
-		String brand = tokens[0];
-		String model = tokens[1];
-		String colour = tokens[2];
-		CarJPA myCar = (CarJPA) entman.createNamedQuery("CarJPA.findCarByBrandModelColour").setParameter("brand", brand)
-				.setParameter("model", model).setParameter("colour", colour).getSingleResult();
-		trip.setCar(myCar);
+		if (driver == null) {
+			throw new IllegalArgumentException("The selected driver is not registered");
+		}
+
+		trip.setDriver(driver);
+
+		CarJPA car = findCar(selectedCar);
+
+		if (car == null) {
+			throw new IllegalArgumentException("The selected car is not registered");
+		}
+
 		try {
 			entman.persist(trip);
-
 		} catch (PersistenceException e) {
 			System.out.println(e);
 		}
+	}
+
+	private DriverJPA getDriver(String driverId) {
+		DriverJPA driver;
+		Query query = entman.createNamedQuery(QUERY_FIND_DRIVER);
+		query.setParameter(PARAMETER_DRIVER_NIF, driverId);
+		try {
+			driver = (DriverJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			driver = null;
+		}
+		return driver;
 	}
 
 	/**
@@ -177,15 +151,10 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 */
 	@Override
 	public List<PassengerJPA> findAllPassengers(int tripId) {
-		// TODO Auto-generated method stub
 
 		TripJPA trip = null;
-		try {
-			trip = (TripJPA) entman.createNamedQuery(QUERY_GET_TRIP_BY_ID).setParameter(PARAMETER_TRIP_ID, tripId)
-					.getSingleResult();
-		} catch (PersistenceException e) {
-			System.out.println(e);
-		}
+		trip = (TripJPA) entman.createNamedQuery(QUERY_GET_TRIP_BY_ID).setParameter(PARAMETER_TRIP_ID, tripId)
+				.getSingleResult();
 		List<PassengerJPA> passengers = trip.getPassengers();
 		return passengers;
 	}
@@ -200,31 +169,41 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace,
 			Date departureDate, Date departureTime, String arrivalCity, String toPlace, Integer availableSeats,
 			Float price, String selectedCar) {
-		// TODO Auto-generated method stub
 
-		String[] tokens = selectedCar.split(" ");
-		String brand = tokens[0];
-		String model = tokens[1];
-		String colour = tokens[2];
-		CarJPA myCar = (CarJPA) entman.createNamedQuery("CarJPA.findCarByBrandModelColour").setParameter("brand", brand)
-				.setParameter("model", model).setParameter("colour", colour).getSingleResult();
-		try {
-			entman.createNamedQuery(QUERY_UPDATE_TRIP).setParameter(PARAMETER_TRIP_DESCRIPTION, description)
-					.setParameter(PARAMETER_TRIP_DEPARTURE_CITY, departureCity)
-					.setParameter(PARAMETER_TRIP_FROM_PLACE, fromPlace)
-					.setParameter(PARAMETER_TRIP_DEPARTURE_DATE, departureDate)
-					.setParameter(PARAMETER_TRIP_DEPARTURE_TIME, departureTime)
-					.setParameter(PARAMETER_TRIP_ARRIVAL_CITY, arrivalCity)
-					.setParameter(PARAMETER_TRIP_TO_PLACE, toPlace)
-					.setParameter(PARAMETER_TRIP_AVAILABLE_SEATS, availableSeats)
-					.setParameter(PARAMETER_TRIP_PRICE, price).setParameter(PARAMETER_TRIP_ID, tripId)
-					.setParameter(PARAMETER_TRIP_CAR, myCar).executeUpdate();
-		} catch (PersistenceException e) {
-			System.out.println(e);
+		CarJPA car = findCar(selectedCar);
+
+		if (car == null) {
+			throw new IllegalArgumentException("The selected car is not registered");
+		} else {
+			TripJPA trip = getTrip(tripId);
+			trip.setDescription(description);
+			trip.setDepartureCity(departureCity);
+			trip.setFromPlace(fromPlace);
+			trip.setDepartureDate(departureDate);
+			trip.setDepartureTime(departureTime);
+			trip.setArrivalCity(arrivalCity);
+			trip.setToPlace(toPlace);
+			trip.setAvailableSeats(availableSeats);
+			trip.setPrice(price);
+			trip.setCar(car);
+
+			entman.persist(trip);
 		}
 	}
 
-	public TripJPA showTrip(Integer id) {
+	private CarJPA findCar(String carId) {
+		CarJPA car;
+		Query query = entman.createNamedQuery(QUERY_FIND_CAR_BY_ID);
+		query.setParameter(PARAMETER_CAR_ID, carId);
+		try {
+			car = (CarJPA) query.getSingleResult();
+		} catch (NoResultException e) {
+			car = null;
+		}
+		return car;
+	}
+
+	public TripJPA getTrip(Integer id) {
 		TripJPA trip;
 		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
 		query.setParameter(PARAMETER_TRIP_ID, id);
@@ -239,14 +218,26 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	@SuppressWarnings("unchecked")
 	public Collection<CarJPA> getMyCars(String driverId) {
 		Collection<CarJPA> myCars = null;
-		DriverJPA driverJPA = (DriverJPA) entman.createNamedQuery(QUERY_GET_DRIVER_BY_NIF)
-				.setParameter(PARAMETER_DRIVER_NIF1, driverId).getSingleResult();
 		try {
-			myCars = entman.createNamedQuery(QUERY_GET_CARS_BY_DRIVER).setParameter(PARAMETER_CARS_DRIVER, driverJPA)
+			myCars = entman.createNamedQuery(QUERY_GET_CARS_BY_DRIVER).setParameter(PARAMETER_DRIVER_NIF, driverId)
 					.getResultList();
 		} catch (PersistenceException e) {
 			System.out.println(e);
 		}
 		return myCars;
+	}
+
+	@Transactional
+	public void deleteTrip(int tripId) {
+		TripJPA trip = entman.find(TripJPA.class, tripId);
+		Calendar depDate = Calendar.getInstance();
+		depDate.setTime(trip.getDepartureDate());
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, MINIMUM_DAYS_REQUIRED);
+		if (cal.after(depDate)) {
+			throw new IllegalArgumentException("Too late to delete that Trip.<br />We need at least "
+					+ "a three-day time to let passengers know about it.");
+		}
+		entman.remove(trip);
 	}
 }

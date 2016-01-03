@@ -147,7 +147,7 @@
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-	<from-view-id>/pages/addTripView.xhtml</from-view-id>
+	<from-view-id>/pages/driver/addTripView.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>errorView</from-outcome>
 			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
@@ -311,6 +311,7 @@
 			</redirect>
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/driver/carListView.xhtml</from-view-id>
 		<navigation-case>
@@ -337,6 +338,7 @@
 			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/driver/addTripView.xhtml</from-view-id>
 		<navigation-case>
@@ -345,6 +347,7 @@
 			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/driver/updateTripInformationView.xhtml</from-view-id>
 		<navigation-case>
@@ -353,12 +356,35 @@
 			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
+	
 	<navigation-rule>
 		<from-view-id>/pages/driver/findAllPassengersView.xhtml</from-view-id>
 		<navigation-case>
 			<from-action>#{login.logout}</from-action>
 			<from-outcome>login</from-outcome>
 			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	
+	<navigation-rule>
+		<from-view-id>/pages/driver/deleteTripView.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>findMyTrips</from-outcome>
+			<to-view-id>/pages/driver/findMyTripsView.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>errorView</from-outcome>
+			<to-view-id>/pages/public/errorView.xhtml</to-view-id>
+			<redirect>
+				<view-param>
+					<name>message</name>
+					<value>#{deleteTripController.errorMessage}</value>
+				</view-param>
+				<view-param>
+					<name>fromPage</name>
+					<value>/CAT-PDP-GRUP6/pages/driver/findMyTripsView.xhtml</value>
+				</view-param>
+			</redirect>
 		</navigation-case>
 	</navigation-rule>
 

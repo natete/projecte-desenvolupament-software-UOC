@@ -191,8 +191,8 @@
 								<h:commandLink action="#{findTripsController.findTrips(page)}" value="#{page}" disabled="#{findTripsController.currentPage eq page}" />
 							</li>
 						</ui:repeat>
-						<li class="#{findTripsController.currentPage*10 ge findTripsController.totalResults ? 'disabled' : ''}">
-							<h:commandLink action="#{findTripsController.findTrips(findTripsController.currentPage+1)}" value="Next" disabled="#{findTripsController.currentPage*10 ge findTripsController.totalResults}"/>
+						<li class="#{findTripsController.currentPage*10 gt findTripsController.totalResults ? 'disabled' : ''}">
+							<h:commandLink action="#{findTripsController.findTrips(findTripsController.currentPage+1)}" value="Next" disabled="#{findTripsController.currentPage*10 gt findTripsController.totalResults}"/>
 						</li>
 					</ul>
 				</nav>

@@ -20,7 +20,6 @@ import javax.persistence.Transient;
 @PrimaryKeyJoinColumn(name = "userId")
 @NamedQueries({
 		@NamedQuery(name = "DriverJPA.driverLogin", query = "SELECT d FROM DriverJPA d WHERE d.email = :email AND d.password = :password"),
-		@NamedQuery(name = "findMyDriver", query = "SELECT d FROM DriverJPA d WHERE d.nif = :nif"),
 		@NamedQuery(name = "DriverJPA.getByNif", query = "SELECT d FROM DriverJPA d WHERE d.nif = :nif") })
 public class DriverJPA extends UserJPA {
 

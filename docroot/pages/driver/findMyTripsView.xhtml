@@ -7,108 +7,119 @@
 
 <ui:composition template="/pages/public/templates/main.xhtml">
 	<ui:define name="content">
-		<div class="col-xs-12">
-			<h1 class="page-header">
-				<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-search"></i>&nbsp;&nbsp;&nbsp;My Trips
-			</h1>
-		</div>
-		<h:form rendered="#{empty findMyTripsController.trips}">
-			<h3>
-				<i class='fa fa-times'></i>&nbsp;
-				<h:outputText value="You have no trips assigned. Please, assign for a trip."></h:outputText>
-			</h3>
-			<div class="col-md-12 text-left">
-				<ul class="list-inline">
-					<li>
-						<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />
-					</li>
-					<li>
-						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
-								<h:outputText value="Cancel"/>
-						</h:outputLink>
-					</li>
-				</ul>
-			</div>
-		</h:form>
-			<h:form rendered="#{!empty findMyTripsController.trips}">
-				<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />
-				<h:dataTable value="#{findMyTripsController.trips}" var="item" class="table table-striped"  >
-		 			<h:column>
-		   				<f:facet name="header">
-		   					<h:outputText value="From"/>
-		   				</f:facet> 
-		     			<h:outputText value="#{item.departureCity}" />
-		 			</h:column>
-		 			<h:column>
-		   				<f:facet name="header">
-		   					<h:outputText value="To" />
-		   				</f:facet> 
-		    			<h:outputText value="#{item.arrivalCity}" />
-		 			</h:column>
-		 			<h:column>
-		   				<f:facet name="header">
-		   					<h:outputText value="Date" />
-		   				</f:facet> 
-		    			<h:outputText value="#{item.departureDate} ">
-		    				<f:convertDateTime type="date" pattern="dd/MM/yyyy" locale="es_ES" timeZone="Europe/Madrid" />
-		    			</h:outputText>
-		 			</h:column>
-		 			<h:column>
-		   				<f:facet name="header">
-		   					<h:outputText value="Time"/>
-		   				</f:facet>
-		     			<h:outputText align="right" value="#{item.departureTime}">
-		     				<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
-		     			</h:outputText>
-		   			</h:column>
-		   			<h:column>
-		     			<h:panelGroup class="col-md-2 col-md-offset-4">
-		     				<h:outputLink value="../public/showTripView.xhtml" styleClass="btn btn-primary">
-		     					<f:param name="tripId" value="#{item.id}" />
-		     					<i class="fa fa-info-circle"></i>&nbsp;
-								<h:outputText value="Details" />
-							</h:outputLink>
-		     			</h:panelGroup>
-		     			<h:panelGroup class="col-md-2">
-		     				<h:outputLink value="findAllPassengersView.xhtml" styleClass="btn btn-primary">
-		     					<f:param name="tripId" value="#{item.id}" />
-		     					<i class="fa fa-male"></i>&nbsp;
-								<h:outputText value="Passengers" />
-							</h:outputLink>
-		     			</h:panelGroup>
-		     			<h:panelGroup class="col-md-2 col-md-offset-1">
-		     				<h:outputLink value="updateTripInformationView.xhtml" styleClass="btn btn-info">
-		     					<f:param name="tripId" value="#{item.id}" />
-		     					<i class="fa fa-refresh"></i>&nbsp;
-								<h:outputText value="Update" />
-							</h:outputLink>
-		     			</h:panelGroup>
-		   			</h:column>
-		 		</h:dataTable>
-		 		<!--<div class="col-md-12 text-center">
-					<ul class="list-inline">
-						<li><h:commandButton class="btn btn-default btn-sm" action="#{findMyTripsController.previousScreen}" value="Previous" /></li>
-						<li><h:commandButton class="btn btn-default btn-sm" action="/pages/public/findTripsView.xhtml" value="Return" /></li>
-						<li><h:commandButton class="btn btn-default btn-sm" action="#{findMyTripsController.nextScreen}" value="Next" /></li>
-					</ul>
-				</div>	-->
-				<h:panelGroup class="col-xs-12 text-center">
-					<ul class="pagination pagination-lg">
-						<li class="#{findMyTripsController.currentPage eq 1 ? 'disabled' : ''}">
-							<h:commandLink action="#{findMyTripsController.findTrips(findMyTripsController.currentPage-1)}" value="Prev" disabled="#{findMyTripsController.currentPage eq 1}" />
-						</li>
-						<ui:repeat var="page" value="#{findMyTripsController.pages}">
-							<li class="#{page eq findMyTripsController.currentPage ? 'active' : ''}">
-								<h:commandLink action="#{findMyTripsController.findTrips(page)}" value="#{page}">
-								</h:commandLink>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1">
+				<h1 class="page-header">
+					<i class="fa fa-search"></i> My Trips
+				</h1>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1">
+				<h:form rendered="#{empty findMyTripsController.trips}">
+					<h3>
+						<i class='fa fa-times'></i>&nbsp;
+						<h:outputText value="You have no trips assigned. Please, assign for a trip."></h:outputText>
+					</h3>
+					<h:panelGroup layout="block" styleClass="col-md-12 text-left">
+						<ul class="list-inline">
+							<li>
+								<!--<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />-->
+								<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml" styleClass="btn btn-primary">
+									<h:outputText value="Add Trip" />
+								</h:outputLink>
 							</li>
-						</ui:repeat>
-						<li class="#{findMyTripsController.currentPage*10 gt findMyTripsController.totalResults ? 'disabled' : ''}">
-							<h:commandLink action="#{findMyTripsController.findTrips(findMyTripsController.currentPage+1)}" value="Next" disabled="#{findMyTripsController.currentPage*10 gt findMyTripsController.totalResults}" />
-						</li>
-					</ul>
-				</h:panelGroup>
-	 		</h:form>
+							<li>
+								<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+										<h:outputText value="Cancel"/>
+								</h:outputLink>
+							</li>
+						</ul>
+					</h:panelGroup>
+				</h:form>
+				<h:form rendered="#{!empty findMyTripsController.trips}">
+					<h:panelGroup layout="block" styleClass="text-right">
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml" styleClass="btn btn-primary">
+					    	<f:param name="tagAddTrip" value="true" />
+							<h:outputText value="Add Trip" />
+						</h:outputLink>
+					</h:panelGroup>
+					<h:dataTable value="#{findMyTripsController.trips}" var="item" class="table table-striped"  >
+			 			<h:column>
+			   				<f:facet name="header">
+			   					<h:outputText value="From"/>
+			   				</f:facet> 
+			     			<h:outputText value="#{item.departureCity}" />
+			 			</h:column>
+			 			<h:column>
+			   				<f:facet name="header">
+			   					<h:outputText value="To" />
+			   				</f:facet> 
+			    			<h:outputText value="#{item.arrivalCity}" />
+			 			</h:column>
+			 			<h:column>
+			   				<f:facet name="header">
+			   					<h:outputText value="Date" />
+			   				</f:facet> 
+			    			<h:outputText value="#{item.departureDate}">
+			    				<f:convertDateTime pattern="dd/MM/yyyy" />
+			    			</h:outputText>
+			 			</h:column>
+			 			<h:column>
+			   				<f:facet name="header">
+			   					<h:outputText value="Time"/>
+			   				</f:facet>
+			     			<h:outputText align="right" value="#{item.departureTime}">
+			     				<f:convertDateTime pattern="HH:mm" />
+			     			</h:outputText>
+			   			</h:column>
+			   			<h:column>
+			   				<h:panelGroup layout="block" styleClass="text-center">
+				   				<ul class="list-inline">
+				   					<li>
+					   					<h:outputLink value="../public/showTripView.xhtml" styleClass="btn btn-info">
+					     					<f:param name="tripId" value="#{item.id}" />
+					     					<i class="fa fa-info-circle"></i>
+											<h:outputText value=" Details" />
+										</h:outputLink>
+				   					</li>
+				   					<li>
+					     				<h:outputLink value="findAllPassengersView.xhtml" styleClass="btn btn-primary">
+					     					<f:param name="tripId" value="#{item.id}" />
+					     					<i class="fa fa-male"></i>
+											<h:outputText value=" Passengers" />
+										</h:outputLink>
+				   					</li>
+				   					<li>
+					     				<h:outputLink value="deleteTripView.xhtml" styleClass="btn btn-danger">
+					     					<f:param name="tripId" value="#{item.id}" />
+					     					<i class="fa fa-trash"></i>
+											<h:outputText value=" Delete" />
+										</h:outputLink>
+				   					</li>
+				   				</ul>
+			   				</h:panelGroup>
+			   			</h:column>
+			 		</h:dataTable>
+					<h:panelGroup class="col-xs-12 text-center">
+						<ul class="pagination pagination-lg">
+							<li class="#{findMyTripsController.currentPage eq 1 ? 'disabled' : ''}">
+								<h:commandLink action="#{findMyTripsController.findTrips(findMyTripsController.currentPage-1)}" value="Prev" disabled="#{findMyTripsController.currentPage eq 1}" />
+							</li>
+							<ui:repeat var="page" value="#{findMyTripsController.pages}">
+								<li class="#{page eq findMyTripsController.currentPage ? 'active' : ''}">
+									<h:commandLink action="#{findMyTripsController.findTrips(page)}" value="#{page}" disabled="#{findMyTripsController.currentPage eq page}"/>
+								</li>
+							</ui:repeat>
+							<li class="#{findMyTripsController.currentPage*10 ge findMyTripsController.totalResults ? 'disabled' : ''}">
+								<h:commandLink action="#{findMyTripsController.findTrips(findMyTripsController.currentPage+1)}" value="Next" disabled="#{findMyTripsController.currentPage*10 ge findMyTripsController.totalResults}" />
+							</li>
+						</ul>
+					</h:panelGroup>
+		 		</h:form>
+			</h:panelGroup>
+		</h:panelGroup>
+		
 	</ui:define>
 </ui:composition>
 </html>

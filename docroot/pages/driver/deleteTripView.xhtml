@@ -1,0 +1,69 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/pages/public/templates/main.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="tripId" value="#{deleteTripController.tripId}" />
+			<f:viewAction action="#{deleteTripController.init()}" />
+		</f:metadata>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-minus"></i> Delete Trip
+				</h1>
+			</h:panelGroup>
+		</h:panelGroup>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-12">
+				<h3>
+					<h:outputText value="Are you sure you want to remove the following trip?"/>
+				</h3>
+			</h:panelGroup>
+		</h:panelGroup>
+		<br/>
+		
+		<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-4">
+				<h:outputLabel value="From"/>
+				<div>
+					<h:outputText value="#{deleteTripController.pickupPoint}"/>
+				</div>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="col-xs-4">
+				<h:outputLabel value="To"/>
+				<div>
+					<h:outputText value="#{deleteTripController.dropoffPoint}"/>
+				</div>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="col-xs-4">
+				<h:outputLabel value="Date"/>
+				<div>
+					<h:outputText value="#{deleteTripController.date}"/>
+				</div>
+			</h:panelGroup>
+		</h:panelGroup>
+		<br/>
+		<h:panelGroup layout="block" styleClass="row">
+			<h:form>
+				<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
+					<ul class="list-inline">
+						<li>
+							<h:commandButton value="Cancel" class="btn btn-danger" 
+								immediate="true" action="/pages/public/findTripsView" />
+						</li>
+						<li>
+							<h:commandButton value="Confirm" class="btn btn-success"
+ 								action="#{deleteTripController.deleteTrip()}" />
+						</li>
+					</ul>
+				</h:panelGroup>
+			</h:form>
+		</h:panelGroup>
+	</ui:define>
+	</ui:composition>
+</html>

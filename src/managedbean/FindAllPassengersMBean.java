@@ -162,7 +162,9 @@ public class FindAllPassengersMBean implements Serializable {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);
 		screen = 0;
-		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx .lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
+		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx 
+				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb."
+						+ "TripAdministrationFacadeRemote");
 		passengersList = (Collection<PassengerJPA>)tripAdmFacadeRemote.findAllPassengers(getTripId());
 		if (passengersList.isEmpty() || passengersList == null) {
 			searchMessage = EMPTY_LIST_MESSAGE;
@@ -189,16 +191,16 @@ public class FindAllPassengersMBean implements Serializable {
 		}
 	}
 	
-public void getTripData() throws NamingException {
-	Properties properties = System.getProperties();
-	Context context = new InitialContext(properties);
-	tripAdmFacadeRemote = (TripAdministrationFacadeRemote) context
+	public void getTripData() throws NamingException {
+		Properties properties = System.getProperties();
+		Context context = new InitialContext(properties);
+		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) context
 			.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
 					+ ".TripAdministrationFacadeRemote");
-	trip = tripAdmFacadeRemote.showTrip(tripId);
-	tripDepartureCity = trip.getDepartureCity();
-	tripArrivalCity = trip.getArrivalCity();
-	tripDepartureDate = trip.getDepartureDate();
-	tripDepartureTime = trip.getDepartureTime();
+		trip = tripAdmFacadeRemote.getTrip(tripId);
+		tripDepartureCity = trip.getDepartureCity();
+		tripArrivalCity = trip.getArrivalCity();
+		tripDepartureDate = trip.getDepartureDate();
+		tripDepartureTime = trip.getDepartureTime();
 	}
 }

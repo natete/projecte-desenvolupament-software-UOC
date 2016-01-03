@@ -7,7 +7,7 @@ import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -17,7 +17,7 @@ import jpa.TripJPA;
 import jpa.UserDTO;
 
 @ManagedBean(name="deleteTripController")
-@SessionScoped
+@ViewScoped
 public class DeleteTripMBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -93,9 +93,11 @@ public class DeleteTripMBean implements Serializable {
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
 				+ ".TripAdministrationFacadeRemote");
 		trip = tripAdmFacadeRemote.showTrip(tripId);
-		setPickupPoint(trip.getDepartureCity() + ", " +trip.getFromPlace());
-		setDropoffPoint(trip.getArrivalCity() +", " +trip.getToPlace());
-		setDating(dateFormat.format(trip.getDepartureDate()) +", " +timeFormat.format(trip.getDepartureTime()));
+		if (trip != null) {
+			setPickupPoint(trip.getDepartureCity() + ", " +trip.getFromPlace());
+			setDropoffPoint(trip.getArrivalCity() +", " +trip.getToPlace());
+			setDating(dateFormat.format(trip.getDepartureDate()) +", " +timeFormat.format(trip.getDepartureTime()));
+		}
 
 	}
 	

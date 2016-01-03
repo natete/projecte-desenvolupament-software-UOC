@@ -258,10 +258,12 @@ public class UpdateTripInformationMBean implements Serializable {
 		updateTripInformationRemote = (TripAdministrationFacadeRemote) context
 				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb"
 						+ ".TripAdministrationFacadeRemote");
+		if (tripId != null) {
 		trip = updateTripInformationRemote.showTrip(tripId);
 		tripDepartureCity = trip.getDepartureCity();
 		tripArrivalCity = trip.getArrivalCity();
 		tripDepartureDate = trip.getDepartureDate();
+		}
 	}
 	
 	/**

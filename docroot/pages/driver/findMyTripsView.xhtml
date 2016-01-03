@@ -20,7 +20,11 @@
 			<div class="col-md-12 text-left">
 				<ul class="list-inline">
 					<li>
-						<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />
+						<!--<h:commandButton value="Add Trip" class="btn btn-primary" action="/pages/driver/addTripView.xhtml" />-->
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml" styleClass="btn btn-primary">
+			    			<f:param name="tagAddTrip" value="true" />
+							<h:outputText value="Add Trip" />
+						</h:outputLink>
 					</li>
 					<li>
 						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
@@ -32,7 +36,6 @@
 		</h:form>
 			<h:form rendered="#{!empty findMyTripsController.trips}">
 				<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml" styleClass="btn btn-primary">
-				    <f:param name="tripId" value="#{item.id}" />
 			    	<f:param name="tagAddTrip" value="true" />
 					<h:outputText value="Add Trip" />
 				</h:outputLink>

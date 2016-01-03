@@ -19,6 +19,9 @@ import jpa.UserDTO;
 
 /**
  * Managed Bean LoginMBean
+ * 
+ * @author Joaquín Paredes Ribera - jparedesr@uoc.edu
+ *
  */
 @ManagedBean(name = "login")
 @SessionScoped
@@ -40,7 +43,7 @@ public class LoginMBean implements Serializable {
 	 * Constructor method
 	 */
 	public LoginMBean() {
-		// this.setEmail(email);
+
 	}
 
 	public String getPassword() {
@@ -91,7 +94,12 @@ public class LoginMBean implements Serializable {
 		return errorMessage;
 	}
 
-	// validate login
+	/**
+	 * Method that validae login
+	 * 
+	 * @return String
+	 *
+	 */
 	public String validateData() throws NamingException {
 		Properties props = System.getProperties();
 		Context ctx = new InitialContext(props);

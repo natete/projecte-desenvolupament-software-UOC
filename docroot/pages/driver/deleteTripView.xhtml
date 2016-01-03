@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<ui:composition template="/pages/public/templates/main.xhtml">
+	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="tripId" value="#{deleteTripController.tripId}" />
+			<f:viewAction action="#{deleteTripController.init()}" />
+		</f:metadata>
+		<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-minus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Delete Trip
+				</h1>
+			</div>
+		</div>
+		<!--<h:form rendered="#{empty deleteTripController.trips}">
+			<h3>
+				<i class='fa fa-times'></i>&nbsp;
+				<h:outputText value="No trips to delete."></h:outputText>
+			</h3>
+			<div class="col-md-12 text-left">
+				<ul class="list-inline">
+					<li>
+						<h:commandButton value="Return" class="btn btn-primary" action="/pages/driver/findMyTripsView.xhtml" />
+					</li>
+					<li>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+		</h:form>-->
+		<div class="row">
+		<!--<h:form class="col-md-10 col-md-offset-1" rendered="#{!empty deleteTripController.trips}">-->
+		<h:form class="col-md-10 col-md-offset-1">
+			<h:panelGroup layout="block" styleClass="row">
+			<h:panelGroup layout="block" styleClass="col-xs-8">
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
+						<h:outputLabel value="Pickup point"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
+						<i class="fa fa-play text-success details-icon"></i>
+						<h:outputText value="#{deleteTripController.pickupPoint}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
+						<h:outputLabel value="Dropoff point"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
+						<i class="fa fa-stop text-danger details-icon"></i>
+						<h:outputText value="#{deleteTripController.dropoffPoint}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
+						<h:outputLabel value="Date"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
+						<i class="fa fa-calendar text-info details-icon"></i>
+						<h:outputText value="#{deleteTripController.dating}"/>
+					</h:panelGroup>
+				</h:panelGroup>
+				<!--<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
+						<h:outputLabel value="Driver"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
+						<i class="fa fa-user text-info details-icon"></i>
+						<h:outputText value="#{showTripController.driver}" styleClass="driver-header"/>
+						<h:outputText value="#{showTripController.rating}" styleClass="driver-header" escape="false"/>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/driverCommentsView.xhtml">
+							<f:param name="tripId" value="#{showTripController.tripId}"/>
+							<h:outputText value="View comments"/>
+						</h:outputLink>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<h:panelGroup layout="block" styleClass="col-xs-2">
+						<h:outputLabel value="Car"/>
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="col-xs-10">
+						<i class="fa fa-car text-info details-icon"></i>
+						<h:outputText value="#{showTripController.car}"/>
+					</h:panelGroup>
+				</h:panelGroup>-
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="col-xs-2">
+				<h:panelGroup layout="block" styleClass="well well-success text-center">
+					<h2><h:outputText value="#{showTripController.price} €"/></h2>
+				</h:panelGroup>
+			</h:panelGroup>
+			<h:panelGroup layout="block" styleClass="col-xs-2">
+				<h:panelGroup layout="block" styleClass="well well-info text-center">
+					<h2><h:outputText value="#{showTripController.availableSeats} seats"/></h2>
+				</h:panelGroup>-->
+			</h:panelGroup>
+		</h:panelGroup>
+			<div class="cancel-safe-group">
+				<div class="col-md-12 text-right">
+					<h:commandButton value="Cancel" class="btn btn-default"
+						immediate="true" action="/pages/public/findTripsView" />&nbsp;
+					<h:commandButton value="Confirm" class="btn btn-primary"
+						action="#{deleteTripController.deleteTrip()}" />
+				</div>
+			</div>
+		</h:form>
+	</div>
+	</ui:define>
+	</ui:composition>
+</html>

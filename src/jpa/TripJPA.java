@@ -24,16 +24,21 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "trip")
-@NamedQueries({ @NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t " + "WHERE t.id = :tripId"),
-		@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t "
-				+ "WHERE t.driver.nif = :driverNif"),
-		@NamedQuery(name = "TripJPA.updateTrip", query = "UPDATE TripJPA t SET "
-				+ "t.description = :description, t.departureCity = :departureCity, "
-				+ "t.fromPlace = :fromPlace, t.departureDate = :departureDate, "
-				+ "t.departureTime = :departureTime, t.arrivalCity = :arrivalCity, "
-				+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price, "
-				+ "t.car = :myCar WHERE t.id = :tripId"),
-		@NamedQuery(name = "TripJPA.findTripsByDriverDataBasePaging", query = "SELECT t FROM TripJPA t"), })
+@NamedQueries({
+	@NamedQuery(name = "TripJPA.getTripById", query = "SELECT t FROM TripJPA t " 
+		+ "WHERE t.id = :tripId"),
+	@NamedQuery(name = "TripJPA.findTripsByDriver", query = "SELECT t FROM TripJPA t "
+		+ "WHERE t.driver.nif = :driverNif ORDER BY t.departureDate DESC"),
+	@NamedQuery(name = "TripJPA.updateTrip", query = "UPDATE TripJPA t SET "
+		+ "t.description = :description, t.departureCity = :departureCity, "
+		+ "t.fromPlace = :fromPlace, t.departureDate = :departureDate, "
+		+ "t.departureTime = :departureTime, t.arrivalCity = :arrivalCity, "
+		+ "t.toPlace = :toPlace, t.availableSeats = :availableSeats, t.price = :price, "
+		+ "t.car = :myCar WHERE t.id = :tripId"),
+	@NamedQuery(name = "TripJPA.countTripJPA", query = "SELECT COUNT (*) FROM TripJPA "
+		+ "WHERE driver.nif = :driverNif"),
+	@NamedQuery(name = "TripJPA.deleteTripJPA", query = "DELETE FROM TripJPA WHERE id = :tripId"),
+})
 public class TripJPA implements Serializable {
 
 	private static final long serialVersionUID = 1L;

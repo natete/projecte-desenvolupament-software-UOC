@@ -77,8 +77,8 @@ public class FindTripsMBean implements Serializable {
 
 	private void populatePagesList(Long total) {
 		pages.clear();
-		for (int i = 0; i * PAGE_SIZE < total; i++) {
-			pages.add(i + 1);
+		for (int i = 1; i * PAGE_SIZE <= total + (10-total%10); i++) {
+			pages.add(i);
 		}
 	}
 

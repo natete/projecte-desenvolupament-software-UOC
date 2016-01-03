@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.SessionScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -22,7 +22,7 @@ import jpa.UserDTO;
  * @author GRUP6 jordi-nacho-ximo-joan
  */
 @ManagedBean(name = "findMyTripsController")
-@ViewScoped
+@SessionScoped
 public class FindMyTripsMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -43,42 +43,30 @@ public class FindMyTripsMBean implements Serializable {
 	private Long totalResults;
 	private final String emptyListMessage = "<i class='fa fa-times'></i>&nbsp;You have no trips assigned.";
 	private String searchMessage = "";
+	private boolean tagAddTrip = false;
+	private boolean tagUpdateTrip = false;
 	
 	/**
 	 * FindMyTripsMBean Default Constructor.
+	 * @throws NamingException 
 	 */
-	public FindMyTripsMBean() {
+	public FindMyTripsMBean() throws NamingException {
 		super();
 		currentPage = 1;
 		pages = new ArrayList<Integer>();
 		
 		Properties props = System.getProperties();
-		Context ctx;
-		try {
-			ctx = new InitialContext(props);
-
-			tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
-					.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
-		} catch (NamingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		Context ctx = new InitialContext(props);
+		tripAdmFacadeRemote = (TripAdministrationFacadeRemote) ctx
+				.lookup("java:app/CAT-PDP-GRUP6.jar/TripAdministrationFacadeBean!ejb.TripAdministrationFacadeRemote");
 		TripsDTO tripsDto = tripAdmFacadeRemote.findMyTrips(getDriverId(), currentPage);
 		trips = tripsDto.getTrips();
-		if (trips == null || trips.isEmpty()) {
-			searchMessage = emptyListMessage;
-		} else {
-			totalResults = tripsDto.getTotal();
+		totalResults = tripAdmFacadeRemote.countMyTrips(getDriverId());
+		if (totalResults == 0) searchMessage = emptyListMessage;
+		else {
 			populatePagesList(totalResults);
-		}
-		
-		try {
 			findTrips(currentPage);
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		
 	}
 	
 	/**
@@ -163,7 +151,30 @@ public class FindMyTripsMBean implements Serializable {
 	public void setTrips(List<TripJPA> trips) {
 		this.trips = trips;
 	}
-	
+
+	public boolean getTagAddTrip() {
+		return tagAddTrip;
+	}
+	/*
+	public String setTagAddTrip(boolean tagAddTrip) {
+		this.tagAddTrip = tagAddTrip;
+		tagUpdateTrip = false;
+		return "/pages/driver/addTripView.xhtml";
+	}
+	*/
+	public void setTagAddTrip(boolean tagAddTrip) {
+		this.tagAddTrip = tagAddTrip;
+		tagUpdateTrip = false;
+	}
+	public boolean getTagUpdateTrip() {
+		return tagUpdateTrip;
+	}
+
+	public void setTagUpdateTrip(boolean tagUpdateTrip) {
+		this.tagUpdateTrip = tagUpdateTrip;
+		tagAddTrip = false;
+	}
+
 	/**
 	 * Returns a searchMessage in 
 	 * case of error.
@@ -289,13 +300,6 @@ public class FindMyTripsMBean implements Serializable {
 		TripsDTO tripsDto = tripAdmFacadeRemote.findMyTrips(getDriverId(), page - 1);
 		trips = tripsDto.getTrips();
 		currentPage = page;
-		
-		if (trips == null || trips.isEmpty()) {
-			searchMessage = emptyListMessage;
-		} else if (tripsDto.getTotal() != totalResults) {
-			totalResults = tripsDto.getTotal();
-			populatePagesList(tripsDto.getTotal());
-		}
 	}
 	
 	/**
@@ -306,8 +310,8 @@ public class FindMyTripsMBean implements Serializable {
 	 */
 	private void populatePagesList(Long total) {
 		pages.clear();
-		for (int i = 0; i * PAGE_SIZE < total + 10; i++) {
-			pages.add(i+1);
+		for (int i = 1; i * PAGE_SIZE <= total + (10-total%10); i++) {
+			pages.add(i);
 		}
 	}
 }

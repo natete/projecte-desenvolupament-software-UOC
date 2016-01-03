@@ -70,4 +70,6 @@ public interface TripAdministrationFacadeRemote {
 	public void updateTripInformation(Integer tripId, String description, String departureCity, String fromPlace, Date departureDate, Date departureTime, String arrivalCity, String toPlace, Integer availableSeats, Float price, String carSelected);
 	public TripJPA showTrip(Integer tripId);
 	public Collection<CarJPA> getMyCars(String driverId);
+	public Long countMyTrips(String driverNif);
+	public String deleteTrip(int tripId);
 }

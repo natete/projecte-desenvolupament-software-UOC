@@ -38,9 +38,12 @@
 								</li>
 								<li role="separator" class="divider"></li>
 								<li>
-									<a href="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml">
-									<f:param name="userId" value="#{login.id}"/>
-									<i class="fa fa-globe"></i>&nbsp;&nbsp;Add trip</a>
+									<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml">
+				     					<f:param name="tripId" value="#{item.id}" />
+			    	 					<f:param name="tagAddTrip" value="true" />
+		    	 						<i class="fa fa-globe" />
+										<h:outputText value="&nbsp;Add trip" />
+									</h:outputLink>
 								</li>
 							</ul>
 						</li>

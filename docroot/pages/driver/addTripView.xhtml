@@ -7,13 +7,21 @@
 
 <ui:composition template="/pages/public/templates/main.xhtml">
 	<ui:define name="content">
+		<f:metadata>
+			<f:viewParam name="tripId" value="#{updateTripInformationController.tripId}"/>
+			<f:viewParam name="tagUpdateTrip" value="#{findMyTripsController.tagUpdateTrip}"/>
+			<f:viewParam name="tagAddTrip" value="#{findMyTripsController.tagAddTrip}"/>
+			<f:event listener="#{updateTripInformationController.updateTrip()}" type="preRenderView" />
+		</f:metadata>
+		<ui:fragment rendered="#{findMyTripsController.tagAddTrip}">
 		<div class="row">
-			<div class="col-xs-12">
-				<h1 class="page-header">
-					<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add Trip
-				</h1>
-			</div>
+				<div class="col-xs-12">
+					<h1 class="page-header">
+						<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Add Trip
+					</h1>
+				</div>
 		</div>
+		
 		<h:form rendered="#{empty addTripController.myCars}">
 			<h3>
 				<i class='fa fa-times'></i>&nbsp;
@@ -91,7 +99,7 @@
 				</h:inputText>
 				<h:message for="price" styleClass="text-danger" />
 			</div>
-			<div class="form-group col-md-6">
+			<div class="form-group col-md-2">
 				<label class="car-group">Car (*)</label>
 				<div class="selectOneMenu">
 					<h:selectOneMenu class="form-control" value="#{addTripController.carSelected}" required="true">
@@ -116,6 +124,86 @@
 			</div>
 		</h:form>
 	</div>
+	</ui:fragment>
+	<ui:fragment rendered="#{findMyTripsController.tagUpdateTrip}">
+	<div class="row">
+			<div class="col-xs-12">
+				<h1 class="page-header">
+					<i class="fa fa-globe"></i>&nbsp;<i class="fa fa-refresh"></i>&nbsp;&nbsp;&nbsp;Update Trip&nbsp;&nbsp;
+					<h:outputLabel value="#{updateTripInformationController.tripDepartureCity}" />&nbsp;&#45;
+					<h:outputLabel value="#{updateTripInformationController.tripArrivalCity}" />&nbsp;&nbsp;
+					<h:outputLabel value="#{updateTripInformationController.tripDepartureDate}">
+						<f:convertDateTime type="date" pattern="dd/MM/yyyy" locale="es_ES" timeZone="Europe/Madrid" />
+					</h:outputLabel>&nbsp;
+					<h:outputLabel value="#{updateTripInformationController.tripDepartureTime}">
+						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
+					</h:outputLabel>
+				</h1>
+			</div>
+		</div>
+		<div class="row">
+		<h:form class="col-md-10 col-md-offset-1">
+			<div class="form-group col-md-6">
+				<label for="departureCity">Departure City</label>
+				<h:inputText value="#{updateTripInformationController.tripDepartureCity}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="arrivalCity">Arrival City</label>
+				<h:inputText value="#{updateTripInformationController.tripArrivalCity}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="fromPlace">From Place</label>
+				<h:inputText value="#{updateTripInformationController.tripFromPlace}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="toPlace">To Place</label>
+				<h:inputText value="#{updateTripInformationController.tripToPlace}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="departureDate">Departure Date</label>
+				<h:inputText value="#{updateTripInformationController.tripDepartureDate}" class="form-control">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:inputText>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="departureTime">Departure Time</label>
+					<h:inputText value="#{updateTripInformationController.tripDepartureTime}" class="form-control">
+						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
+					</h:inputText>
+			</div>
+			<div class="form-group col-md-6">
+				<label for="availableSeats">Available Seats</label>
+				<h:inputText value="#{updateTripInformationController.tripAvailableSeats}" class="form-control" />
+			</div>
+			<div class="form-group col-md-6">
+				<label for="price">Price</label>
+				<h:inputText value="#{updateTripInformationController.tripPrice}" class="form-control" />
+			</div>
+			<div class="col-md-2">
+				<label class="car-group">Car&nbsp;</label>
+				<div class="selectOneMenu">
+					<h:selectOneMenu class="form-control" value="#{updateTripInformationController.carSelected}">
+						<f:selectItems value="#{updateTripInformationController.cars}" />
+					</h:selectOneMenu>
+				</div>
+			</div>
+			<div class="form-group col-md-12">
+				<label for="description" style="margin-top:1em;">Description</label>
+				<h:inputTextarea value="#{updateTripInformationController.tripDescription}" class="form-control" />
+			</div>
+			<div class="cancel-safe-group">
+				<div class="col-md-12 text-right">
+					<h:commandButton value="Return" class="btn btn-default"
+						immediate="true" action="/pages/driver/findMyTripsView.xhtml" />&nbsp;
+					<h:commandButton value="Cancel" class="btn btn-default"
+						immediate="true" action="/pages/public/findTripsView" />&nbsp;
+					<h:commandButton value="Save" class="btn btn-primary"
+						action="#{updateTripInformationController.refreshTrip}" />
+				</div>
+			</div>
+		</h:form>
+		</div>
+	</ui:fragment>
 	</ui:define>
 	</ui:composition>
 </html>

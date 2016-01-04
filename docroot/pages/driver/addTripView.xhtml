@@ -13,9 +13,14 @@
 			<f:event listener="#{updateTripInformationController.init()}" type="preRenderView" />
 		</f:metadata>
 		<h:panelGroup layout="block" styleClass="row">
-				<h:panelGroup layout="block" styleClass="col-xs-12 col-xs-offset-1">
+				<h:panelGroup layout="block" styleClass="col-xs-12 col-xs-offset-1" rendered="#{not updateTripInformationController.isEditing}">
 					<h1 class="page-header">
 						<i class="fa fa-plus"></i> Add Trip
+					</h1>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="col-xs-12 col-xs-offset-1" rendered="#{updateTripInformationController.isEditing}">
+					<h1 class="page-header" rendered="#{updateTripInformationController.isEditing}">
+						<i class="fa fa-refresh"></i> Update Trip
 					</h1>
 				</h:panelGroup>
 		</h:panelGroup>
@@ -124,18 +129,18 @@
 			<h:panelGroup layout="block" styleClass="row">
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label for="availableSeats">Available Seats (*)</label>
-					<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{not updateTripInformationController.isEditing}">
+					<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" validatorMessage="Seats must be set between 1 and 8" rendered="#{not updateTripInformationController.isEditing}">
 						<f:validateLongRange minimum="1" maximum="4" />
 					</h:inputText>
 					<h:inputText id="availableSeatsUpdate" value="#{updateTripInformationController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{updateTripInformationController.isEditing}">
-						<f:validateLongRange minimum="1" maximum="4" />
+						<f:validateLongRange minimum="1" maximum="8" />
 					</h:inputText>
 					<h:message for="availableSeats" styleClass="text-danger" />
 					<h:message for="availableSeatsUpdate" styleClass="text-danger" />
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label for="price">Price (*)</label>
-					<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00" rendered="#{not updateTripInformationController.isEditing}">
+					<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="Price must be set between 0.50 and 100.00" rendered="#{not updateTripInformationController.isEditing}">
 						<f:validateDoubleRange minimum="0.50" maximum="100.00" />
 					</h:inputText>
 					<h:inputText id="priceUpdate" value="#{updateTripInformationController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00" rendered="#{updateTripInformationController.isEditing}">

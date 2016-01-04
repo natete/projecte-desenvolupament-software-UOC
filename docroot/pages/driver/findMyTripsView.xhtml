@@ -17,10 +17,6 @@
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1">
 				<h:form rendered="#{empty findMyTripsController.trips}">
-					<h3>
-						<i class='fa fa-times'></i>&nbsp;
-						<h:outputText value="You have no trips assigned. Please, assign for a trip."></h:outputText>
-					</h3>
 					<h:panelGroup layout="block" styleClass="col-md-12 text-left">
 						<ul class="list-inline">
 							<li>
@@ -31,11 +27,15 @@
 							</li>
 							<li>
 								<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
-										<h:outputText value="Cancel"/>
+									<h:outputText value="Cancel"/>
 								</h:outputLink>
 							</li>
 						</ul>
 					</h:panelGroup>
+					<h3>
+						<i class='fa fa-times'></i>&nbsp;
+						<h:outputText value="You have no trips assigned. Please, assign for a trip."></h:outputText>
+					</h3>
 				</h:form>
 				<h:form rendered="#{!empty findMyTripsController.trips}">
 					<h:panelGroup layout="block" styleClass="text-right">

@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -31,7 +33,8 @@ public class ShowTripMBean implements Serializable {
 	@EJB
 	private TripFacadeRemote tripFacadeRemote;
 
-	private DateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy");
+	private Locale browserLocale = FacesContext.getCurrentInstance().getViewRoot().getLocale();
+	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.FULL, browserLocale);
 	private DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	private Integer tripId;
@@ -39,6 +42,7 @@ public class ShowTripMBean implements Serializable {
 	private TripJPA trip;
 	private UserDTO loggedUser;
 	private String errorMessage;
+	private String fromPage = "/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml";
 
 	public ShowTripMBean() {
 		super();
@@ -113,6 +117,14 @@ public class ShowTripMBean implements Serializable {
 		CarJPA car = trip.getCar();
 
 		return car.getBrand() + " " + car.getModel() + " color " + car.getColor();
+	}
+
+	public String getFromPage() {
+		return this.fromPage;
+	}
+
+	public void setFromPage(String fromPage) {
+		this.fromPage = fromPage;
 	}
 
 	public String getRating() {

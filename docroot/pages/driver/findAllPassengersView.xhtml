@@ -8,7 +8,7 @@
 	<ui:define name="content">
 		<f:metadata>
 			<f:viewParam name="tripId" value="#{findAllPassengersController.tripId}"/>
-			<f:event listener="#{findAllPassengersController.getTripData()}" type="preRenderView" />-->
+			<f:event listener="#{findAllPassengersController.init()}" type="preRenderView" />-->
 		</f:metadata>
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-12">
@@ -25,28 +25,17 @@
 			</h:panelGroup>
 		</h:panelGroup>
 		
-		<h:panelGroup layout="block" styleClass="row">
+		<h:panelGroup layout="block" styleClass="row" rendered="#{empty findAllPassengersController.passengers}">
 			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
-				<h:form rendered="#{empty findAllPassengersController.allPassengers}">
-					<h3>
-						<i class='fa fa-times'></i> This trip has not passengers yet
-					</h3>
-					<br/>
-					<h:panelGroup layout="block" styleClass="row">
-						<h:panelGroup layout="block" styleClass="col-md-12 text-center">
-							<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/findMyTripsView.xhtml" class="btn btn-default">
-								<h:outputText value="Return"/>
-							</h:outputLink>
-						</h:panelGroup>
-					</h:panelGroup>
-				</h:form>
+				<h3>
+					<i class='fa fa-times'></i> This trip has not passengers yet
+				</h3>
 			</h:panelGroup>
 		</h:panelGroup>
 		
-		<h:form rendered="#{!empty findAllPassengersController.allPassengers}">
-		<h:panelGroup layout="block" styleClass="row">
+		<h:panelGroup layout="block" styleClass="row" rendered="#{not empty findAllPassengersController.passengers}">
 			<h:panelGroup layout="block" styleClass="col-xs-12">
-				<h:dataTable var="item" value="#{findAllPassengersController.allPassengers}" class="table table-striped" rendered="#{not empty findAllPassengersController.allPassengers}">
+				<h:dataTable var="item" value="#{findAllPassengersController.passengers}" class="table table-striped" >
 					<h:column>
 		   				<f:facet name="header">
 		   					<h:outputText value="Name"/>
@@ -80,14 +69,16 @@
 				</h:dataTable>
 			</h:panelGroup>
 		</h:panelGroup>
-		<h:panelGroup layout="block" styleClass="col-md-12 text-center">
-			<ul class="list-inline">
-				<!--<li><h:commandButton class="btn btn-bbg1" action="#{findAllPassengersController.previousScreen}" value="Previous" /></li>-->
-				<li><h:commandButton class="btn btn-primary" action="/pages/driver/findMyTripsView.xhtml" value="Return" /></li>
-				<!--<li><h:commandButton class="btn btn-bbg1" action="#{findAllPassengersController.nextScreen}" value="Next" /></li>-->
-			</ul>
-		</h:panelGroup>
-	</h:form>
+		<br/>
+		<h:form>
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="col-md-12 text-center">
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/findMyTripsView.xhtml" class="btn btn-default">
+						<h:outputText value="Return"/>
+					</h:outputLink>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
 	</ui:define>
 </ui:composition>
 </html>

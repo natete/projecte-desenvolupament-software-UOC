@@ -9,6 +9,7 @@
 	<ui:define name="content">
 	<f:metadata>
 		<f:viewParam name="tripId" value="#{showTripController.tripId}"/>
+		<f:viewParam name="fromPage" value="#{showTripController.fromPage}"/>
 		<f:viewAction action="#{showTripController.init()}" />
 	</f:metadata>
 		<h:panelGroup layout="block" styleClass="row">
@@ -125,27 +126,41 @@
 				</h:panelGroup>
 			</h:panelGroup>
 		</h:panelGroup>
+		
+		<h:panelGroup layout="block" styleClass="row" rendered="#{not showTripController.passengerLogged and not showTripController.tripDriver}">
+			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
+				<h4 class="text-muted">
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/public/login.xhtml">Login</h:outputLink> 
+				 	 or <h:outputLink value="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">Register</h:outputLink>
+					 as a passenger to join this trip!
+				</h4>
+			</h:panelGroup>
+		</h:panelGroup>
+		
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.canJoinTrip}">
-					<f:param name="tripId" value="#{showTripController.tripId}"/>
-					<h:outputText value="Join to trip"/>
-				</h:outputLink>
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.canLeaveTrip}">
-					<f:param name="tripId" value="#{showTripController.tripId}"/>
-					<h:outputText value="Leave trip"/>
-				</h:outputLink>
-				<h:panelGroup layout="block" rendered="#{not showTripController.passengerLogged and not showTripController.tripDriver}">
-					<h4 class="text-muted">
-						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/login.xhtml">Login</h:outputLink> 
-					 	 or <h:outputLink value="/CAT-PDP-GRUP6/pages/public/registerPassengerView.xhtml">Register</h:outputLink>
-						 as a passenger to join this trip!
-					</h4>
-				</h:panelGroup>
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.tripDriver}">
-					<f:param name="tripId" value="#{showTripController.tripId}"/>
-					<h:outputText value="Edit trip"/>
-				</h:outputLink>
+			<ul class="list-inline">
+				<li>
+					<h:outputLink value="#{showTripController.fromPage}" styleClass="btn btn-default">
+						<h:outputText value="Return" />
+					</h:outputLink>
+				</li>
+				<li>
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.canJoinTrip}">
+						<f:param name="tripId" value="#{showTripController.tripId}"/>
+						<h:outputText value="Join to trip"/>
+					</h:outputLink>
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.canLeaveTrip}">
+						<f:param name="tripId" value="#{showTripController.tripId}"/>
+						<h:outputText value="Leave trip"/>
+					</h:outputLink>
+					<h:outputLink value="/CAT-PDP-GRUP6/pages/driver/addTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.tripDriver}">
+						<f:param name="tripId" value="#{showTripController.tripId}"/>
+						<h:outputText value="Edit trip"/>
+					</h:outputLink>
+				</li>
+			</ul>
+				
 			</h:panelGroup>
 		</h:panelGroup>
 	</ui:define>

@@ -111,10 +111,10 @@
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label for="departureTime">Departure Time (*)</label>
-					<h:inputText id="departureTime" value="#{addTripController.departureTime}" styleClass="form-control" required="true" crequiredMessage="This field is mandatory" onverterMessage="Bad format time (hh:mm)" rendered="#{not updateTripInformationController.isEditing}">
+					<h:inputText id="departureTime" value="#{addTripController.departureTime}" styleClass="form-control" required="true" requiredMessage="This field is mandatory" converterMessage="Bad format time (hh:mm)" rendered="#{not updateTripInformationController.isEditing}">
 						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
 					</h:inputText>
-					<h:inputText id="departureTimeUpdate" value="#{updateTripInformationController.departureTime}" class="form-control" required="true" converterMessage="Bad format time (hh:mm)" rendered="#{updateTripInformationController.isEditing}">
+					<h:inputText id="departureTimeUpdate" value="#{updateTripInformationController.departureTime}" class="form-control" required="true" requiredMessage="This field is mandatory" converterMessage="Bad format time (hh:mm)" rendered="#{updateTripInformationController.isEditing}">
 						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
 					</h:inputText>
 					<h:message for="departureTime" styleClass="text-danger" />

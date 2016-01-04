@@ -3,6 +3,7 @@ package managedbean;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 
 import javax.ejb.EJB;
@@ -147,5 +148,22 @@ public class ShowTripMBean implements Serializable {
 
 	public String getErrorMessage() {
 		return this.errorMessage;
+	}
+
+	public boolean getCanJoinTrip() {
+		return isFutureTrip() && isPassengerLogged() && !isLoggedUserInTrip();
+
+		// return true;
+	}
+
+	public boolean getCanLeaveTrip() {
+		return isFutureTrip() && isLoggedUserInTrip();
+	}
+
+	private boolean isFutureTrip() {
+		Calendar now = Calendar.getInstance();
+		Calendar tripDate = Calendar.getInstance();
+		tripDate.setTime(trip.getDepartureDate());
+		return now.before(tripDate);
 	}
 }

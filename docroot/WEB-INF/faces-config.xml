@@ -4,6 +4,14 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
 
 	<navigation-rule>
+		<from-view-id>*</from-view-id>
+		<navigation-case>
+			<from-outcome>logout</from-outcome>
+			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+
+	<navigation-rule>
 		<from-view-id>/pages/public/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>errorView</from-outcome>
@@ -330,42 +338,6 @@
 		</navigation-case>
 	</navigation-rule>
 
-	<navigation-rule>
-		<from-view-id>/pages/driver/findMyTripsView.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{login.logout}</from-action>
-			<from-outcome>login</from-outcome>
-			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
-	<navigation-rule>
-		<from-view-id>/pages/driver/addTripView.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{login.logout}</from-action>
-			<from-outcome>login</from-outcome>
-			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
-	<navigation-rule>
-		<from-view-id>/pages/driver/updateTripInformationView.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{login.logout}</from-action>
-			<from-outcome>login</from-outcome>
-			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
-	<navigation-rule>
-		<from-view-id>/pages/driver/findAllPassengersView.xhtml</from-view-id>
-		<navigation-case>
-			<from-action>#{login.logout}</from-action>
-			<from-outcome>login</from-outcome>
-			<to-view-id>/pages/public/findTripsView.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	
 	<navigation-rule>
 		<from-view-id>/pages/driver/deleteTripView.xhtml</from-view-id>
 		<navigation-case>

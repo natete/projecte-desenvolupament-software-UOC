@@ -142,7 +142,7 @@ public class LoginMBean implements Serializable {
 		HttpSession session = SessionBean.getSession();
 		session.invalidate();
 		this.user = null;
-		return "login";
+		return "logout";
 	}
 
 	public boolean isLogged() {

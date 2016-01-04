@@ -66,7 +66,7 @@ public class ShowTripCommentsMBean implements Serializable {
 		}
 		if (trip == null) {
 			trip = (TripJPA) tripCommentsRemote.findTrip(this.getTripId());
-			isDriverLogged = loggedUser != null && loggedUser.getId().equals(trip.getDriver().getNif());
+			isDriverLogged = loggedUser != null && loggedUser.isDriver();
 		}
 		populateTripCommentsList();
 	}

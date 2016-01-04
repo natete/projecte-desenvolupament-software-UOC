@@ -31,9 +31,9 @@
 							jsf:styleClass="form-control" >
 							<f:convertDateTime pattern="yyyy-MM-dd" />
 						</input>
-						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
-						<h:message for="departureDate" styleClass="text-danger"/>
+					<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
 					</h:panelGroup>
+					<h:message for="departureDate" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="col-xs-3 form-group checkbox" rendered="#{findTripsController.isAdvancedSearch}">
 					<h:outputLabel><h:selectBooleanCheckbox value="#{findTripsController.hasSeats}"/> Has seats</h:outputLabel>
@@ -51,12 +51,12 @@
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="initialDate" styleClass="control-label" value="Departure date from"/>
 					<h:panelGroup layout="block" styleClass="input-group">
-						<input type="date" jsf:id="initialDate" jsf:value="#{findTripsController.initialDate}" jsf:styleClass="form-control" jsf:converterMessage="Bad format date (dd/mm/yyyy)">
+						<input type="date" jsf:id="initialDate" jsf:value="#{findTripsController.initialDate}" jsf:styleClass="form-control" jsf:converterMessage="Bad format date (yyyy-mm-dd)">
 							<f:convertDateTime pattern="yyyy-MM-dd" />
 						</input>
 						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
-						<h:message for="initialDate" styleClass="text-danger"/>
 					</h:panelGroup>
+					<h:message for="initialDate" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="finalDate" styleClass="control-label" value="Departure date to"/>
@@ -65,8 +65,8 @@
 							<f:convertDateTime pattern="yyyy-MM-dd" />
 						</input>
 						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
-						<h:message for="finalDate" styleClass="text-danger"/>
 					</h:panelGroup>
+					<h:message for="finalDate" styleClass="text-danger"/>
 				</h:panelGroup>
 				<h:panelGroup styleClass="col-xs-3 form-group">
 					<h:outputLabel for="minPrice" styleClass="control-label" value="Min price"/>

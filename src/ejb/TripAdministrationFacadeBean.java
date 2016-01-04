@@ -110,22 +110,23 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		trip.setPrice(price);
 
 		DriverJPA driver = getDriver(nif);
-
+		/*
 		if (driver == null) {
 			throw new IllegalArgumentException("The selected driver is not registered");
-		}
+		}*/
 
 		trip.setDriver(driver);
 
 		CarJPA car = findCar(selectedCar);
 
 		trip.setCar(car);
+		/*
 		if (car == null) {
 			throw new IllegalArgumentException("The selected car is not registered");
 		} else {
 			trip.setCar(car);
 		}
-
+		*/
 		try {
 			entman.persist(trip);
 		} catch (PersistenceException e) {
@@ -194,6 +195,11 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		}
 	}
 
+	/**
+	 * Returns a car according to the given car id.
+	 * @param carId.
+	 * @return the car object.
+	 */
 	private CarJPA findCar(String carId) {
 		CarJPA car;
 		Query query = entman.createNamedQuery(QUERY_FIND_CAR_BY_ID);
@@ -205,7 +211,10 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		}
 		return car;
 	}
-
+	
+	/**
+	 * Returns a trip according to the given trip id.
+	 */
 	public TripJPA getTrip(Integer id) {
 		TripJPA trip;
 		Query query = entman.createNamedQuery(QUERY_GET_TRIP_BY_ID);
@@ -217,7 +226,10 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		}
 		return trip;
 	}
-
+	
+	/**
+	 * Get all cars from a given driver
+	 */
 	@SuppressWarnings("unchecked")
 	public Collection<CarJPA> getMyCars(String driverId) {
 		Collection<CarJPA> myCars = null;
@@ -230,6 +242,11 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 		return myCars;
 	}
 
+	/**
+	 * Deletes the given trip with a 3-day minimum time.
+	 * This is required to let the passengers know about 
+	 * it.
+	 */
 	@Transactional
 	public boolean deleteTrip(int tripId) {
 		TripJPA trip = entman.find(TripJPA.class, tripId);

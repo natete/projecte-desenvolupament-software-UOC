@@ -8,17 +8,19 @@
 <ui:composition template="templates/main.xhtml">
 	<ui:define name="content">
 		<h:panelGroup layout="block" styleClass="row">
-			<h:panelGroup layout="block" styleClass="col-xs-12">
+			<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1">
 				<h1 class="page-header">
-					<h:outputText value="Update your personal data" rendered="#{login.isLogged()}"/>
-					<h:outputText value="Register as passenger" rendered="#{not login.isLogged()}"/>
+					<h:panelGroup rendered="#{login.isLogged()}">
+						<i class="fa fa-user"></i><h:outputText value=" Update your personal data" />
+					</h:panelGroup>
+					<h:panelGroup rendered="#{not login.isLogged()}">
+						<i class="fa fa-user"></i><h:outputText value=" Register as passenger" />
+					</h:panelGroup>
 				</h1>
 			</h:panelGroup>
 		</h:panelGroup>
 		<h:panelGroup layout="block" styleClass="row">
 			<h:form class="col-md-10 col-md-offset-1">
-				<h1 class="col-md-12"><h:outputText value="Add a new passenger" rendered="#{not login.isLogged()}"/></h1>
-				<h1 class="col-md-12"><h:outputText value="Update #{login.roles}" rendered="#{login.isLogged()}"/></h1>
 				<h:panelGroup layout="block" styleClass="row">
 					<h:panelGroup layout="block" styleClass="form-group col-md-6">
 						<label>NIF: (*) </label>

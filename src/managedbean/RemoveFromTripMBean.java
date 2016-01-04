@@ -3,6 +3,7 @@ package managedbean;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 
 import javax.ejb.EJB;
@@ -52,10 +53,20 @@ public class RemoveFromTripMBean implements Serializable {
 		if (trip == null) {
 			this.errorMessage = "The required trip does not exist";
 			result = "errorView";
+		} else if (!isFutureTrip(trip)) {
+			this.errorMessage = "You can not leave in a past trip";
+			result = "errorView";
 		}
 		loggedUser = SessionBean.getLoggedUser();
 		isRegistered = trip.hasPassenger(loggedUser.getId());
 		return result;
+	}
+
+	private boolean isFutureTrip(TripJPA trip2) {
+		Calendar now = Calendar.getInstance();
+		Calendar tripDate = Calendar.getInstance();
+		tripDate.setTime(trip.getDepartureDate());
+		return now.before(tripDate);
 	}
 
 	/**

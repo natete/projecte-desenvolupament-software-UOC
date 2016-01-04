@@ -11,14 +11,14 @@
 		</f:metadata>
 		<h:form>
 			<h:panelGroup layout="block" styleClass="row">
-				<h:panelGroup layout="block" styleClass="col-xs-12">
+				<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1">
 					<h1 class="page-header">
-						<i><h:outputLabel class="fa fa-user" value=" My cars" /></i>
+						<i class="fa fa-car"></i> My cars
 					</h1>
 				</h:panelGroup>
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="row">
-				<h:panelGroup layout="block" styleClass="col-md-12 text-left">
+				<h:panelGroup layout="block" styleClass="col-md-10 col-xs-offset-1 text-right">
 					<ul class="list-inline">
 						<li>
 							<h:commandButton value="Add Car" class="btn btn-primary"
@@ -26,7 +26,7 @@
 						</li>
 					</ul>
 				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="col-xs-12">
+				<h:panelGroup layout="block" styleClass="col-xs-10 col-xs-offset-1">
 					<h3>
 						<h:outputText escape="false" value="This driver does not have cars" rendered="#{empty cars.carsList}"></h:outputText>
 					</h3>
@@ -99,6 +99,5 @@
 		</h:form>
 	</ui:define>
 </ui:composition>
-
 </html>
 

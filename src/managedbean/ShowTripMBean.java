@@ -31,8 +31,8 @@ public class ShowTripMBean implements Serializable {
 	@EJB
 	private TripFacadeRemote tripFacadeRemote;
 
-	DateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy");
-	DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+	private DateFormat dateFormat = new SimpleDateFormat("EEEE, MMM d, yyyy");
+	private DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	private Integer tripId;
 	private String driverId;
@@ -152,8 +152,6 @@ public class ShowTripMBean implements Serializable {
 
 	public boolean getCanJoinTrip() {
 		return isFutureTrip() && isPassengerLogged() && !isLoggedUserInTrip();
-
-		// return true;
 	}
 
 	public boolean getCanLeaveTrip() {

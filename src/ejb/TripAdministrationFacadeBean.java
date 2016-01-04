@@ -119,8 +119,11 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 
 		CarJPA car = findCar(selectedCar);
 
+		trip.setCar(car);
 		if (car == null) {
 			throw new IllegalArgumentException("The selected car is not registered");
+		} else {
+			trip.setCar(car);
 		}
 
 		try {

@@ -39,101 +39,111 @@
 		</h:form>
 		<h:panelGroup layout="block" styleClass="row">
 		<h:form class="col-md-10 col-md-offset-1" rendered="#{!empty addTripController.cars}">
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="departureCity">Departure City (*)</label>
-				<h:inputText id="departureCity" value="#{addTripController.departureCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:inputText id="departureCityUpdate" value="#{updateTripInformationController.departureCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:message for="departureCity" styleClass="text-danger" />
-				<h:message for="departureCityUpdate" styleClass="text-danger" />
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="departureCity">Departure City (*)</label>
+					<h:inputText id="departureCity" value="#{addTripController.departureCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:inputText id="departureCityUpdate" value="#{updateTripInformationController.departureCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:message for="departureCity" styleClass="text-danger" />
+					<h:message for="departureCityUpdate" styleClass="text-danger" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="arrivalCity">Arrival City (*)</label>
+					<h:inputText id="arrivalCity" value="#{addTripController.arrivalCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:inputText id="arrivalCityUpdate" value="#{updateTripInformationController.arrivalCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:message for="arrivalCity" styleClass="text-danger" />
+					<h:message for="arrivalCityUpdate" styleClass="text-danger" />
+				</h:panelGroup>
 			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="arrivalCity">Arrival City (*)</label>
-				<h:inputText id="arrivalCity" value="#{addTripController.arrivalCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:inputText id="arrivalCityUpdate" value="#{updateTripInformationController.arrivalCity}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:message for="arrivalCity" styleClass="text-danger" />
-				<h:message for="arrivalCityUpdate" styleClass="text-danger" />
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="fromPlace">From Place (*)</label>
+					<h:inputText id="fromPlace" value="#{addTripController.fromPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:inputText id="fromPlaceUpdate" value="#{updateTripInformationController.fromPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:message for="fromPlace" styleClass="text-danger" />
+					<h:message for="fromPlaceUpdate" styleClass="text-danger" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="toPlace">To Place (*)</label>
+					<h:inputText id="toPlace" value="#{addTripController.toPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:inputText id="toPlaceUpdate" value="#{updateTripInformationController.toPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
+						<f:validator validatorId="validator.NameValidator" />
+					</h:inputText>
+					<h:message for="toPlace" styleClass="text-danger" />
+					<h:message for="toPlaceUpdate" styleClass="text-danger" />
+				</h:panelGroup>
 			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="fromPlace">From Place (*)</label>
-				<h:inputText id="fromPlace" value="#{addTripController.fromPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:inputText id="fromPlaceUpdate" value="#{updateTripInformationController.fromPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:message for="fromPlace" styleClass="text-danger" />
-				<h:message for="fromPlaceUpdate" styleClass="text-danger" />
-			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="toPlace">To Place (*)</label>
-				<h:inputText id="toPlace" value="#{addTripController.toPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{not updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:inputText id="toPlaceUpdate" value="#{updateTripInformationController.toPlace}" class="form-control" required="true" requiredMessage="This field is mandatory" rendered="#{updateTripInformationController.isEditing}">
-					<f:validator validatorId="validator.NameValidator" />
-				</h:inputText>
-				<h:message for="toPlace" styleClass="text-danger" />
-				<h:message for="toPlaceUpdate" styleClass="text-danger" />
-			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="departureDate">Departure Date (*)</label>
-				<h:panelGroup layout="block" styleClass="input-group" rendered="#{not updateTripInformationController.isEditing}">
-					<input type="date" jsf:id="departureDate" jsf:value="#{addTripController.departureDate}"
-								jsf:styleClass="form-control" >
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="departureDate">Departure Date (*)</label>
+					<h:panelGroup layout="block" styleClass="input-group" rendered="#{not updateTripInformationController.isEditing}">
+						<input type="date" jsf:id="departureDate" jsf:value="#{addTripController.departureDate}"
+									jsf:styleClass="form-control" required="true" requiredMessage="This field is mandatory">
+								<f:convertDateTime pattern="dd/MM/yyy" />
+								<f:validator validatorId="validator.DateValidator" />
+						</input>
+						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
+						<h:message for="departureDate" styleClass="text-danger" />
+					</h:panelGroup>
+					<h:panelGroup layout="block" styleClass="input-group" rendered="#{updateTripInformationController.isEditing}">
+						<input type="date" jsf:id="departureDateUpdate" jsf:value="#{updateTripInformationController.departureDate}"
+									jsf:styleClass="form-control" required="true" requiredMessage="This field is mandatory">
 							<f:convertDateTime pattern="dd/MM/yyy" />
-					</input>
-					<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
-					<h:message for="departureDate" styleClass="text-danger" />
+							<f:validator validatorId="validator.DateValidator" />
+						</input>
+						<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
+						<h:message for="departureDateUpdate" styleClass="text-danger" />
+					</h:panelGroup>
 				</h:panelGroup>
-				<h:panelGroup layout="block" styleClass="input-group" rendered="#{updateTripInformationController.isEditing}">
-					<input type="date" jsf:id="departureDateUpdate" jsf:value="#{updateTripInformationController.departureDate}"
-								jsf:styleClass="form-control" >
-						<f:convertDateTime pattern="dd/MM/yyy" />
-					</input>
-					<h:panelGroup styleClass="input-group-addon"><i class="fa fa-calendar"></i></h:panelGroup>
-					<h:message for="departureDateUpdate" styleClass="text-danger" />
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="departureTime">Departure Time (*)</label>
+					<h:inputText id="departureTime" value="#{addTripController.departureTime}" class="form-control" required="true" converterMessage="Bad format time (hh:mm)" rendered="#{not updateTripInformationController.isEditing}">
+						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
+					</h:inputText>
+					<h:inputText id="departureTimeUpdate" value="#{updateTripInformationController.departureTime}" class="form-control" required="true" converterMessage="Bad format time (hh:mm)" rendered="#{updateTripInformationController.isEditing}">
+						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
+					</h:inputText>
+					<h:message for="departureTime" styleClass="text-danger" />
+					<h:message for="departureTimeUpdate" styleClass="text-danger" />
 				</h:panelGroup>
 			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="departureTime">Departure Time (*)</label>
-				<h:inputText id="departureTime" value="#{addTripController.departureTime}" class="form-control" required="true" converterMessage="Bad format time (hh:mm)" rendered="#{not updateTripInformationController.isEditing}">
-					<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
-				</h:inputText>
-				<h:inputText id="departureTimeUpdate" value="#{updateTripInformationController.departureTime}" class="form-control" required="true" converterMessage="Bad format time (hh:mm)" rendered="#{updateTripInformationController.isEditing}">
-					<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
-				</h:inputText>
-				<h:message for="departureTime" styleClass="text-danger" />
-				<h:message for="departureTimeUpdate" styleClass="text-danger" />
-			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="availableSeats">Available Seats (*)</label>
-				<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{not updateTripInformationController.isEditing}">
-					<f:validateLongRange minimum="1" maximum="4" />
-				</h:inputText>
-				<h:inputText id="availableSeatsUpdate" value="#{updateTripInformationController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{updateTripInformationController.isEditing}">
-					<f:validateLongRange minimum="1" maximum="4" />
-				</h:inputText>
-				<h:message for="availableSeats" styleClass="text-danger" />
-				<h:message for="availableSeatsUpdate" styleClass="text-danger" />
-			</h:panelGroup>
-			<h:panelGroup layout="block" styleClass="form-group col-md-6">
-				<label for="price">Price (*)</label>
-				<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00" rendered="#{not updateTripInformationController.isEditing}">
-					<f:validateDoubleRange minimum="0.50" maximum="100.00" />
-				</h:inputText>
-				<h:inputText id="priceUpdate" value="#{updateTripInformationController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00" rendered="#{updateTripInformationController.isEditing}">
-					<f:validateDoubleRange minimum="0.50" maximum="100.00" />
-				</h:inputText>
-				<h:message for="price" styleClass="text-danger" />
-				<h:message for="priceUpdate" styleClass="text-danger" />
+			<h:panelGroup layout="block" styleClass="row">
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="availableSeats">Available Seats (*)</label>
+					<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{not updateTripInformationController.isEditing}">
+						<f:validateLongRange minimum="1" maximum="4" />
+					</h:inputText>
+					<h:inputText id="availableSeatsUpdate" value="#{updateTripInformationController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{updateTripInformationController.isEditing}">
+						<f:validateLongRange minimum="1" maximum="4" />
+					</h:inputText>
+					<h:message for="availableSeats" styleClass="text-danger" />
+					<h:message for="availableSeatsUpdate" styleClass="text-danger" />
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="form-group col-md-6">
+					<label for="price">Price (*)</label>
+					<h:inputText id="price" value="#{addTripController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00" rendered="#{not updateTripInformationController.isEditing}">
+						<f:validateDoubleRange minimum="0.50" maximum="100.00" />
+					</h:inputText>
+					<h:inputText id="priceUpdate" value="#{updateTripInformationController.price}" class="form-control" required="true" validatorMessage="price must be set between 0.50 and 100.00" rendered="#{updateTripInformationController.isEditing}">
+						<f:validateDoubleRange minimum="0.50" maximum="100.00" />
+					</h:inputText>
+					<h:message for="price" styleClass="text-danger" />
+					<h:message for="priceUpdate" styleClass="text-danger" />
+				</h:panelGroup>
 			</h:panelGroup>
 			<h:panelGroup layout="block" styleClass="form-group col-md-6">
 				<label class="car-group">Car (*)</label>
@@ -161,7 +171,7 @@
 							</h:outputLink>
 						</li>
 						<li>
-							<h:commandButton value="Guardar" class="btn btn-primary"
+							<h:commandButton value="Save" class="btn btn-primary"
 								action="#{addTripController.addTrip}" rendered="#{not updateTripInformationController.isEditing}"/>
 						</li>
 						<li>

@@ -14,7 +14,7 @@ import javax.faces.validator.ValidatorException;
  */
 @FacesValidator("validator.DateValidator")
 public class DateValidator implements Validator {
-	private static final int MINIMUM_DAYS_REQUIRED = 2;
+	//private static final int MINIMUM_DAYS_REQUIRED = 2;
 	
 	@Override
 	public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
@@ -24,9 +24,9 @@ public class DateValidator implements Validator {
 		Calendar depDate = Calendar.getInstance();
 		depDate.setTime(date);
 		Calendar currDate = Calendar.getInstance();
-		currDate.add(Calendar.DATE, MINIMUM_DAYS_REQUIRED);
-		if (currDate.after(depDate)) {
-			FacesMessage msg = new FacesMessage("This field only accepts a 3-day minimum future day");
+		//currDate.add(Calendar.DATE, MINIMUM_DAYS_REQUIRED);
+		if (currDate.after(depDate) || depDate == null) {
+			FacesMessage msg = new FacesMessage("This field only accepts a future date");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(msg);
 		}

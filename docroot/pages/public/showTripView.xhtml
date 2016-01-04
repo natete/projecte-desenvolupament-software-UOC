@@ -127,11 +127,11 @@
 		</h:panelGroup>
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-12 text-center">
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.passengerLogged and not showTripController.loggedUserInTrip}">
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/registerInTripView.xhtml" styleClass="btn btn-info" rendered="#{showTripController.canJoinTrip}">
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Join to trip"/>
 				</h:outputLink>
-				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.loggedUserInTrip}">
+				<h:outputLink value="/CAT-PDP-GRUP6/pages/passenger/removeFromTripView.xhtml" styleClass="btn btn-danger" rendered="#{showTripController.canLeaveTrip}">
 					<f:param name="tripId" value="#{showTripController.tripId}"/>
 					<h:outputText value="Leave trip"/>
 				</h:outputLink>

@@ -10,7 +10,9 @@
 		<f:metadata>
 			<f:viewParam name="tripId" value="#{deleteTripController.tripId}" />
 			<f:viewAction action="#{deleteTripController.init()}" />
+			<f:viewParam name="3dayDel" value="#{deleteTripController.errorMessage}" />
 		</f:metadata>
+
 		<h:panelGroup layout="block" styleClass="row">
 			<h:panelGroup layout="block" styleClass="col-xs-12">
 				<h1 class="page-header">
@@ -70,6 +72,24 @@
 				</h:panelGroup>
 			</h:form>
 		</h:panelGroup>
+		<!--<h:form rendered="#{deleteTripController.errorMessage != null}">
+			<h3>
+				<i class='fa fa-times'></i>&nbsp;
+				<h:outputText value="Too late to delete that Trip. A three-day time is needed to delete a trip."></h:outputText>
+			</h3>
+			<div class="col-md-12 text-left">
+				<ul class="list-inline">
+					<li>
+						<h:commandButton value="Return" class="btn btn-primary" action="/pages/driver/findMyTripsView.xhtml" />
+					</li>
+					<li>
+						<h:outputLink value="/CAT-PDP-GRUP6/pages/public/findTripsView.xhtml" class="btn btn-default">
+								<h:outputText value="Cancel"/>
+						</h:outputLink>
+					</li>
+				</ul>
+			</div>
+		</h:form>-->
 	</ui:define>
 	</ui:composition>
 </html>

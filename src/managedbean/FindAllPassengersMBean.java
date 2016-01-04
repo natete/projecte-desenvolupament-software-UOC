@@ -27,7 +27,7 @@ public class FindAllPassengersMBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private static final String EMPTY_LIST_MESSAGE = "<i class='fa fa-times'></i>"
-			+ "No passengers for this trip.";
+		+ "No passengers for this trip.";
 	@EJB
 	private TripAdministrationFacadeRemote tripAdmFacadeRemote;
 	private int tripId;
@@ -122,7 +122,7 @@ public class FindAllPassengersMBean implements Serializable {
 	public void setSearchMessage(String searchMessage) {
 		this.searchMessage = searchMessage;
 	}
-
+	
 
 	/**
 	 * Returns a list of passengers registered in a trip

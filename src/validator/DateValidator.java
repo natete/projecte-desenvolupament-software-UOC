@@ -26,7 +26,7 @@ public class DateValidator implements Validator {
 		Calendar currDate = Calendar.getInstance();
 		currDate.add(Calendar.DATE, MINIMUM_DAYS_REQUIRED);
 		if (currDate.after(depDate)) {
-			FacesMessage msg = new FacesMessage("This field only accepts future dates");
+			FacesMessage msg = new FacesMessage("This field only accepts a 3-day minimum future day");
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(msg);
 		}

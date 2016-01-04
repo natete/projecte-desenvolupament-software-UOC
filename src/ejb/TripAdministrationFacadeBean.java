@@ -231,16 +231,17 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	}
 
 	@Transactional
-	public void deleteTrip(int tripId) {
+	public boolean deleteTrip(int tripId) {
 		TripJPA trip = entman.find(TripJPA.class, tripId);
 		Calendar depDate = Calendar.getInstance();
 		depDate.setTime(trip.getDepartureDate());
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.DATE, MINIMUM_DAYS_REQUIRED);
 		if (cal.after(depDate)) {
-			throw new IllegalArgumentException("Too late to delete that Trip.<br />We need at least "
-					+ "a three-day time to let passengers know about it.");
+			return false;
+		} else {
+			entman.remove(trip);
+			return true;
 		}
-		entman.remove(trip);
 	}
 }

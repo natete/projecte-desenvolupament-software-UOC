@@ -111,11 +111,10 @@ public class DeleteTripMBean implements Serializable {
 
 	public String deleteTrip() {
 		String result;
-		try {
-			tripAdmFacadeRemote.deleteTrip(tripId);
-			result = "findMyTrips";
-		} catch (IllegalArgumentException e) {
-			errorMessage = e.getMessage();
+		if (tripAdmFacadeRemote.deleteTrip(tripId)) {
+			result = "findMyTripsView";
+		} else {
+			errorMessage = "Too late to delete that trip. A three-day minimum time is needed to delete a trip.";
 			result = "errorView";
 		}
 		return result;

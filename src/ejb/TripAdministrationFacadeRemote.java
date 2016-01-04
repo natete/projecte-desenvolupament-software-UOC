@@ -79,5 +79,5 @@ public interface TripAdministrationFacadeRemote {
 
 	public Collection<CarJPA> getMyCars(String driverId);
 
-	public void deleteTrip(int tripId);
+	public boolean deleteTrip(int tripId);
 }

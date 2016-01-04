@@ -17,24 +17,28 @@
 		<div class="row">
 			<h:form class="col-md-10 col-md-offset-1">
 				<h1 class="col-md-12">Add a new car</h1>
-				<div class="form-group col-md-6">
-					<label for="carRegistrationId">Car Registration ID: (*) </label>
-					<h:inputText id="carRegistrationId" value="#{addcar.carRegistrationId}" class="form-control" required="true" requiredMessage="This field is mandatory" />
-					<h:message for="carRegistrationId" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
-					<label for="brand">Brand: (*)</label>
-					<h:inputText id="brand" value="#{addcar.brand}" class="form-control" required="true" requiredMessage="This field is mandatory" />
-					<h:message for="brand" styleClass="text-danger"/>
-				</div>
-				<div class="form-group col-md-6">
-					<label for="model">Model:</label>
-					<h:inputText value="#{addcar.model}" class="form-control" />
-				</div>
-				<div class="form-group col-md-6">
-					<label for="color">Color: </label>
-					<h:inputText value="#{addcar.color}" class="form-control" />
-				</div>
+				<h:panelGroup layout="block" styleClass="row">
+					<div class="form-group col-md-6">
+						<label for="carRegistrationId">Car Registration ID: (*) </label>
+						<h:inputText id="carRegistrationId" value="#{addcar.carRegistrationId}" class="form-control" required="true" requiredMessage="This field is mandatory" />
+						<h:message for="carRegistrationId" styleClass="text-danger"/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="brand">Brand: (*)</label>
+						<h:inputText id="brand" value="#{addcar.brand}" class="form-control" required="true" requiredMessage="This field is mandatory" />
+						<h:message for="brand" styleClass="text-danger"/>
+					</div>
+				</h:panelGroup>
+				<h:panelGroup layout="block" styleClass="row">
+					<div class="form-group col-md-6">
+						<label for="model">Model:</label>
+						<h:inputText value="#{addcar.model}" class="form-control" />
+					</div>
+					<div class="form-group col-md-6">
+						<label for="color">Color: </label>
+						<h:inputText value="#{addcar.color}" class="form-control" />
+					</div>
+				</h:panelGroup>
 				<div class="col-md-12 text-left">
 					<label>(*) Field mandatory</label>
 				</div>

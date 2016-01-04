@@ -51,6 +51,7 @@ public class UpdateTripInformationMBean implements Serializable {
 		if (tripId != null) {
 			isEditing = true;
 			trip = updateTripInformationRemote.getTrip(tripId);
+			carSelected = trip.getCar().getCarRegistrationId();
 			cars = updateTripInformationRemote.getMyCars(loggedUser.getId());
 		} else {
 			isEditing = false;

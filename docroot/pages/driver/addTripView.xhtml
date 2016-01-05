@@ -4,7 +4,7 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
-	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+	xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
 
 <ui:composition template="/pages/public/templates/main.xhtml">
 	<ui:define name="content">
@@ -96,7 +96,7 @@
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label for="departureDate">Departure Date (*)</label>
 					<h:panelGroup layout="block" styleClass="input-group" rendered="#{not updateTripInformationController.isEditing}">
-						<input type="date" jsf:id="departureDate" jsf:value="#{addTripController.departureDate}"
+						<input type="date" jsf:id="departureDate" jsf:value="#{addTripController.departureDate}" p:placeholder="yyyy-mm-dd"
 									jsf:styleClass="form-control" jsf:required="true" jsf:requiredMessage="This field is mandatory" jsf:converterMessage="Bad format date (yyyy-mm-dd)">
 								<f:convertDateTime pattern="yyyy-MM-dd" />
 								<f:validator validatorId="validator.DateValidator" />
@@ -105,7 +105,7 @@
 					</h:panelGroup>
 					<h:message for="departureDate" styleClass="text-danger" />
 					<h:panelGroup layout="block" styleClass="input-group" rendered="#{updateTripInformationController.isEditing}">
-						<input type="date" jsf:id="departureDateUpdate" jsf:value="#{updateTripInformationController.departureDate}"
+						<input type="date" jsf:id="departureDateUpdate" jsf:value="#{updateTripInformationController.departureDate}" p:placeholder="yyyy-mm-dd"
 									jsf:styleClass="form-control" jsf:required="true" jsf:requiredMessage="This field is mandatory" jsf:converterMessage="Bad format date (yyyy-mm-dd)">
 							<f:convertDateTime pattern="yyyy-MM-dd" />
 							<f:validator validatorId="validator.DateValidator" />
@@ -116,10 +116,10 @@
 				</h:panelGroup>
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label for="departureTime">Departure Time (*)</label>
-					<h:inputText id="departureTime" value="#{addTripController.departureTime}" styleClass="form-control" required="true" requiredMessage="This field is mandatory" converterMessage="Bad format time (hh:mm)" rendered="#{not updateTripInformationController.isEditing}">
+					<h:inputText id="departureTime" value="#{addTripController.departureTime}" styleClass="form-control" required="true" requiredMessage="This field is mandatory" converterMessage="Bad format time (hh:mm)" rendered="#{not updateTripInformationController.isEditing}" p:placeholder="hh:mm">
 						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
 					</h:inputText>
-					<h:inputText id="departureTimeUpdate" value="#{updateTripInformationController.departureTime}" class="form-control" required="true" requiredMessage="This field is mandatory" converterMessage="Bad format time (hh:mm)" rendered="#{updateTripInformationController.isEditing}">
+					<h:inputText id="departureTimeUpdate" value="#{updateTripInformationController.departureTime}" class="form-control" required="true" requiredMessage="This field is mandatory" converterMessage="Bad format time (hh:mm)" rendered="#{updateTripInformationController.isEditing}" p:placeholder="hh:mm">
 						<f:convertDateTime type="time" pattern="HH:mm" timeZone="Europe/Madrid" />
 					</h:inputText>
 					<h:message for="departureTime" styleClass="text-danger" />

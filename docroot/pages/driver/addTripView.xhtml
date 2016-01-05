@@ -130,9 +130,9 @@
 				<h:panelGroup layout="block" styleClass="form-group col-md-6">
 					<label for="availableSeats">Available Seats (*)</label>
 					<h:inputText id="availableSeats" value="#{addTripController.availableSeats}" class="form-control" required="true" validatorMessage="Seats must be set between 1 and 8" rendered="#{not updateTripInformationController.isEditing}">
-						<f:validateLongRange minimum="1" maximum="4" />
+						<f:validateLongRange minimum="1" maximum="8" />
 					</h:inputText>
-					<h:inputText id="availableSeatsUpdate" value="#{updateTripInformationController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 4" rendered="#{updateTripInformationController.isEditing}">
+					<h:inputText id="availableSeatsUpdate" value="#{updateTripInformationController.availableSeats}" class="form-control" required="true" validatorMessage="seats must be set between 1 and 8" rendered="#{updateTripInformationController.isEditing}">
 						<f:validateLongRange minimum="1" maximum="8" />
 					</h:inputText>
 					<h:message for="availableSeats" styleClass="text-danger" />

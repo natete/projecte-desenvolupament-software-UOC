@@ -95,7 +95,7 @@ public class TripAdministrationFacadeBean implements TripAdministrationFacadeRem
 	 */
 	@Override
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
-			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif,
+			Date departureTime, String arrivalCity, String toPlace, Integer availableSeats, Float price, String nif,
 			String selectedCar) {
 
 		TripJPA trip = new TripJPA();

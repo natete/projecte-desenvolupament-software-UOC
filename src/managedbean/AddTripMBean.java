@@ -39,8 +39,8 @@ public class AddTripMBean implements Serializable {
 	private Date departureTime;
 	private String arrivalCity;
 	private String toPlace;
-	private int availableSeats;
-	private float price;
+	private Integer availableSeats;
+	private Float price;
 	private Collection<CarJPA> cars;
 	private String carSelected;
 	private String searchMessage = "";
@@ -196,7 +196,7 @@ public class AddTripMBean implements Serializable {
 	 * 
 	 * @return availableSeats.
 	 */
-	public int getAvailableSeats() {
+	public Integer getAvailableSeats() {
 		return availableSeats;
 	}
 
@@ -205,7 +205,7 @@ public class AddTripMBean implements Serializable {
 	 * 
 	 * @param availableSeats.
 	 */
-	public void setAvailableSeats(int availableSeats) {
+	public void setAvailableSeats(Integer availableSeats) {
 		this.availableSeats = availableSeats;
 	}
 
@@ -214,7 +214,7 @@ public class AddTripMBean implements Serializable {
 	 * 
 	 * @return price.
 	 */
-	public float getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
@@ -223,7 +223,7 @@ public class AddTripMBean implements Serializable {
 	 * 
 	 * @param price.
 	 */
-	public void setPrice(float price) {
+	public void setPrice(Float price) {
 		this.price = price;
 	}
 

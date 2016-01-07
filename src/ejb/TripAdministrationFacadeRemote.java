@@ -44,7 +44,7 @@ public interface TripAdministrationFacadeRemote {
 	 * @param selectedCar, the car selected of owner's trip.
 	 */
 	public void addTrip(String description, String departureCity, String fromPlace, Date departureDate,
-			Date departureTime, String arrivalCity, String toPlace, int availableSeats, float price, String nif,
+			Date departureTime, String arrivalCity, String toPlace, Integer availableSeats, Float price, String nif,
 			String selectedCar);
 
 	/**
